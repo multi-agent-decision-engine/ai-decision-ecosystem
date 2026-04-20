@@ -1,0 +1,83 @@
+﻿{
+    "create_response":  {
+                            "scenario_id":  5
+                        },
+    "migration":  {
+                      "success":  false,
+                      "output":  ""
+                  },
+    "compose_ps":  {
+                       "success":  false,
+                       "output":  ""
+                   },
+    "swagger":  {
+                    "status_description":  "OK",
+                    "status_code":  200
+                },
+    "create_request":  {
+                           "name":  "JSON Kayit Demo",
+                           "risk_level":  2,
+                           "description":  "Sonuclari JSON kaydet",
+                           "expected_roi_percent":  80,
+                           "team_readiness":  8,
+                           "budget_million_usd":  2
+                       },
+    "simulation_response":  {
+                                "scenario_id":  5,
+                                "agent_outputs":  [
+                                                      {
+                                                          "agent_name":  "CEO",
+                                                          "score":  64,
+                                                          "rationale":  "Strategic fit 80% with market risk 0.2 yields strategic score 64."
+                                                      },
+                                                      {
+                                                          "agent_name":  "CFO",
+                                                          "score":  64,
+                                                          "rationale":  "ROI 80.0% with risk factor 0.2 yields financial score 64."
+                                                      },
+                                                      {
+                                                          "agent_name":  "HR",
+                                                          "score":  50,
+                                                          "rationale":  "Team readiness 8/10 with 2 hires needed and 3 months to readiness yields HR score 50."
+                                                      }
+                                                  ],
+                                "final_score":  59.33,
+                                "final_decision":  "REVISE"
+                            },
+    "timestamp":  "2026-02-28T01:55:54.8194016+03:00",
+    "compose_up":  {
+                       "success":  false,
+                       "output":  ""
+                   },
+    "retrieve_response":  {
+                              "scenario":  {
+                                               "id":  5,
+                                               "name":  "JSON Kayit Demo",
+                                               "description":  "Sonuclari JSON kaydet",
+                                               "budget_million_usd":  2.0,
+                                               "expected_roi_percent":  80.0,
+                                               "risk_level":  2,
+                                               "team_readiness":  8,
+                                               "created_at":  "2026-02-27T22:55:54.769407"
+                                           },
+                              "agent_outputs":  [
+                                                    {
+                                                        "agent_name":  "CEO",
+                                                        "score":  64,
+                                                        "rationale":  "Strategic fit 80% with market risk 0.2 yields strategic score 64."
+                                                    },
+                                                    {
+                                                        "agent_name":  "CFO",
+                                                        "score":  64,
+                                                        "rationale":  "ROI 80.0% with risk factor 0.2 yields financial score 64."
+                                                    },
+                                                    {
+                                                        "agent_name":  "HR",
+                                                        "score":  50,
+                                                        "rationale":  "Team readiness 8/10 with 2 hires needed and 3 months to readiness yields HR score 50."
+                                                    }
+                                                ],
+                              "final_score":  59.33,
+                              "final_decision":  "REVISE"
+                          }
+}

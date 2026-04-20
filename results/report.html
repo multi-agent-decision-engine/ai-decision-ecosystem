@@ -1,0 +1,992 @@
+﻿<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Decision Ecosystem Engine</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      min-height: 100vh;
+      color: #f1f5f9;
+    }
+    .container { max-width: 1200px; margin: 0 auto; padding: 24px; }
+    
+    /* Header */
+    .header {
+      text-align: center;
+      padding: 32px 0 16px;
+    }
+    .header h1 {
+      font-size: 28px;
+      font-weight: 700;
+      background: linear-gradient(90deg, #60a5fa, #a78bfa, #f472b6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .header p { color: #94a3b8; margin-top: 8px; font-size: 14px; }
+    
+    /* Navigation Tabs */
+    .nav-tabs {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin: 20px 0 24px;
+      padding: 6px;
+      background: rgba(15, 23, 42, 0.6);
+      border-radius: 14px;
+      width: fit-content;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .nav-tab {
+      padding: 12px 24px;
+      font-size: 14px;
+      font-weight: 600;
+      color: #94a3b8;
+      background: transparent;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .nav-tab:hover { color: #f1f5f9; background: rgba(255,255,255,0.05); }
+    .nav-tab.active {
+      background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+      color: #fff;
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+    }
+    
+    /* Page sections */
+    .page { display: none; animation: fadeIn 0.4s ease; }
+    .page.active { display: block; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    
+    /* Cards */
+    .card {
+      background: rgba(30, 41, 59, 0.7);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.3);
+    }
+    .card-title {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .card-title .icon { font-size: 20px; }
+    
+    /* Grid layout */
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    @media (max-width: 768px) {
+      .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+    }
+    
+    /* Agent Info Cards (for Home page) */
+    .agent-info-card {
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 16px;
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    .agent-info-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+    }
+    .agent-info-card.ceo::before { background: linear-gradient(90deg, #3b82f6, #60a5fa); }
+    .agent-info-card.cfo::before { background: linear-gradient(90deg, #22c55e, #4ade80); }
+    .agent-info-card.hr::before { background: linear-gradient(90deg, #a855f7, #c084fc); }
+    .agent-info-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .agent-info-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+    }
+    .agent-info-card.ceo .agent-info-icon { background: rgba(59, 130, 246, 0.2); }
+    .agent-info-card.cfo .agent-info-icon { background: rgba(34, 197, 94, 0.2); }
+    .agent-info-card.hr .agent-info-icon { background: rgba(168, 85, 247, 0.2); }
+    .agent-info-title { font-size: 18px; font-weight: 700; }
+    .agent-info-card.ceo .agent-info-title { color: #60a5fa; }
+    .agent-info-card.cfo .agent-info-title { color: #4ade80; }
+    .agent-info-card.hr .agent-info-title { color: #c084fc; }
+    .agent-info-subtitle { font-size: 12px; color: #64748b; margin-top: 2px; }
+    .agent-info-desc { font-size: 14px; color: #94a3b8; line-height: 1.6; margin-bottom: 16px; }
+    .agent-info-metrics { display: flex; flex-direction: column; gap: 8px; }
+    .metric-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      color: #cbd5e1;
+    }
+    .metric-item .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: currentColor;
+    }
+    
+    /* How it works */
+    .step-card {
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+    }
+    .step-number {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      font-weight: 700;
+      margin: 0 auto 12px;
+    }
+    .step-title { font-size: 15px; font-weight: 600; margin-bottom: 8px; }
+    .step-desc { font-size: 13px; color: #94a3b8; line-height: 1.5; }
+    
+    /* Formula box */
+    .formula-box {
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid rgba(96, 165, 250, 0.3);
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+      margin: 16px 0;
+    }
+    .formula-label { font-size: 12px; color: #64748b; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+    .formula-text { font-size: 18px; font-weight: 600; color: #60a5fa; font-family: 'Courier New', monospace; }
+    
+    /* Threshold list */
+    .threshold-list { display: flex; flex-direction: column; gap: 12px; margin-top: 16px; }
+    .threshold-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      background: rgba(15, 23, 42, 0.6);
+      border-radius: 10px;
+    }
+    .threshold-badge {
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 700;
+      min-width: 80px;
+      text-align: center;
+    }
+    .threshold-badge.approve { background: rgba(34, 197, 94, 0.2); color: #22c55e; }
+    .threshold-badge.revise { background: rgba(234, 179, 8, 0.2); color: #eab308; }
+    .threshold-badge.reject { background: rgba(239, 68, 68, 0.2); color: #ef4444; }
+    .threshold-text { font-size: 14px; color: #cbd5e1; }
+    
+    /* Form styles */
+    .form-group { margin-bottom: 16px; }
+    .form-group label {
+      display: block;
+      font-size: 12px;
+      font-weight: 500;
+      color: #94a3b8;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .form-group input, .form-group textarea {
+      width: 100%;
+      padding: 12px 14px;
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 10px;
+      color: #f1f5f9;
+      font-size: 15px;
+      font-family: inherit;
+      transition: all 0.2s;
+    }
+    .form-group input:focus, .form-group textarea:focus {
+      outline: none;
+      border-color: #60a5fa;
+      box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.2);
+    }
+    .form-group input[type="range"] {
+      -webkit-appearance: none;
+      height: 8px;
+      border-radius: 4px;
+      background: linear-gradient(90deg, #22c55e 0%, #eab308 50%, #ef4444 100%);
+      padding: 0;
+    }
+    .form-group input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: #fff;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    }
+    .range-value {
+      display: inline-block;
+      background: rgba(96, 165, 250, 0.2);
+      color: #60a5fa;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: 600;
+      margin-left: 10px;
+    }
+    
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 14px 28px;
+      font-size: 15px;
+      font-weight: 600;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: inherit;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+      color: #fff;
+      box-shadow: 0 4px 14px rgba(59, 130, 246, 0.4);
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(59, 130, 246, 0.5);
+    }
+    .btn-primary:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+    .btn-secondary {
+      background: rgba(255,255,255,0.1);
+      color: #f1f5f9;
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+    .btn-secondary:hover { background: rgba(255,255,255,0.15); }
+    .btn-lg { padding: 16px 32px; font-size: 16px; }
+    
+    /* KPI cards */
+    .kpi {
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 12px;
+      padding: 16px;
+      text-align: center;
+    }
+    .kpi .label { font-size: 11px; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; }
+    .kpi .value { font-size: 32px; font-weight: 700; margin-top: 4px; }
+    .kpi.approve .value { color: #22c55e; }
+    .kpi.revise .value { color: #eab308; }
+    .kpi.reject .value { color: #ef4444; }
+    .kpi.total .value { color: #60a5fa; }
+    
+    /* Agent result cards */
+    .agent-card {
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 12px;
+      padding: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+    .agent-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+    }
+    .agent-card.ceo::before { background: linear-gradient(90deg, #3b82f6, #60a5fa); }
+    .agent-card.cfo::before { background: linear-gradient(90deg, #22c55e, #4ade80); }
+    .agent-card.hr::before { background: linear-gradient(90deg, #a855f7, #c084fc); }
+    .agent-name { font-size: 14px; font-weight: 600; color: #94a3b8; margin-bottom: 8px; }
+    .agent-score { font-size: 48px; font-weight: 700; }
+    .agent-card.ceo .agent-score { color: #60a5fa; }
+    .agent-card.cfo .agent-score { color: #4ade80; }
+    .agent-card.hr .agent-score { color: #c084fc; }
+    .agent-rationale { font-size: 13px; color: #94a3b8; margin-top: 12px; line-height: 1.5; }
+    
+    /* Decision badge */
+    .decision-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      border-radius: 30px;
+      font-size: 18px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .decision-badge.APPROVE { background: rgba(34, 197, 94, 0.2); color: #22c55e; border: 2px solid #22c55e; }
+    .decision-badge.REVISE { background: rgba(234, 179, 8, 0.2); color: #eab308; border: 2px solid #eab308; }
+    .decision-badge.REJECT { background: rgba(239, 68, 68, 0.2); color: #ef4444; border: 2px solid #ef4444; }
+    
+    /* Final score */
+    .final-score-display { text-align: center; padding: 24px; }
+    .final-score-label { font-size: 14px; color: #64748b; text-transform: uppercase; letter-spacing: 1px; }
+    .final-score-value { font-size: 64px; font-weight: 700; color: #f1f5f9; margin: 8px 0; }
+    
+    /* Table */
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    th, td { padding: 12px 16px; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.1); }
+    th { font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; color: #64748b; font-weight: 600; }
+    tr:hover td { background: rgba(255,255,255,0.03); }
+    .badge-sm {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+    .badge-sm.APPROVE { background: rgba(34, 197, 94, 0.2); color: #22c55e; }
+    .badge-sm.REVISE { background: rgba(234, 179, 8, 0.2); color: #eab308; }
+    .badge-sm.REJECT { background: rgba(239, 68, 68, 0.2); color: #ef4444; }
+    
+    /* Loading spinner */
+    .spinner {
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(255,255,255,0.2);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    
+    /* Result section */
+    #result-section { display: none; }
+    #result-section.show { display: block; animation: fadeIn 0.4s ease; }
+    
+    /* Status indicator */
+    .status { display: flex; align-items: center; gap: 8px; font-size: 13px; color: #64748b; }
+    .status-dot { width: 8px; height: 8px; border-radius: 50%; }
+    .status-dot.online { background: #22c55e; box-shadow: 0 0 8px #22c55e; }
+    .status-dot.offline { background: #ef4444; }
+    
+    /* Feature list */
+    .feature-list { display: flex; flex-direction: column; gap: 10px; }
+    .feature-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-size: 14px;
+      color: #cbd5e1;
+    }
+    .feature-item .check {
+      color: #22c55e;
+      font-size: 16px;
+      margin-top: 2px;
+    }
+    
+    /* Hero section */
+    .hero {
+      text-align: center;
+      padding: 40px 20px;
+      margin-bottom: 24px;
+    }
+    .hero h2 {
+      font-size: 32px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      line-height: 1.3;
+    }
+    .hero p { font-size: 16px; color: #94a3b8; max-width: 600px; margin: 0 auto; line-height: 1.6; }
+    
+    /* Footer */
+    .footer { text-align: center; padding: 24px; color: #475569; font-size: 12px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>🤖 AI Decision Ecosystem Engine</h1>
+      <p>Multi-Agent Corporate Decision Simulation System</p>
+    </div>
+
+    <!-- Navigation -->
+    <div class="nav-tabs">
+      <button class="nav-tab active" onclick="showPage('home')">🏠 Ana Sayfa</button>
+      <button class="nav-tab" onclick="showPage('simulation')">🎮 Simülasyon</button>
+    </div>
+
+    <!-- ==================== HOME PAGE ==================== -->
+    <div id="page-home" class="page active">
+      
+      <!-- Hero Section -->
+      <div class="hero">
+        <h2>Kurumsal Kararlarınızı<br>Yapay Zeka ile Güçlendirin</h2>
+        <p>3 uzman AI agent'ı (CEO, CFO, HR) senaryolarınızı bağımsız olarak değerlendirir ve kolektif bir karar üretir. Her perspektiften içgörü kazanın.</p>
+        <button class="btn btn-primary btn-lg" style="margin-top: 24px;" onclick="showPage('simulation')">
+          🚀 Simülasyona Başla
+        </button>
+      </div>
+
+      <!-- How It Works -->
+      <div class="card">
+        <div class="card-title"><span class="icon">⚙️</span> Nasıl Çalışır?</div>
+        <div class="grid-4" style="margin-bottom: 20px;">
+          <div class="step-card">
+            <div class="step-number">1</div>
+            <div class="step-title">Senaryo Oluştur</div>
+            <div class="step-desc">Bütçe, ROI, risk seviyesi ve takım hazırlık durumunu girin</div>
+          </div>
+          <div class="step-card">
+            <div class="step-number">2</div>
+            <div class="step-title">Agent Analizi</div>
+            <div class="step-desc">3 uzman agent senaryoyu kendi perspektifinden değerlendirir</div>
+          </div>
+          <div class="step-card">
+            <div class="step-number">3</div>
+            <div class="step-title">Skor Hesaplama</div>
+            <div class="step-desc">Her agent 0-100 arası bağımsız bir skor ve gerekçe üretir</div>
+          </div>
+          <div class="step-card">
+            <div class="step-number">4</div>
+            <div class="step-title">Final Karar</div>
+            <div class="step-desc">Skorların ortalaması alınır ve karar eşiklerine göre sonuç belirlenir</div>
+          </div>
+        </div>
+        
+        <div class="formula-box">
+          <div class="formula-label">Final Skor Formülü</div>
+          <div class="formula-text">Final Skor = (CEO + CFO + HR) / 3</div>
+        </div>
+        
+        <div class="threshold-list">
+          <div class="threshold-item">
+            <span class="threshold-badge approve">APPROVE</span>
+            <span class="threshold-text">Final Skor ≥ 75 → Proje onaylanır, yatırım yapılabilir</span>
+          </div>
+          <div class="threshold-item">
+            <span class="threshold-badge revise">REVISE</span>
+            <span class="threshold-text">Final Skor 50-74 → Revizyon gerekli, parametreleri iyileştirin</span>
+          </div>
+          <div class="threshold-item">
+            <span class="threshold-badge reject">REJECT</span>
+            <span class="threshold-text">Final Skor &lt; 50 → Proje reddedilir, risk çok yüksek</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Agent Descriptions -->
+      <div class="card">
+        <div class="card-title"><span class="icon">🤖</span> Agent'larımızı Tanıyın</div>
+        <div class="grid-3">
+          
+          <!-- CEO Agent -->
+          <div class="agent-info-card ceo">
+            <div class="agent-info-header">
+              <div class="agent-info-icon">👔</div>
+              <div>
+                <div class="agent-info-title">CEO Agent</div>
+                <div class="agent-info-subtitle">Stratejik Vizyon Uzmanı</div>
+              </div>
+            </div>
+            <div class="agent-info-desc">
+              Şirketin genel stratejisi ve büyüme hedefleri açısından projeyi değerlendirir. Uzun vadeli vizyona uygunluğu ve rekabet avantajını analiz eder.
+            </div>
+            <div class="agent-info-metrics">
+              <div class="metric-item"><span class="dot" style="background: #60a5fa;"></span> Bütçe uygunluğu değerlendirmesi</div>
+              <div class="metric-item"><span class="dot" style="background: #60a5fa;"></span> ROI potansiyeli analizi</div>
+              <div class="metric-item"><span class="dot" style="background: #60a5fa;"></span> Risk/getiri dengesi</div>
+            </div>
+          </div>
+
+          <!-- CFO Agent -->
+          <div class="agent-info-card cfo">
+            <div class="agent-info-header">
+              <div class="agent-info-icon">💰</div>
+              <div>
+                <div class="agent-info-title">CFO Agent</div>
+                <div class="agent-info-subtitle">Finansal Analiz Uzmanı</div>
+              </div>
+            </div>
+            <div class="agent-info-desc">
+              Projenin finansal sürdürülebilirliğini ve karlılığını değerlendirir. Nakit akışı, yatırım getirisi ve mali riskleri detaylı analiz eder.
+            </div>
+            <div class="agent-info-metrics">
+              <div class="metric-item"><span class="dot" style="background: #4ade80;"></span> ROI performans hesaplaması</div>
+              <div class="metric-item"><span class="dot" style="background: #4ade80;"></span> Mali risk değerlendirmesi</div>
+              <div class="metric-item"><span class="dot" style="background: #4ade80;"></span> Bütçe verimlilik analizi</div>
+            </div>
+          </div>
+
+          <!-- HR Agent -->
+          <div class="agent-info-card hr">
+            <div class="agent-info-header">
+              <div class="agent-info-icon">👥</div>
+              <div>
+                <div class="agent-info-title">HR Agent</div>
+                <div class="agent-info-subtitle">İnsan Kaynakları Uzmanı</div>
+              </div>
+            </div>
+            <div class="agent-info-desc">
+              Ekibin projeyi başarıyla yürütme kapasitesini değerlendirir. Takım hazırlık durumu, yetenek boşlukları ve organizasyonel etkileri analiz eder.
+            </div>
+            <div class="agent-info-metrics">
+              <div class="metric-item"><span class="dot" style="background: #c084fc;"></span> Takım hazırlık skoru</div>
+              <div class="metric-item"><span class="dot" style="background: #c084fc;"></span> Yetenek açığı değerlendirmesi</div>
+              <div class="metric-item"><span class="dot" style="background: #c084fc;"></span> Operasyonel uyum analizi</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Input Parameters Guide -->
+      <div class="card">
+        <div class="card-title"><span class="icon">📋</span> Girdi Parametreleri Rehberi</div>
+        <div class="grid-2">
+          <div>
+            <h4 style="color: #60a5fa; margin-bottom: 12px; font-size: 15px;">💵 Bütçe (Milyon USD)</h4>
+            <p style="font-size: 14px; color: #94a3b8; line-height: 1.6;">
+              Projenin toplam maliyeti. Yüksek bütçeler daha dikkatli incelenir. 
+              <strong style="color: #cbd5e1;">Önerilen:</strong> 0.5 - 10 milyon arası değerler.
+            </p>
+          </div>
+          <div>
+            <h4 style="color: #4ade80; margin-bottom: 12px; font-size: 15px;">📈 Beklenen ROI (%)</h4>
+            <p style="font-size: 14px; color: #94a3b8; line-height: 1.6;">
+              Yatırımın beklenen getiri oranı. Yüksek ROI skorları artırır.
+              <strong style="color: #cbd5e1;">Önerilen:</strong> %50-200 arası gerçekçi tahminler.
+            </p>
+          </div>
+          <div>
+            <h4 style="color: #f472b6; margin-bottom: 12px; font-size: 15px;">⚠️ Risk Seviyesi (1-10)</h4>
+            <p style="font-size: 14px; color: #94a3b8; line-height: 1.6;">
+              Projenin taşıdığı risk miktarı. <strong style="color: #22c55e;">1=Düşük risk</strong>, <strong style="color: #ef4444;">10=Yüksek risk</strong>.
+              Yüksek risk skorları düşürür.
+            </p>
+          </div>
+          <div>
+            <h4 style="color: #a78bfa; margin-bottom: 12px; font-size: 15px;">👥 Takım Hazırlık (1-10)</h4>
+            <p style="font-size: 14px; color: #94a3b8; line-height: 1.6;">
+              Ekibin projeyi yürütme kapasitesi. <strong style="color: #ef4444;">1=Hazır değil</strong>, <strong style="color: #22c55e;">10=Tam hazır</strong>.
+              Yüksek hazırlık skorları artırır.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Key Features -->
+      <div class="card">
+        <div class="card-title"><span class="icon">✨</span> Temel Özellikler</div>
+        <div class="grid-2">
+          <div class="feature-list">
+            <div class="feature-item">
+              <span class="check">✓</span>
+              <span><strong>Çoklu Perspektif:</strong> 3 farklı uzman bakış açısı</span>
+            </div>
+            <div class="feature-item">
+              <span class="check">✓</span>
+              <span><strong>Deterministik Skorlama:</strong> Tutarlı ve tekrarlanabilir sonuçlar</span>
+            </div>
+            <div class="feature-item">
+              <span class="check">✓</span>
+              <span><strong>Gerçek Zamanlı:</strong> Anında analiz ve sonuç</span>
+            </div>
+          </div>
+          <div class="feature-list">
+            <div class="feature-item">
+              <span class="check">✓</span>
+              <span><strong>Clean Architecture:</strong> Modüler ve bakımı kolay kod yapısı</span>
+            </div>
+            <div class="feature-item">
+              <span class="check">✓</span>
+              <span><strong>REST API:</strong> Entegre edilebilir API endpoints</span>
+            </div>
+            <div class="feature-item">
+              <span class="check">✓</span>
+              <span><strong>Docker Ready:</strong> Kolay deployment ve ölçeklendirme</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="text-align: center; margin-top: 32px;">
+        <button class="btn btn-primary btn-lg" onclick="showPage('simulation')">
+          🎮 Simülasyona Geç
+        </button>
+      </div>
+
+    </div>
+
+    <!-- ==================== SIMULATION PAGE ==================== -->
+    <div id="page-simulation" class="page">
+      
+      <div class="status" style="justify-content: center; margin-bottom: 20px;">
+        <span class="status-dot" id="api-status"></span>
+        <span id="api-status-text">Checking API...</span>
+      </div>
+
+      <div class="grid-2">
+        <!-- Input Form -->
+        <div class="card">
+          <div class="card-title"><span class="icon">📝</span> Senaryo Parametreleri</div>
+          
+          <div class="form-group">
+            <label>Senaryo Adı</label>
+            <input type="text" id="name" value="Yeni Proje Değerlendirmesi" />
+          </div>
+          
+          <div class="form-group">
+            <label>Açıklama</label>
+            <textarea id="description" rows="2">Stratejik yatırım kararı için multi-agent analizi</textarea>
+          </div>
+          
+          <div class="grid-2">
+            <div class="form-group">
+              <label>Bütçe (Milyon USD)</label>
+              <input type="number" id="budget" value="2.0" min="0.1" step="0.1" />
+            </div>
+            <div class="form-group">
+              <label>Beklenen ROI (%)</label>
+              <input type="number" id="roi" value="80" min="-100" max="500" />
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label>Risk Seviyesi <span class="range-value" id="risk-value">2</span></label>
+            <input type="range" id="risk" min="1" max="10" value="2" />
+          </div>
+          
+          <div class="form-group">
+            <label>Takım Hazırlık Durumu <span class="range-value" id="team-value">8</span></label>
+            <input type="range" id="team" min="1" max="10" value="8" />
+          </div>
+          
+          <div style="display: flex; gap: 12px; margin-top: 20px;">
+            <button class="btn btn-primary" id="simulate-btn" onclick="runSimulation()">
+              <span id="btn-text">🚀 Simülasyonu Çalıştır</span>
+              <div class="spinner" id="btn-spinner" style="display: none;"></div>
+            </button>
+            <button class="btn btn-secondary" onclick="resetForm()">🔄 Sıfırla</button>
+          </div>
+        </div>
+
+        <!-- Quick Stats -->
+        <div class="card">
+          <div class="card-title"><span class="icon">📊</span> Geçmiş İstatistikler</div>
+          <div class="grid-4" id="stats-grid">
+            <div class="kpi total"><div class="label">Toplam Koşu</div><div class="value" id="stat-total">-</div></div>
+            <div class="kpi approve"><div class="label">Onay</div><div class="value" id="stat-approve">-</div></div>
+            <div class="kpi revise"><div class="label">Revize</div><div class="value" id="stat-revise">-</div></div>
+            <div class="kpi reject"><div class="label">Red</div><div class="value" id="stat-reject">-</div></div>
+          </div>
+          
+          <div style="margin-top: 20px;">
+            <div class="card-title" style="font-size: 14px;"><span class="icon">📈</span> Karar Eşikleri</div>
+            <div style="display: flex; gap: 16px; font-size: 13px; color: #94a3b8;">
+              <div><span style="color: #22c55e;">●</span> APPROVE: ≥75</div>
+              <div><span style="color: #eab308;">●</span> REVISE: 50-74</div>
+              <div><span style="color: #ef4444;">●</span> REJECT: &lt;50</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Result Section -->
+      <div id="result-section">
+        <div class="card">
+          <div class="card-title"><span class="icon">🎯</span> Simülasyon Sonucu</div>
+          
+          <div class="grid-2" style="margin-bottom: 24px;">
+            <div class="final-score-display">
+              <div class="final-score-label">Final Skor</div>
+              <div class="final-score-value" id="final-score">-</div>
+            </div>
+            <div class="final-score-display">
+              <div class="final-score-label">Karar</div>
+              <div style="margin-top: 12px;">
+                <span class="decision-badge" id="final-decision">-</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="grid-3">
+            <div class="agent-card ceo">
+              <div class="agent-name">👔 CEO Agent</div>
+              <div class="agent-score" id="ceo-score">-</div>
+              <div class="agent-rationale" id="ceo-rationale">-</div>
+            </div>
+            <div class="agent-card cfo">
+              <div class="agent-name">💰 CFO Agent</div>
+              <div class="agent-score" id="cfo-score">-</div>
+              <div class="agent-rationale" id="cfo-rationale">-</div>
+            </div>
+            <div class="agent-card hr">
+              <div class="agent-name">👥 HR Agent</div>
+              <div class="agent-score" id="hr-score">-</div>
+              <div class="agent-rationale" id="hr-rationale">-</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- History Table -->
+      <div class="card">
+        <div class="card-title"><span class="icon">📜</span> Çalışma Geçmişi</div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Zaman</th>
+                <th>Scenario ID</th>
+                <th>CEO</th>
+                <th>CFO</th>
+                <th>HR</th>
+                <th>Final Skor</th>
+                <th>Karar</th>
+              </tr>
+            </thead>
+            <tbody id="history-table"></tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="footer">
+      AI Decision Ecosystem Engine © 2026 | Multi-Agent Decision Simulation
+    </div>
+  </div>
+
+  <script>
+    const API_BASE = 'http://localhost:8000/api/v1';
+    let historyData = [];
+
+    // Page navigation
+    function showPage(pageName) {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+      
+      document.getElementById('page-' + pageName).classList.add('active');
+      document.querySelector(`.nav-tab[onclick="showPage('${pageName}')"]`).classList.add('active');
+      
+      if (pageName === 'simulation') {
+        checkApiStatus();
+      }
+    }
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', () => {
+      loadHistoryData();
+      setupRangeInputs();
+    });
+
+    function setupRangeInputs() {
+      document.getElementById('risk').addEventListener('input', (e) => {
+        document.getElementById('risk-value').textContent = e.target.value;
+      });
+      document.getElementById('team').addEventListener('input', (e) => {
+        document.getElementById('team-value').textContent = e.target.value;
+      });
+    }
+
+    async function checkApiStatus() {
+      const dot = document.getElementById('api-status');
+      const text = document.getElementById('api-status-text');
+      try {
+        const res = await fetch('http://localhost:8000/docs', { method: 'HEAD' });
+        if (res.ok) {
+          dot.classList.add('online');
+          dot.classList.remove('offline');
+          text.textContent = 'API Online';
+        } else {
+          throw new Error('API not OK');
+        }
+      } catch (e) {
+        dot.classList.add('offline');
+        dot.classList.remove('online');
+        text.textContent = 'API Offline';
+      }
+    }
+
+    async function loadHistoryData() {
+      try {
+        const res = await fetch('all_demo_runs.json?t=' + Date.now());
+        const data = await res.json();
+        historyData = data.runs || [];
+        updateStats(data.summary);
+        renderHistoryTable();
+      } catch (e) {
+        console.log('No history data found');
+      }
+    }
+
+    function updateStats(summary) {
+      if (!summary) return;
+      document.getElementById('stat-total').textContent = summary.total_runs || 0;
+      document.getElementById('stat-approve').textContent = summary.decisions?.APPROVE || 0;
+      document.getElementById('stat-revise').textContent = summary.decisions?.REVISE || 0;
+      document.getElementById('stat-reject').textContent = summary.decisions?.REJECT || 0;
+    }
+
+    function renderHistoryTable() {
+      const tbody = document.getElementById('history-table');
+      if (historyData.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:#64748b;">Henüz kayıt yok</td></tr>';
+        return;
+      }
+      tbody.innerHTML = historyData.slice().reverse().map(run => `
+        <tr>
+          <td>${formatTime(run.timestamp)}</td>
+          <td>#${run.scenario_id}</td>
+          <td>${run.ceo_score ?? '-'}</td>
+          <td>${run.cfo_score ?? '-'}</td>
+          <td>${run.hr_score ?? '-'}</td>
+          <td>${run.final_score ?? '-'}</td>
+          <td><span class="badge-sm ${run.final_decision}">${run.final_decision || '-'}</span></td>
+        </tr>
+      `).join('');
+    }
+
+    function formatTime(ts) {
+      if (!ts) return '-';
+      const d = new Date(ts);
+      return d.toLocaleString('tr-TR', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+    }
+
+    async function runSimulation() {
+      const btn = document.getElementById('simulate-btn');
+      const btnText = document.getElementById('btn-text');
+      const spinner = document.getElementById('btn-spinner');
+      
+      btn.disabled = true;
+      btnText.style.display = 'none';
+      spinner.style.display = 'block';
+
+      try {
+        const payload = {
+          name: document.getElementById('name').value,
+          description: document.getElementById('description').value,
+          budget_million_usd: parseFloat(document.getElementById('budget').value),
+          expected_roi_percent: parseFloat(document.getElementById('roi').value),
+          risk_level: parseInt(document.getElementById('risk').value),
+          team_readiness: parseInt(document.getElementById('team').value)
+        };
+
+        const createRes = await fetch(`${API_BASE}/scenarios`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const createData = await createRes.json();
+        const scenarioId = createData.scenario_id;
+
+        const simRes = await fetch(`${API_BASE}/scenarios/${scenarioId}/simulate`, { method: 'POST' });
+        const simData = await simRes.json();
+
+        displayResults(simData);
+
+        const newRun = {
+          timestamp: new Date().toISOString(),
+          scenario_id: scenarioId,
+          final_score: simData.final_score,
+          final_decision: simData.final_decision,
+          ceo_score: simData.agent_outputs.find(a => a.agent_name === 'CEO')?.score,
+          cfo_score: simData.agent_outputs.find(a => a.agent_name === 'CFO')?.score,
+          hr_score: simData.agent_outputs.find(a => a.agent_name === 'HR')?.score
+        };
+        historyData.push(newRun);
+        
+        const counts = { APPROVE: 0, REVISE: 0, REJECT: 0 };
+        historyData.forEach(r => { if (r.final_decision) counts[r.final_decision]++; });
+        updateStats({ total_runs: historyData.length, decisions: counts });
+        renderHistoryTable();
+
+      } catch (e) {
+        alert('Hata: ' + e.message);
+      } finally {
+        btn.disabled = false;
+        btnText.style.display = 'inline';
+        spinner.style.display = 'none';
+      }
+    }
+
+    function displayResults(data) {
+      document.getElementById('result-section').classList.add('show');
+      
+      document.getElementById('final-score').textContent = data.final_score;
+      
+      const decisionEl = document.getElementById('final-decision');
+      decisionEl.textContent = data.final_decision;
+      decisionEl.className = 'decision-badge ' + data.final_decision;
+
+      const ceo = data.agent_outputs.find(a => a.agent_name === 'CEO');
+      const cfo = data.agent_outputs.find(a => a.agent_name === 'CFO');
+      const hr = data.agent_outputs.find(a => a.agent_name === 'HR');
+
+      if (ceo) {
+        document.getElementById('ceo-score').textContent = ceo.score;
+        document.getElementById('ceo-rationale').textContent = ceo.rationale;
+      }
+      if (cfo) {
+        document.getElementById('cfo-score').textContent = cfo.score;
+        document.getElementById('cfo-rationale').textContent = cfo.rationale;
+      }
+      if (hr) {
+        document.getElementById('hr-score').textContent = hr.score;
+        document.getElementById('hr-rationale').textContent = hr.rationale;
+      }
+
+      document.getElementById('result-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function resetForm() {
+      document.getElementById('name').value = 'Yeni Proje Değerlendirmesi';
+      document.getElementById('description').value = 'Stratejik yatırım kararı için multi-agent analizi';
+      document.getElementById('budget').value = '2.0';
+      document.getElementById('roi').value = '80';
+      document.getElementById('risk').value = '2';
+      document.getElementById('team').value = '8';
+      document.getElementById('risk-value').textContent = '2';
+      document.getElementById('team-value').textContent = '8';
+      document.getElementById('result-section').classList.remove('show');
+    }
+  </script>
+</body>
+</html>
