@@ -37,7 +37,7 @@ Bu proje, bu süreci **otomatikleştiren** bir sistemdir. 3 yapay zeka ajanı, h
 ```
 ┌─────────────────────────────────────────────────────┐
 │                                                     │
-│   "25M$ AI yatırımı yapalım mı?"                   │
+│   "25M$ AI yatırımı yapalım mı?"                    │
 │                                                     │
 │              ┌─────────┐                            │
 │              │ SİSTEM  │                            │
@@ -45,13 +45,13 @@ Bu proje, bu süreci **otomatikleştiren** bir sistemdir. 3 yapay zeka ajanı, h
 │                   │                                 │
 │     ┌─────────────┼─────────────┐                   │
 │     ▼             ▼             ▼                   │
-│  ┌─────┐      ┌─────┐      ┌─────┐                 │
-│  │ CEO │      │ CFO │      │ HR  │                 │
-│  │  🎯 │      │  💰 │      │  👥 │                 │
-│  └──┬──┘      └──┬──┘      └──┬──┘                 │
+│  ┌─────┐      ┌─────┐      ┌─────┐                  │
+│  │ CEO │      │ CFO │      │ HR  │                  │
+│  │  🎯 │      │  💰 │      │  👥 │                │
+│  └──┬──┘      └──┬──┘      └──┬──┘                  │
 │     │            │            │                     │
-│  Strateji    Finans      İnsan                     │
-│   Skoru      Skoru      Kaynağı                    │
+│  Strateji    Finans      İnsan                      │
+│   Skoru      Skoru      Kaynağı                     │
 │    85          90         50                        │
 │     │            │            │                     │
 │     └────────────┼────────────┘                     │
@@ -61,7 +61,7 @@ Bu proje, bu süreci **otomatikleştiren** bir sistemdir. 3 yapay zeka ajanı, h
 │           │ Skor: 71  │                             │
 │           └───────────┘                             │
 │                                                     │
-│   "Ekip eksikliğini giderin, sonra onaylayın"      │
+│   "Ekip eksikliğini giderin, sonra onaylayın"       │
 │                                                     │
 └─────────────────────────────────────────────────────┘
 ```
@@ -94,18 +94,18 @@ Sistemimiz **3 farklı bakış açısını** bir araya getirir:
 ```
 ┌─────────────────────────────────────────────────────┐
 │                                                     │
-│   GELENEKSEL           BİZİM SİSTEM                │
-│   ────────────         ─────────────               │
+│   GELENEKSEL           BİZİM SİSTEM                 │
+│   ────────────         ─────────────                │
 │                                                     │
-│   CEO ──────► Karar    CEO ────┐                   │
+│   CEO ──────► Karar    CEO ────┐                    │
 │                                │                    │
-│                        CFO ────┼──► Dengeli Karar  │
+│                        CFO ────┼──► Dengeli Karar   │
 │                                │                    │
-│                        HR  ────┘                   │
+│                        HR  ────┘                    │
 │                                                     │
-│   Tek perspektif       Çoklu perspektif            │
-│   Riskli               Dengeli                     │
-│   Hızlı ama hatalı     Kapsamlı                    │
+│   Tek perspektif       Çoklu perspektif             │
+│   Riskli               Dengeli                      │
+│   Hızlı ama hatalı     Kapsamlı                     │
 │                                                     │
 └─────────────────────────────────────────────────────┘
 ```
@@ -175,40 +175,40 @@ Her agent kendi perspektifinden değerlendirir:
 ┌─────────────────────────────────────────────────────┐
 │ CEO AGENT                                           │
 ├─────────────────────────────────────────────────────┤
-│ Bakış Açısı: Strateji, büyüme, vizyon              │
+│ Bakış Açısı: Strateji, büyüme, vizyon               │
 │                                                     │
 │ Değerlendirme:                                      │
-│ • ROI yüksek mi?          (+puan)                  │
-│ • Stratejik uyum var mı?  (+puan)                  │
-│ • Pazar fırsatı var mı?   (+puan)                  │
+│ • ROI yüksek mi?          (+puan)                   │
+│ • Stratejik uyum var mı?  (+puan)                   │
+│ • Pazar fırsatı var mı?   (+puan)                   │
 │                                                     │
-│ Çıktı: Skor (0-100) + Gerekçe                      │
+│ Çıktı: Skor (0-100) + Gerekçe                       │
 └─────────────────────────────────────────────────────┘
 
 ┌─────────────────────────────────────────────────────┐
 │ CFO AGENT                                           │
 ├─────────────────────────────────────────────────────┤
-│ Bakış Açısı: Finans, maliyet, nakit akışı          │
+│ Bakış Açısı: Finans, maliyet, nakit akışı           │
 │                                                     │
 │ Değerlendirme:                                      │
-│ • Bütçe makul mü?         (+puan)                  │
-│ • ROI yeterli mi?         (+puan)                  │
-│ • Finansal risk var mı?   (-puan)                  │
+│ • Bütçe makul mü?         (+puan)                   │
+│ • ROI yeterli mi?         (+puan)                   │
+│ • Finansal risk var mı?   (-puan)                   │
 │                                                     │
-│ Çıktı: Skor (0-100) + Gerekçe                      │
+│ Çıktı: Skor (0-100) + Gerekçe                       │
 └─────────────────────────────────────────────────────┘
 
 ┌─────────────────────────────────────────────────────┐
 │ HR AGENT                                            │
 ├─────────────────────────────────────────────────────┤
-│ Bakış Açısı: İnsan kaynağı, ekip, kapasite         │
+│ Bakış Açısı: İnsan kaynağı, ekip, kapasite          │
 │                                                     │
 │ Değerlendirme:                                      │
-│ • Ekip yeterli mi?        (+puan)                  │
-│ • Yeni işe alım gerekli mi? (-puan)                │
-│ • Eğitim ihtiyacı var mı? (-puan)                  │
+│ • Ekip yeterli mi?        (+puan)                   │
+│ • Yeni işe alım gerekli mi? (-puan)                 │
+│ • Eğitim ihtiyacı var mı? (-puan)                   │
 │                                                     │
-│ Çıktı: Skor (0-100) + Gerekçe                      │
+│ Çıktı: Skor (0-100) + Gerekçe                       │
 └─────────────────────────────────────────────────────┘
 ```
 
@@ -235,19 +235,19 @@ Senaryo tipine göre hangi agent'ın görüşü daha önemli?
 │                                                     │
 │   Hesaplama:                                        │
 │   ──────────                                        │
-│   CEO Skoru × CEO Ağırlığı = 85 × 0.25 = 21.25    │
-│   CFO Skoru × CFO Ağırlığı = 90 × 0.25 = 22.50    │
-│   HR  Skoru × HR  Ağırlığı = 50 × 0.50 = 25.00    │
+│   CEO Skoru × CEO Ağırlığı = 85 × 0.25 = 21.25      │
+│   CFO Skoru × CFO Ağırlığı = 90 × 0.25 = 22.50      │
+│   HR  Skoru × HR  Ağırlığı = 50 × 0.50 = 25.00      │
 │                              ─────────────────      │
-│                              Final Skor = 68.75    │
+│                              Final Skor = 68.75     │
 │                                                     │
 │   Karar Eşikleri:                                   │
 │   ───────────────                                   │
-│   70+ → APPROVE (Onayla)                           │
-│   50-69 → REVISE (Revize Et)                       │
-│   <50 → REJECT (Reddet)                            │
+│   70+ → APPROVE (Onayla)                            │
+│   50-69 → REVISE (Revize Et)                        │
+│   <50 → REJECT (Reddet)                             │
 │                                                     │
-│   ► 68.75 = REVISE                                 │
+│   ► 68.75 = REVISE                                  │
 │                                                     │
 └─────────────────────────────────────────────────────┘
 ```
@@ -261,29 +261,29 @@ Senaryo tipine göre hangi agent'ın görüşü daha önemli?
 ```
 ┌─────────────────────────────────────────────────────┐
 │                    CEO AGENT                        │
-│                       🎯                            │
+│                       🎯                           │
 ├─────────────────────────────────────────────────────┤
 │                                                     │
-│   ROL: Chief Executive Officer (Genel Müdür)       │
+│   ROL: Chief Executive Officer (Genel Müdür)        │
 │                                                     │
 │   ODAK ALANLARI:                                    │
-│   • Şirket stratejisi                              │
-│   • Büyüme hedefleri                               │
-│   • Pazar fırsatları                               │
-│   • Rekabet avantajı                               │
-│   • Uzun vadeli vizyon                             │
+│   • Şirket stratejisi                               │
+│   • Büyüme hedefleri                                │
+│   • Pazar fırsatları                                │
+│   • Rekabet avantajı                                │
+│   • Uzun vadeli vizyon                              │
 │                                                     │
-│   SORU: "Bu proje şirketi ileriye taşır mı?"       │
+│   SORU: "Bu proje şirketi ileriye taşır mı?"        │
 │                                                     │
-│   PUANLAMA KRİTERLERİ:                             │
-│   ├── Yüksek ROI (+)                               │
-│   ├── Stratejik uyum (+)                           │
-│   ├── Pazar potansiyeli (+)                        │
-│   └── Rekabet avantajı (+)                         │
+│   PUANLAMA KRİTERLERİ:                              │
+│   ├── Yüksek ROI (+)                                │
+│   ├── Stratejik uyum (+)                            │
+│   ├── Pazar potansiyeli (+)                         │
+│   └── Rekabet avantajı (+)                          │
 │                                                     │
 │   ÖRNEK ÇIKTI:                                      │
-│   "ROI %45 ile güçlü bir getiri. Stratejik         │
-│    hedeflerimizle uyumlu. DESTEK veriyorum."       │
+│   "ROI %45 ile güçlü bir getiri. Stratejik          │
+│    hedeflerimizle uyumlu. DESTEK veriyorum."        │
 │                                                     │
 └─────────────────────────────────────────────────────┘
 ```
@@ -293,7 +293,7 @@ Senaryo tipine göre hangi agent'ın görüşü daha önemli?
 ```
 ┌─────────────────────────────────────────────────────┐
 │                    CFO AGENT                        │
-│                       💰                            
+│                       💰                            |
 ├─────────────────────────────────────────────────────┤
 │                                                     │
 │   ROL: Chief Financial Officer (Finans Direktörü)   │
@@ -325,29 +325,29 @@ Senaryo tipine göre hangi agent'ın görüşü daha önemli?
 ```
 ┌─────────────────────────────────────────────────────┐
 │                    HR AGENT                         │
-│                       👥                            │
+│                       👥                           │
 ├─────────────────────────────────────────────────────┤
 │                                                     │
-│   ROL: Human Resources (İnsan Kaynakları)          │
+│   ROL: Human Resources (İnsan Kaynakları)           │
 │                                                     │
 │   ODAK ALANLARI:                                    │
-│   • Ekip kapasitesi                                │
-│   • Yetenek ihtiyacı                               │
-│   • İşe alım gereksinimleri                        │
-│   • Eğitim ihtiyaçları                             │
-│   • Organizasyonel etki                            │
+│   • Ekip kapasitesi                                 │
+│   • Yetenek ihtiyacı                                │
+│   • İşe alım gereksinimleri                         │
+│   • Eğitim ihtiyaçları                              │
+│   • Organizasyonel etki                             │
 │                                                     │
-│   SORU: "Bu projeyi yapacak ekibimiz var mı?"      │
+│   SORU: "Bu projeyi yapacak ekibimiz var mı?"       │
 │                                                     │
-│   PUANLAMA KRİTERLERİ:                             │
-│   ├── Yeterli ekip (+)                             │
-│   ├── Mevcut yetkinlikler (+)                      │
-│   ├── Az işe alım ihtiyacı (+)                     │
-│   └── Düşük eğitim ihtiyacı (+)                    │
+│   PUANLAMA KRİTERLERİ:                              │
+│   ├── Yeterli ekip (+)                              │
+│   ├── Mevcut yetkinlikler (+)                       │
+│   ├── Az işe alım ihtiyacı (+)                      │
+│   └── Düşük eğitim ihtiyacı (+)                     │
 │                                                     │
 │   ÖRNEK ÇIKTI:                                      │
-│   "Ekip hazırlığı 3/10. Bu proje için en az 8     │
-│    yeni çalışan gerekli. NÖTR - Önce işe alım."   │
+│   "Ekip hazırlığı 3/10. Bu proje için en az 8       │
+│    yeni çalışan gerekli. NÖTR - Önce işe alım."      │
 │                                                     │
 └─────────────────────────────────────────────────────┘
 ```
@@ -359,19 +359,19 @@ Senaryo tipine göre hangi agent'ın görüşü daha önemli?
 │                    ROUND 1                          │
 ├─────────────────────────────────────────────────────┤
 │                                                     │
-│   CEO: "ROI yüksek, stratejik uyum var" → 85      │
-│   CFO: "Finansal olarak makul"          → 90      │
-│   HR:  "Ekip yetersiz, işe alım gerek"  → 50      │
+│   CEO: "ROI yüksek, stratejik uyum var" → 85        │
+│   CFO: "Finansal olarak makul"          → 90        │
+│   HR:  "Ekip yetersiz, işe alım gerek"  → 50        │
 │                                                     │
 ├─────────────────────────────────────────────────────┤
 │                    ROUND 2                          │
 ├─────────────────────────────────────────────────────┤
 │                                                     │
-│   CEO görüyor: CFO olumlu, HR olumsuz              │
-│   CFO görüyor: CEO olumlu, HR olumsuz              │
-│   HR görüyor:  CEO ve CFO olumlu                   │
+│   CEO görüyor: CFO olumlu, HR olumsuz               │
+│   CFO görüyor: CEO olumlu, HR olumsuz               │
+│   HR görüyor:  CEO ve CFO olumlu                    │
 │                                                     │
-│   (Şu an: Görüyorlar ama tepki vermiyorlar)        │
+│   (Şu an: Görüyorlar ama tepki vermiyorlar)         │
 │                                                     │
 └─────────────────────────────────────────────────────┘
 ```
@@ -392,16 +392,16 @@ Sistem, her senaryoyu otomatik olarak 5 tipten birine sınıflandırır:
 ├─────────────────────────────────────────────────────┤
 │                                                     │
 │ ÖZELLİKLER:                                         │
-│ • Yüksek ROI (>%30)                                │
-│ • Düşük-Orta risk (<6)                             │
-│ • Büyüme odaklı                                    │
+│ • Yüksek ROI (>%30)                                 │
+│ • Düşük-Orta risk (<6)                              │
+│ • Büyüme odaklı                                     │
 │                                                     │
-│ ÖRNEK: Yeni pazara giriş, ürün lansmanı            │
+│ ÖRNEK: Yeni pazara giriş, ürün lansmanı             │
 │                                                     │
 │ AĞIRLIKLAR:                                         │
-│ ├── CEO: %40 (stratejik vizyon önemli)             │
-│ ├── CFO: %35                                       │
-│ └── HR:  %25                                       │
+│ ├── CEO: %40 (stratejik vizyon önemli)              │
+│ ├── CFO: %35                                        │
+│ └── HR:  %25                                        │
 │                                                     │
 └─────────────────────────────────────────────────────┘
 ```
@@ -414,16 +414,16 @@ Sistem, her senaryoyu otomatik olarak 5 tipten birine sınıflandırır:
 ├─────────────────────────────────────────────────────┤
 │                                                     │
 │ ÖZELLİKLER:                                         │
-│ • Düşük bütçe (<$10M)                              │
-│ • Düşük risk (<4)                                  │
-│ • Tasarruf odaklı                                  │
+│ • Düşük bütçe (<$10M)                               │
+│ • Düşük risk (<4)                                   │
+│ • Tasarruf odaklı                                   │
 │                                                     │
-│ ÖRNEK: Süreç iyileştirme, otomasyon                │
+│ ÖRNEK: Süreç iyileştirme, otomasyon                 │
 │                                                     │
 │ AĞIRLIKLAR:                                         │
-│ ├── CEO: %25                                       │
-│ ├── CFO: %50 (finansal analiz kritik)              │
-│ └── HR:  %25                                       │
+│ ├── CEO: %25                                        │
+│ ├── CFO: %50 (finansal analiz kritik)               │
+│ └── HR:  %25                                        │
 │                                                     │
 └─────────────────────────────────────────────────────┘
 ```
@@ -436,15 +436,15 @@ Sistem, her senaryoyu otomatik olarak 5 tipten birine sınıflandırır:
 ├─────────────────────────────────────────────────────┤
 │                                                     │
 │ ÖZELLİKLER:                                         │
-│ • Düşük ekip hazırlığı (<5)                        │
-│ • İşe alım ihtiyacı var                            │
+│ • Düşük ekip hazırlığı (<5)                         │
+│ • İşe alım ihtiyacı var                             │
 │                                                     │
-│ ÖRNEK: Yeni departman kurulumu, büyük proje        │
+│ ÖRNEK: Yeni departman kurulumu, büyük proje         │
 │                                                     │
 │ AĞIRLIKLAR:                                         │
-│ ├── CEO: %25                                       │
-│ ├── CFO: %25                                       │
-│ └── HR:  %50 (insan kaynağı kritik)                │
+│ ├── CEO: %25                                        │
+│ ├── CFO: %25                                        │
+│ └── HR:  %50 (insan kaynağı kritik)                 │
 │                                                     │
 └─────────────────────────────────────────────────────┘
 ```
@@ -457,16 +457,16 @@ Sistem, her senaryoyu otomatik olarak 5 tipten birine sınıflandırır:
 ├─────────────────────────────────────────────────────┤
 │                                                     │
 │ ÖZELLİKLER:                                         │
-│ • Yüksek risk (>7)                                 │
-│ • Yüksek bütçe (>$20M)                             │
-│ • Strateji değişikliği                             │
+│ • Yüksek risk (>7)                                  │
+│ • Yüksek bütçe (>$20M)                              │
+│ • Strateji değişikliği                              │
 │                                                     │
-│ ÖRNEK: İş modeli değişikliği, satın alma           │
+│ ÖRNEK: İş modeli değişikliği, satın alma            │
 │                                                     │
 │ AĞIRLIKLAR:                                         │
-│ ├── CEO: %45 (stratejik karar kritik)              │
-│ ├── CFO: %30                                       │
-│ └── HR:  %25                                       │
+│ ├── CEO: %45 (stratejik karar kritik)               │
+│ ├── CFO: %30                                        │
+│ └── HR:  %25                                        │
 │                                                     │
 └─────────────────────────────────────────────────────┘
 ```
@@ -479,17 +479,17 @@ Sistem, her senaryoyu otomatik olarak 5 tipten birine sınıflandırır:
 ├─────────────────────────────────────────────────────┤
 │                                                     │
 │ ÖZELLİKLER:                                         │
-│ • Düşük bütçe                                      │
-│ • Düşük risk                                       │
-│ • Düşük ROI                                        │
-│ • Rutin işlemler                                   │
+│ • Düşük bütçe                                       │
+│ • Düşük risk                                        │
+│ • Düşük ROI                                         │
+│ • Rutin işlemler                                    │
 │                                                     │
-│ ÖRNEK: Sistem güncellemesi, altyapı bakımı         │
+│ ÖRNEK: Sistem güncellemesi, altyapı bakımı          │
 │                                                     │
 │ AĞIRLIKLAR:                                         │
-│ ├── CEO: %33 (eşit dağılım)                        │
-│ ├── CFO: %33                                       │
-│ └── HR:  %33                                       │
+│ ├── CEO: %33 (eşit dağılım)                         │
+│ ├── CFO: %33                                        │
+│ └── HR:  %33                                        │
 │                                                     │
 └─────────────────────────────────────────────────────┘
 ```
@@ -501,30 +501,30 @@ Sistem, her senaryoyu otomatik olarak 5 tipten birine sınıflandırır:
 ```
 ┌─────────────────────────────────────────────────────┐
 │                                                     │
-│   GİRİŞ: budget=25, roi=45, risk=5, team=3        │
+│   GİRİŞ: budget=25, roi=45, risk=5, team=3          │
 │                                                     │
 │   KURALLAR:                                         │
 │   ─────────                                         │
 │                                                     │
-│   1. team <= 4?                                    │
-│      ├── EVET → team_expansion                     │
-│      └── HAYIR → devam                             │
+│   1. team <= 4?                                     │
+│      ├── EVET → team_expansion                      │
+│      └── HAYIR → devam                              │
 │                                                     │
-│   2. roi >= 30 AND risk <= 5?                      │
-│      ├── EVET → high_growth                        │
-│      └── HAYIR → devam                             │
+│   2. roi >= 30 AND risk <= 5?                       │
+│      ├── EVET → high_growth                         │
+│      └── HAYIR → devam                              │
 │                                                     │
-│   3. budget < 10 AND risk <= 3?                    │
-│      ├── EVET → cost_optimization                  │
-│      └── HAYIR → devam                             │
+│   3. budget < 10 AND risk <= 3?                     │
+│      ├── EVET → cost_optimization                   │
+│      └── HAYIR → devam                              │
 │                                                     │
-│   4. risk >= 7 AND budget > 20?                    │
-│      ├── EVET → strategic_pivot                    │
-│      └── HAYIR → devam                             │
+│   4. risk >= 7 AND budget > 20?                     │
+│      ├── EVET → strategic_pivot                     │
+│      └── HAYIR → devam                              │
 │                                                     │
-│   5. Hiçbiri değilse → maintenance                 │
+│   5. Hiçbiri değilse → maintenance                  │
 │                                                     │
-│   ÇIKTI: team_expansion (team=3 düşük)             │
+│   ÇIKTI: team_expansion (team=3 düşük)              │
 │                                                     │
 └─────────────────────────────────────────────────────┘
 ```
@@ -538,14 +538,14 @@ Sistem, her senaryoyu otomatik olarak 5 tipten birine sınıflandırır:
 ```
 ┌─────────────────────────────────────────────────────┐
 │                                                     │
-│   0        25        50        70       100        │
-│   │─────────│─────────│─────────│─────────│        │
-│   │  REJECT │  REJECT │  REVISE │ APPROVE │        │
-│   │   ❌    │    ❌   │   ⚠️    │   ✅    │        │
+│   0        25        50        70       100         │
+│   │─────────│─────────│─────────│─────────│         │
+│   │  REJECT │  REJECT │  REVISE │ APPROVE │         │
+│   │   ❌    │    ❌   │   ⚠️    │   ✅    │       │
 │                                                     │
-│   REJECT (0-49): Projeyi reddet                    │
-│   REVISE (50-69): Revizyonla tekrar değerlendir    │
-│   APPROVE (70-100): Projeyi onayla                 │
+│   REJECT (0-49): Projeyi reddet                     │
+│   REVISE (50-69): Revizyonla tekrar değerlendir     │
+│   APPROVE (70-100): Projeyi onayla                  │
 │                                                     │
 └─────────────────────────────────────────────────────┘
 ```
@@ -566,16 +566,16 @@ Sistem, her senaryoyu otomatik olarak 5 tipten birine sınıflandırır:
 ├─────────────────────────────────────────────────────┤
 │ SINIFLANDIRMA:                                      │
 │ • Tip: team_expansion                               │
-│ • Sebep: Ekip hazırlığı düşük (3/10)               │
+│ • Sebep: Ekip hazırlığı düşük (3/10)                │
 │                                                     │
 ├─────────────────────────────────────────────────────┤
 │ AGENT SKORLARI:                                     │
-│ • CEO: 85 (Strateji uygun)                         │
-│ • CFO: 90 (Finans olumlu)                          │
-│ • HR:  50 (Ekip yetersiz)                          │
+│ • CEO: 85 (Strateji uygun)                          │
+│ • CFO: 90 (Finans olumlu)                           │
+│ • HR:  50 (Ekip yetersiz)                           │
 │                                                     │
 ├─────────────────────────────────────────────────────┤
-│ AĞIRLIKLAR (team_expansion için):                  │
+│ AĞIRLIKLAR (team_expansion için):                   │
 │ • CEO: %25                                          │
 │ • CFO: %25                                          │
 │ • HR:  %50                                          │
@@ -583,14 +583,14 @@ Sistem, her senaryoyu otomatik olarak 5 tipten birine sınıflandırır:
 ├─────────────────────────────────────────────────────┤
 │ HESAPLAMA:                                          │
 │                                                     │
-│   (85 × 0.25) + (90 × 0.25) + (50 × 0.50)         │
-│ = 21.25 + 22.50 + 25.00                            │
+│   (85 × 0.25) + (90 × 0.25) + (50 × 0.50)           │
+│ = 21.25 + 22.50 + 25.00                             │
 │ = 68.75                                             │
 │                                                     │
 ├─────────────────────────────────────────────────────┤
-│ KARAR: REVISE (68.75 < 70)                         │
+│ KARAR: REVISE (68.75 < 70)                          │
 │                                                     │
-│ ANLAMI: "Projeyi onaylamadan önce ekip             │
+│ ANLAMI: "Projeyi onaylamadan önce ekip              │
 │          eksikliğini giderin."                      │
 │                                                     │
 └─────────────────────────────────────────────────────┘
@@ -598,24 +598,24 @@ Sistem, her senaryoyu otomatik olarak 5 tipten birine sınıflandırır:
 
 ## 🔄 Normal vs Akıllı Hesaplama
 
-```
+``` 
 ┌─────────────────────────────────────────────────────┐
-│ NORMAL ORTALAMA (Sınıflandırma olmadan)            │
+│ NORMAL ORTALAMA (Sınıflandırma olmadan)             │
 ├─────────────────────────────────────────────────────┤
 │                                                     │
-│   (85 + 90 + 50) / 3 = 75                          │
-│   Karar: APPROVE ✅                                 │
+│   (85 + 90 + 50) / 3 = 75                           │
+│   Karar: APPROVE ✅                                │
 │                                                     │
-│   SORUN: Ekip yetersizliği göz ardı edildi!        │
+│   SORUN: Ekip yetersizliği göz ardı edildi!         │
 │                                                     │
 ├─────────────────────────────────────────────────────┤
-│ AKILLI ORTALAMA (Sınıflandırma ile)                │
+│ AKILLI ORTALAMA (Sınıflandırma ile)                 │
 ├─────────────────────────────────────────────────────┤
 │                                                     │
-│   (85 × 0.25) + (90 × 0.25) + (50 × 0.50) = 68.75 │
-│   Karar: REVISE ⚠️                                 │
+│   (85 × 0.25) + (90 × 0.25) + (50 × 0.50) = 68.75   │
+│   Karar: REVISE ⚠️                                  │
 │                                                     │
-│   FAYDA: Ekip sorunu tespit edildi!                │
+│   FAYDA: Ekip sorunu tespit edildi!                 │
 │                                                     │
 └─────────────────────────────────────────────────────┘
 ```
@@ -629,15 +629,15 @@ Sistem, her senaryoyu otomatik olarak 5 tipten birine sınıflandırır:
 ```
 ┌─────────────────────────────────────────────────────┐
 │                                                     │
-│   ŞİRKET: TechMart E-Ticaret                       │
-│   KARAR: Yapay zeka tabanlı öneri sistemi          │
+│   ŞİRKET: TechMart E-Ticaret                        │
+│   KARAR: Yapay zeka tabanlı öneri sistemi           │
 │          yatırımı yapılsın mı?                      │
 │                                                     │
 │   PROJE BİLGİLERİ:                                  │
-│   • Bütçe: $15 milyon                              │
-│   • Beklenen ROI: %60                              │
-│   • Risk Seviyesi: 4/10                            │
-│   • Mevcut Ekip Hazırlığı: 8/10                    │
+│   • Bütçe: $15 milyon                               │
+│   • Beklenen ROI: %60                               │
+│   • Risk Seviyesi: 4/10                             │
+│   • Mevcut Ekip Hazırlığı: 8/10                     │
 │                                                     │
 └─────────────────────────────────────────────────────┘
 ```
@@ -656,9 +656,9 @@ Sistem: "ROI %60 (>%30), Risk 4 (<=5)"
 ┌─────────────────────────────────────────────────────┐
 │ CEO AGENT                                           │
 ├─────────────────────────────────────────────────────┤
-│ "E-ticarette AI öneri sistemleri artık standart.   │
-│  Rakiplerimiz zaten kullanıyor. %60 ROI ile        │
-│  yatırımın geri dönüşü 2 yılda mümkün.             │
+│ "E-ticarette AI öneri sistemleri artık standart.    │
+│  Rakiplerimiz zaten kullanıyor. %60 ROI ile         │
+│  yatırımın geri dönüşü 2 yılda mümkün.              │
 │  Stratejik olarak DESTEKLIYORUM."                   │
 │                                                     │
 │ SKOR: 92/100                                        │
@@ -667,9 +667,9 @@ Sistem: "ROI %60 (>%30), Risk 4 (<=5)"
 ┌─────────────────────────────────────────────────────┐
 │ CFO AGENT                                           │
 ├─────────────────────────────────────────────────────┤
-│ "$15M yatırım için %60 ROI oldukça iyi.            │
+│ "$15M yatırım için %60 ROI oldukça iyi.             │
 │  Risk seviyesi kabul edilebilir.                    │
-│  Nakit akışımız bu yatırımı kaldırır.              │
+│  Nakit akışımız bu yatırımı kaldırır.               │
 │  Finansal olarak UYGUN."                            │
 │                                                     │
 │ SKOR: 88/100                                        │
@@ -678,9 +678,9 @@ Sistem: "ROI %60 (>%30), Risk 4 (<=5)"
 ┌─────────────────────────────────────────────────────┐
 │ HR AGENT                                            │
 ├─────────────────────────────────────────────────────┤
-│ "Ekip hazırlığı 8/10 - mevcut veri bilimi          │
+│ "Ekip hazırlığı 8/10 - mevcut veri bilimi           │
 │  ekibimiz projeyi yürütebilir.                      │
-│  Sadece 2 ek mühendis yeterli.                     │
+│  Sadece 2 ek mühendis yeterli.                      │
 │  İnsan kaynağı açısından UYGUN."                    │
 │                                                     │
 │ SKOR: 85/100                                        │
@@ -708,11 +708,11 @@ Hesaplama:
 │   KARAR: ✅ APPROVE (ONAYLA)                        │
 │                                                     │
 │   ÖZET:                                             │
-│   • CEO: Stratejik uyum mükemmel                   │
-│   • CFO: Finansal olarak sağlam                    │
-│   • HR: Ekip hazır                                 │
+│   • CEO: Stratejik uyum mükemmel                    │
+│   • CFO: Finansal olarak sağlam                     │
+│   • HR: Ekip hazır                                  │
 │                                                     │
-│   ÖNERİ: "Proje onaylanabilir. 2 ek mühendis       │
+│   ÖNERİ: "Proje onaylanabilir. 2 ek mühendis        │
 │          işe alımı yapılmalı."                      │
 │                                                     │
 └─────────────────────────────────────────────────────┘
@@ -779,15 +779,15 @@ OLMASİ GEREKEN:
 ┌─────────────────────────────────────────────────────┐
 │                                                     │
 │   MEVCUT SEVİYE                                     │
-│   ──────────────────────────────────────           │
-│   [████████████████████░░░░░░░░░░] %70-75          │
+│   ──────────────────────────────────────            │
+│   [████████████████████░░░░░░░░░░] %70-75           │
 │                                                     │
 │   ✅ Mimari: Üretim seviyesi                        │
 │   ✅ API: Üretim seviyesi                           │
 │   ✅ Database: Üretim seviyesi                      │
-│   ⚠️ ML: Kural tabanlı (geliştirilmeli)            │
-│   ⚠️ Agent: Statik (reaktif olmalı)                │
-│   ❌ LLM: Mock (gerçek entegrasyon yok)            │
+│   ⚠️ ML: Kural tabanlı (geliştirilmeli)             │
+│   ⚠️ Agent: Statik (reaktif olmalı)                 │
+│   ❌ LLM: Mock (gerçek entegrasyon yok)             │
 │                                                     │
 └─────────────────────────────────────────────────────┘
 ```
@@ -800,43 +800,43 @@ OLMASİ GEREKEN:
 
 ```
 ┌─────────────────────────────────────────────────────┐
-│ FAZ 8: Gerçek ML Sınıflandırma                     │
+│ FAZ 8: Gerçek ML Sınıflandırma                      │
 ├─────────────────────────────────────────────────────┤
-│ • scikit-learn ile model eğitimi                   │
+│ • scikit-learn ile model eğitimi                    │
 │ • 105 veri ile train/test                           │
-│ • /api/v1/ml/train endpoint'i                      │
+│ • /api/v1/ml/train endpoint'i                       │
 │ • Model kaydetme/yükleme                            │
-│ • Tahmini süre: 1-2 saat                           │
+│ • Tahmini süre: 1-2 saat                            │
 └─────────────────────────────────────────────────────┘
            │
            ▼
 ┌─────────────────────────────────────────────────────┐
-│ FAZ 9: Reaktif Agentlar                            │
+│ FAZ 9: Reaktif Agentlar                             │
 ├─────────────────────────────────────────────────────┤
-│ • Agentlar birbirinin skoruna tepki versin         │
+│ • Agentlar birbirinin skoruna tepki versin          │
 │ • Uzlaşma/ikna mekanizması                          │
 │ • Görüş değişikliği takibi                          │
-│ • Tahmini süre: 2-3 saat                           │
+│ • Tahmini süre: 2-3 saat                            │
 └─────────────────────────────────────────────────────┘
            │
            ▼
 ┌─────────────────────────────────────────────────────┐
-│ FAZ 10: Feedback Loop                              │
+│ FAZ 10: Feedback Loop                               │
 ├─────────────────────────────────────────────────────┤
 │ • Karar sonuçlarını kaydet                          │
 │ • Model performansını ölç                           │
 │ • Otomatik yeniden eğitim                           │
-│ • Tahmini süre: 1-2 saat                           │
+│ • Tahmini süre: 1-2 saat                            │
 └─────────────────────────────────────────────────────┘
            │
            ▼
 ┌─────────────────────────────────────────────────────┐
-│ FAZ 11: LLM Entegrasyonu (Opsiyonel)              │
+│ FAZ 11: LLM Entegrasyonu (Opsiyonel)                │
 ├─────────────────────────────────────────────────────┤
 │ • OpenAI/Ollama API bağlantısı                      │
 │ • Doğal dilde gerekçeler                            │
 │ • Dinamik tartışma                                  │
-│ • Tahmini süre: 3-4 saat                           │
+│ • Tahmini süre: 3-4 saat                            │
 └─────────────────────────────────────────────────────┘
 ```
 

@@ -1,10 +1,148 @@
 {
+  "model": "claude-opus-4-7",
   "permissions": {
     "allow": [
       "Bash(python:*)",
+      "Bash(git *)",
+      "Bash(ls *)",
+      "Bash(find *)",
+      "Bash(mkdir *)",
+      "Read",
+      "Write",
+      "Edit",
+      "Glob",
+      "Grep",
+      "Agent",
       "Bash(gh pr create --base develop --head feature/MADE-4-agent-scoring-logic --title 'feat\\(MADE-4\\): agent scoring logic implemented' --body ':*)",
       "Bash(gh pr create --base develop --head feature/MADE-1-initial-clean-architecture-setup --title 'feat\\(MADE-1\\): initial clean architecture setup & workflow documentation' --body ':*)",
       "Bash(gh pr create --base develop --head feature/MADE-2-llm-client-ssot-config --title 'feat\\(MADE-2\\): LLM client SSOT config consolidation' --body ':*)"
     ]
+  },
+  "env": {
+    "PYTHONPATH": "${workspaceFolder}",
+    "PYTHONDONTWRITEBYTECODE": "1"
+  },
+  "codeSettings": {
+    "pythonPath": "python",
+    "pythonInterpreterPath": "python",
+    "formatOnSave": true
+  },
+  "paths": {
+    "projectRoot": "${workspaceFolder}",
+    "dataDir": "${workspaceFolder}/data",
+    "realDatasets": "${workspaceFolder}/data/real_datasets",
+    "syntheticData": "${workspaceFolder}/data/synthetic",
+    "reports": "${workspaceFolder}/reports",
+    "appDir": "${workspaceFolder}/app"
+  },
+  "projectMetadata": {
+    "name": "Multiagent Business Decision System",
+    "phase": "1-data-collection",
+    "status": "ready-to-start",
+    "lastUpdated": "2026-04-30",
+    "phases": {
+      "phase1": {
+        "name": "Data Collection",
+        "duration": "Weeks 1-2",
+        "status": "pending",
+        "goal": "Gather 100-150 real scenarios",
+        "sources": ["HBS", "SEC", "Kaggle", "McKinsey"]
+      },
+      "phase2": {
+        "name": "Agent Training",
+        "duration": "Weeks 3-4",
+        "status": "pending",
+        "goal": ">70% accuracy on real data",
+        "file": "app/scripts/real_data_training.py"
+      },
+      "phase3": {
+        "name": "Outcome-Based RL",
+        "duration": "Weeks 5-6",
+        "status": "planned",
+        "goal": "+1-2% accuracy improvement",
+        "files": ["app/domain/learning/outcome_loss.py", "app/scripts/phase3_training.py"]
+      },
+      "phase4": {
+        "name": "Publication",
+        "duration": "Weeks 7-8",
+        "status": "planned",
+        "goal": "PhD-ready validation & paper"
+      }
+    }
+  },
+  "documentation": {
+    "main": ".claude/CLAUDE.md",
+    "strategy": "PROJECT_DOCUMENTATION.md",
+    "phases": "TRAINING_STRATEGY.md",
+    "rl": "OUTCOME_BASED_RL.md",
+    "roadmap": "IMPLEMENTATION_ROADMAP.md"
+  },
+  "keyFiles": {
+    "agents": [
+      "app/domain/agents/base.py",
+      "app/domain/agents/ceo_agent.py",
+      "app/domain/agents/cfo_agent.py",
+      "app/domain/agents/hr_agent.py"
+    ],
+    "learning": [
+      "app/domain/learning/agent_calibrator.py",
+      "app/domain/learning/debate_orchestrator.py",
+      "app/domain/learning/synthetic_data_gen.py"
+    ],
+    "scripts": [
+      "app/scripts/real_data_training.py",
+      "app/scripts/seed_data_generator.py"
+    ],
+    "database": [
+      "app/infrastructure/database/models.py",
+      "app/infrastructure/repositories/scenario_repository.py"
+    ]
+  },
+  "successCriteria": {
+    "phase1": [
+      "100+ scenarios collected",
+      "90%+ validation rate",
+      "All required fields present",
+      "Data anonymized"
+    ],
+    "phase2": [
+      "CEO accuracy >= 70%",
+      "CFO accuracy >= 70%",
+      "HR accuracy >= 70%",
+      "Debate convergence < 0.05 std"
+    ],
+    "phase3": [
+      "Decision accuracy +1-2%",
+      "Outcome prediction MAE < 10%",
+      "Debate convergence -30% faster",
+      "Confidence calibration +10%"
+    ],
+    "phase4": [
+      "5-fold CV score >= 70%",
+      "Statistical significance p < 0.05",
+      "Research paper ready",
+      "Publication submission"
+    ]
+  },
+  "constraints": {
+    "dont": [
+      "Start Phase 3 before Phase 2 finishes",
+      "Train on synthetic data thinking it's real",
+      "Mix synthetic and real data without explicit split",
+      "Ignore agent-specific optimization"
+    ],
+    "do": [
+      "Validate data quality (score >= 0.7)",
+      "Test on hold-out test set (30%)",
+      "Measure debate convergence",
+      "Track accuracy over epochs",
+      "Save checkpoints at each phase"
+    ]
+  },
+  "hooks": {
+    "beforeStart": "Read .claude/CLAUDE.md for project context",
+    "phase1Entry": "Check IMPLEMENTATION_ROADMAP.md for data collection tasks",
+    "phase2Entry": "Load data from data/real_datasets/ and run real_data_training.py",
+    "phase3Entry": "Implement outcome_loss.py and update agent_calibrator.py"
   }
 }
