@@ -49,13 +49,13 @@ def run_simulation(scenario: ScenarioInput):
 
     # --- FINAL DECISION ---
     print("\n🏁 FINAL BOARD DECISION")
-    results = [
-        ceo_msg2.to_legacy_result(),
-        cfo_msg2.to_legacy_result(),
-        hr_msg2.to_legacy_result()
+    messages = [
+        ceo_msg2,
+        cfo_msg2,
+        hr_msg2
     ]
     
-    final = aggregator.aggregate(results)
+    final = aggregator.aggregate(messages)
     print(f"\n🏆 VERDICT: {final.decision.value} (Score: {final.final_score}/100)")
     print(f"{'='*60}\n")
 
