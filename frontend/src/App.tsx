@@ -11,6 +11,14 @@ import {
   ShieldCheck,
   Zap,
   Loader2,
+  LayoutDashboard,
+  FlaskConical,
+  FileText,
+  History,
+  Settings,
+  Users,
+  Radio,
+  PlusCircle,
 } from "lucide-react";
 
 type AgentStatus = "IDLE" | "ANALYZING" | "WARNING" | "COMPLETED";
@@ -177,10 +185,13 @@ export default function App() {
   };
 
   return (
-    <main className="scanline cyber-grid min-h-screen bg-[#050816] text-white">
-      <div className="mx-auto max-w-[1600px] space-y-5 p-5">
-        <TopBar isRunning={isRunning} />
+  <main className="scanline cyber-grid min-h-screen bg-[#050816] text-white">
+    <div className="flex min-h-screen">
+      <Sidebar />
 
+      <div className="flex-1">
+        <div className="mx-auto max-w-[1600px] space-y-5 p-5">
+          <TopBar isRunning={isRunning} />
         <section className="grid gap-5 xl:grid-cols-[320px_1fr_380px]">
           <ScenarioPanel isRunning={isRunning} onStart={runSimulation} />
           <DecisionCore
@@ -200,11 +211,94 @@ export default function App() {
 
     <WhatIfLab />
 
+             </div>
       </div>
-    </main>
+    </div>
+  </main>
+);
+}
+function Sidebar() {
+  const navItems = [
+    { label: "Mission Control", icon: LayoutDashboard, active: true },
+    { label: "New Simulation", icon: PlusCircle },
+    { label: "Agent Registry", icon: Users },
+    { label: "Live Analysis", icon: Radio },
+    { label: "What-if Lab", icon: FlaskConical },
+    { label: "Reports", icon: FileText },
+    { label: "History", icon: History },
+    { label: "System Settings", icon: Settings },
+  ];
+
+  return (
+    <aside className="hidden w-72 shrink-0 border-r border-cyan-400/20 bg-slate-950/90 p-5 shadow-[0_0_35px_rgba(34,211,238,0.10)] backdrop-blur-xl xl:block">
+      <div className="mb-8">
+        <div className="flex items-center gap-3">
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-cyan-400/40 bg-cyan-400/10">
+            <Brain className="h-5 w-5 text-cyan-300" />
+          </div>
+
+          <div>
+            <p className="text-sm font-black tracking-widest text-white">
+              DECISION OS
+            </p>
+            <p className="font-mono text-[10px] text-cyan-300">
+              Agentic Command Layer
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <nav className="space-y-2">
+        {navItems.map((item) => {
+          const Icon = item.icon;
+
+          return (
+            <button
+              key={item.label}
+              className={`flex w-full items-center gap-3 rounded-xl border px-3 py-3 text-left font-mono text-xs transition ${
+                item.active
+                  ? "border-cyan-400/40 bg-cyan-400/10 text-cyan-300 shadow-[0_0_18px_rgba(34,211,238,0.16)]"
+                  : "border-transparent text-slate-400 hover:border-cyan-400/20 hover:bg-cyan-400/5 hover:text-cyan-200"
+              }`}
+            >
+              <Icon className="h-4 w-4" />
+              {item.label}
+            </button>
+          );
+        })}
+      </nav>
+
+      <div className="mt-8 rounded-2xl border border-cyan-400/20 bg-black/40 p-4">
+        <p className="mb-4 font-mono text-[10px] uppercase tracking-widest text-cyan-300">
+          System Telemetry
+        </p>
+
+        <div className="space-y-3">
+          <TelemetryRow label="CPU" value="32%" />
+          <TelemetryRow label="Memory" value="47%" />
+          <TelemetryRow label="Network" value="Secure" />
+          <TelemetryRow label="Data Stream" value="Active" />
+        </div>
+      </div>
+
+      <div className="mt-5 rounded-xl border border-emerald-400/20 bg-emerald-400/10 p-3">
+        <div className="flex items-center gap-2 font-mono text-[10px] text-emerald-300">
+          <span className="h-2 w-2 rounded-full bg-emerald-300 shadow-[0_0_12px_rgba(52,211,153,0.9)]" />
+          ALL SYSTEMS NOMINAL
+        </div>
+      </div>
+    </aside>
   );
 }
 
+function TelemetryRow({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="flex items-center justify-between border-b border-white/5 pb-2 last:border-b-0 last:pb-0">
+      <span className="font-mono text-[10px] text-slate-500">{label}</span>
+      <span className="font-mono text-[10px] font-bold text-white">{value}</span>
+    </div>
+  );
+}
 function TopBar({ isRunning }: { isRunning: boolean }) {
   return (
     <motion.header
