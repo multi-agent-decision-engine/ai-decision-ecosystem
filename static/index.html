@@ -308,7 +308,26 @@
     </div>
     
     <script>
-        const API_BASE = 'http://localhost:8000';
+        const API_BASE = (window.location && window.location.origin && window.location.origin.startsWith('http'))
+            ? window.location.origin
+            : 'http://localhost:8000';
+
+        function escapeHtml(text) {
+            return String(text)
+                .replaceAll('&', '&amp;')
+                .replaceAll('<', '&lt;')
+                .replaceAll('>', '&gt;')
+                .replaceAll('"', '&quot;')
+                .replaceAll("'", '&#039;');
+        }
+
+        function formatJson(value) {
+            try {
+                return JSON.stringify(value ?? {}, null, 2);
+            } catch {
+                return String(value ?? '');
+            }
+        }
         
         // Check API status on load
         async function checkStatus() {
@@ -414,7 +433,7 @@
             document.getElementById('resultsArea').innerHTML = '<div class="loading">Running multi-agent simulation</div>';
             
             try {
-                const response = await fetch(`${API_BASE}/api/v1/scenarios/${scenarioId}/simulate`, {
+                const response = await fetch(`${API_BASE}/api/v1/scenarios/${scenarioId}/simulate/detailed`, {
                     method: 'POST'
                 });
                 const data = await response.json();
@@ -423,13 +442,13 @@
                 const classResponse = await fetch(`${API_BASE}/api/v1/scenarios/${scenarioId}/classify`);
                 const classData = await classResponse.json();
                 
-                const decisionClass = data.final_decision.toLowerCase();
+                const decisionClass = (data.final_decision || '').toLowerCase();
                 
                 let html = `
                     <div style="text-align: center; margin-bottom: 20px;">
                         <span class="decision-badge decision-${decisionClass}">${data.final_decision}</span>
                         <p style="font-size: 1.5em; margin-top: 10px;">Final Score: <strong>${data.final_score}</strong>/100</p>
-                        <p style="color: #8892b0;">Scenario #${data.scenario_id} | Type: ${classData.primary_type.toUpperCase()}</p>
+                        <p style="color: #8892b0;">Scenario #${data.scenario_id} | Type: ${classData.primary_type.toUpperCase()} | Rounds: ${data.total_rounds}</p>
                     </div>
                     
                     <div class="weight-bar" style="margin: 20px 0;">
@@ -441,20 +460,61 @@
                     <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px;">
                 `;
                 
-                data.agent_outputs.forEach(agent => {
-                    const agentClass = agent.agent_name.toLowerCase();
-                    const scoreColor = agent.score >= 75 ? '#2ecc71' : agent.score >= 50 ? '#f39c12' : '#e74c3c';
+                // Show final round summary cards
+                const finalRound = (data.rounds && data.rounds.length) ? data.rounds[data.rounds.length - 1] : null;
+                const finalMessages = finalRound ? finalRound.messages : [];
+
+                finalMessages.forEach(msg => {
+                    const agentClass = (msg.agent || '').toLowerCase();
+                    const stance = (msg.stance || '').toUpperCase();
+                    const confidencePct = Math.round((msg.confidence ?? 0) * 100);
+                    const stanceColor = msg.stance === 'support' ? '#2ecc71' : msg.stance === 'neutral' ? '#f39c12' : '#e74c3c';
                     html += `
                         <div class="agent-card agent-${agentClass}">
-                            <h4>${agent.agent_name} Agent</h4>
-                            <span class="score" style="color: ${scoreColor}">${agent.score}</span>
-                            <span>/100</span>
-                            <p class="rationale">${agent.rationale}</p>
+                            <h4>${escapeHtml(msg.agent)} Agent</h4>
+                            <div>
+                                <span class="score" style="color: ${stanceColor}">${stance}</span>
+                                <span style="color: #8892b0;">(confidence: ${confidencePct}%)</span>
+                            </div>
+                            <p class="rationale">${escapeHtml(msg.reasoning || '')}</p>
                         </div>
                     `;
                 });
-                
+
                 html += '</div>';
+
+                // Debate transcript (round-by-round)
+                if (data.rounds && data.rounds.length) {
+                    html += `
+                        <div style="margin-top: 25px;">
+                            <h3 style="color: #64ffda; margin-bottom: 10px;">🗣️ Debate Transcript (Round by Round)</h3>
+                            <p style="color: #8892b0; margin-bottom: 15px;">Consensus: ${data.consensus_reached} | Stability: ${data.stability_reached}</p>
+                        </div>
+                    `;
+
+                    data.rounds.forEach(r => {
+                        html += `
+                            <div class="panel" style="margin-top: 15px;">
+                                <h2>Round ${r.round_number}</h2>
+                        `;
+                        r.messages.forEach(m => {
+                            const stance = (m.stance || '').toUpperCase();
+                            const confidencePct = Math.round((m.confidence ?? 0) * 100);
+                            html += `
+                                <div class="agent-card agent-${(m.agent || '').toLowerCase()}">
+                                    <h4>${escapeHtml(m.agent)} — ${stance} (${confidencePct}%)</h4>
+                                    <div class="rationale">${escapeHtml(m.reasoning || '')}</div>
+                                    <div class="rationale" style="margin-top: 10px;">
+                                        <strong>metrics</strong>
+                                        <pre style="margin-top: 8px; white-space: pre-wrap; color: #cbd5e1;">${escapeHtml(formatJson(m.metrics))}</pre>
+                                    </div>
+                                </div>
+                            `;
+                        });
+                        html += `</div>`;
+                    });
+                }
+
                 document.getElementById('resultsArea').innerHTML = html;
                 
             } catch (e) {

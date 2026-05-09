@@ -7,15 +7,18 @@ from app.domain.models import AgentResult, ScenarioInput, ScenarioRecord
 from app.domain.services.classifier import ScenarioClassifier
 from app.presentation.dependencies import get_scenario_query_service, get_scenario_service
 from app.presentation.schemas.scenario import (
+    AgentMessageResponse,
     AgentOutputResponse,
     AgentWeightsResponse,
     ClassificationRequest,
     ClassificationResponse,
     CreateScenarioRequest,
     CreateScenarioResponse,
+    RoundResponse,
     ScenarioListResponse,
     ScenarioResponse,
     SimulationDetailResponse,
+    SimulationDetailedResponse,
     SimulationResponse,
 )
 
@@ -40,6 +43,17 @@ def _to_agent_output_response(agent_result: AgentResult) -> AgentOutputResponse:
         agent_name=agent_result.agent_name,
         score=agent_result.score,
         rationale=agent_result.rationale,
+    )
+
+
+def _to_agent_message_response(msg) -> AgentMessageResponse:
+    return AgentMessageResponse(
+        agent=msg.agent,
+        stance=msg.stance,
+        confidence=msg.confidence,
+        reasoning=msg.reasoning,
+        metrics=msg.metrics,
+        round_number=msg.round_number,
     )
 
 
@@ -120,6 +134,48 @@ async def run_simulation(
         agent_outputs=[_to_agent_output_response(item) for item in result.agent_outputs],
         final_score=result.aggregated_decision.final_score,
         final_decision=result.aggregated_decision.decision.value,
+    )
+
+
+@router.post("/scenarios/{scenario_id}/simulate/detailed", response_model=SimulationDetailedResponse)
+async def run_simulation_detailed(
+    scenario_id: int,
+    service: ScenarioSimulationService = Depends(get_scenario_service),
+) -> SimulationDetailedResponse:
+    """Run simulation and return full round-by-round debate transcript."""
+    try:
+        result = await service.run_simulation(scenario_id)
+    except ScenarioNotFoundError as exc:
+        raise HTTPException(status_code=404, detail=str(exc)) from exc
+
+    rounds = [
+        RoundResponse(
+            round_number=r.round_number,
+            messages=[_to_agent_message_response(m) for m in r.messages],
+        )
+        for r in result.rounds
+    ]
+
+    scenario_type = None
+    scenario_type_confidence = None
+    classification_reasoning = None
+    if result.classification:
+        scenario_type = result.classification.primary_type.value
+        scenario_type_confidence = result.classification.confidence
+        classification_reasoning = result.classification.classification_reasoning
+
+    return SimulationDetailedResponse(
+        scenario_id=result.scenario_id,
+        rounds=rounds,
+        total_rounds=result.total_rounds,
+        consensus_reached=result.consensus_reached,
+        stability_reached=result.stability_reached,
+        final_score=result.aggregated_decision.final_score,
+        final_decision=result.aggregated_decision.decision.value,
+        scenario_type=scenario_type,
+        scenario_type_confidence=scenario_type_confidence,
+        classification_reasoning=classification_reasoning,
+        agent_weights=result.agent_weights,
     )
 
 
