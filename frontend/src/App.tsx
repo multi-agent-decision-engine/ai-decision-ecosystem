@@ -19,6 +19,9 @@ import {
   Users,
   Radio,
   PlusCircle,
+  Copy,
+  Download,
+  Check,
 } from "lucide-react";
 
 type AgentStatus = "IDLE" | "ANALYZING" | "WARNING" | "COMPLETED";
@@ -948,6 +951,61 @@ function clamp(value: number) {
   return Math.max(0, Math.min(100, Math.round(value)));
 }
 function ExecutiveDecisionReport() {
+const [copied, setCopied] = useState(false);
+
+const reportText = `AI Decision Ecosystem Engine - Executive Decision Report
+
+Scenario:
+AI Market Expansion Initiative
+
+Inputs:
+- Budget: $25M
+- Expected ROI: 45%
+- Risk Level: 5/10
+- Team Readiness: 3/10
+- Scenario Type: TEAM_EXPANSION
+
+Agent Findings:
+- CEO Agent: Score 85 | Weight 25% | Stance: Support
+  Strong strategic alignment and long-term market expansion potential detected.
+
+- CFO Agent: Score 90 | Weight 25% | Stance: Support
+  Expected ROI is financially attractive and budget exposure is acceptable.
+
+- HR Agent: Score 50 | Weight 50% | Stance: Revise
+  Team readiness is below execution threshold, creating a workforce capacity bottleneck.
+
+Final Score Calculation:
+CEO: 85 × 0.25 = 21.25
+CFO: 90 × 0.25 = 22.50
+HR : 50 × 0.50 = 25.00
+
+Final Score: 68.75 / 100
+Final Decision: REVISE
+Primary Bottleneck: Workforce Capacity
+
+Recommended Next Steps:
+1. Increase team readiness from 3/10 to at least 6/10.
+2. Create a hiring or onboarding plan before approval.
+3. Keep risk level below 6/10 during execution planning.
+4. Re-run the simulation after workforce capacity improvements.
+`;
+
+const copyReport = async () => {
+  await navigator.clipboard.writeText(reportText);
+  setCopied(true);
+  setTimeout(() => setCopied(false), 1600);
+};
+
+const downloadReport = () => {
+  const blob = new Blob([reportText], { type: "text/plain;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = "ai-decision-executive-report.txt";
+  link.click();
+  URL.revokeObjectURL(url);
+};
   const agentFindings = [
     {
       agent: "CEO Agent",
@@ -990,6 +1048,34 @@ function ExecutiveDecisionReport() {
       title="Executive Decision Report"
       subtitle="AI-generated boardroom summary and explainable recommendation"
     >
+<div className="mb-5 flex flex-col gap-3 rounded-2xl border border-cyan-400/10 bg-black/40 p-4 md:flex-row md:items-center md:justify-between">
+  <div>
+    <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-cyan-300">
+      Report Actions
+    </p>
+    <p className="mt-1 text-xs text-slate-400">
+      Copy or download the AI-generated executive report.
+    </p>
+  </div>
+
+  <div className="flex flex-wrap gap-2">
+    <button
+      onClick={copyReport}
+      className="inline-flex items-center gap-2 rounded-xl border border-cyan-400/30 bg-cyan-400/10 px-3 py-2 font-mono text-xs text-cyan-300 transition hover:bg-cyan-400 hover:text-slate-950"
+    >
+      {copied ? <Check size={14} /> : <Copy size={14} />}
+      {copied ? "Copied" : "Copy Report"}
+    </button>
+
+    <button
+      onClick={downloadReport}
+      className="inline-flex items-center gap-2 rounded-xl border border-emerald-400/30 bg-emerald-400/10 px-3 py-2 font-mono text-xs text-emerald-300 transition hover:bg-emerald-400 hover:text-slate-950"
+    >
+      <Download size={14} />
+      Download TXT
+    </button>
+  </div>
+</div>
       <div className="grid gap-5 xl:grid-cols-[1.1fr_0.9fr]">
         <div className="space-y-5">
           <div className="rounded-2xl border border-cyan-400/10 bg-black/40 p-5">
