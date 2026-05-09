@@ -25,6 +25,7 @@ services:
       DATABASE_URL: postgresql+psycopg2://postgres:postgres@db:5432/ai_decision_engine
     ports:
       - "8000:8000"
+      - "8501:8501"
     depends_on:
       db:
         condition: service_healthy
