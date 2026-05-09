@@ -210,6 +210,7 @@ export default function App() {
 
 
     <WhatIfLab />
+<ExecutiveDecisionReport />
 
              </div>
       </div>
@@ -945,4 +946,223 @@ function SliderControl({
 
 function clamp(value: number) {
   return Math.max(0, Math.min(100, Math.round(value)));
+}
+function ExecutiveDecisionReport() {
+  const agentFindings = [
+    {
+      agent: "CEO Agent",
+      score: 85,
+      weight: "25%",
+      stance: "Support",
+      color: "cyan",
+      finding:
+        "The initiative has strong strategic alignment and supports long-term market expansion.",
+    },
+    {
+      agent: "CFO Agent",
+      score: 90,
+      weight: "25%",
+      stance: "Support",
+      color: "emerald",
+      finding:
+        "The expected ROI is financially attractive and the budget exposure is acceptable.",
+    },
+    {
+      agent: "HR Agent",
+      score: 50,
+      weight: "50%",
+      stance: "Revise",
+      color: "amber",
+      finding:
+        "Team readiness is below the required execution threshold, creating a workforce capacity bottleneck.",
+    },
+  ];
+
+  const nextSteps = [
+    "Increase team readiness from 3/10 to at least 6/10.",
+    "Create a hiring or onboarding plan before approval.",
+    "Keep risk level below 6/10 during execution planning.",
+    "Re-run the simulation after workforce capacity improvements.",
+  ];
+
+  return (
+    <Panel
+      title="Executive Decision Report"
+      subtitle="AI-generated boardroom summary and explainable recommendation"
+    >
+      <div className="grid gap-5 xl:grid-cols-[1.1fr_0.9fr]">
+        <div className="space-y-5">
+          <div className="rounded-2xl border border-cyan-400/10 bg-black/40 p-5">
+            <div className="mb-4 flex items-center justify-between">
+              <div>
+                <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-cyan-300">
+                  Scenario Summary
+                </p>
+                <h3 className="mt-2 text-xl font-black text-white">
+                  AI Market Expansion Initiative
+                </h3>
+              </div>
+
+              <span className="rounded-full border border-amber-400/30 bg-amber-400/10 px-3 py-1 font-mono text-[10px] text-amber-300">
+                NEEDS REVISION
+              </span>
+            </div>
+
+            <p className="text-sm leading-relaxed text-slate-300">
+              The system analyzed a high-impact market expansion scenario using
+              three executive AI agents. CEO and CFO perspectives are positive,
+              but the HR Agent detected a workforce capacity limitation. Because
+              this scenario is classified as <strong>TEAM_EXPANSION</strong>, HR
+              receives the highest decision weight.
+            </p>
+
+            <div className="mt-5 grid gap-3 md:grid-cols-4">
+              <Metric label="Budget" value="$25M" />
+              <Metric label="Expected ROI" value="45%" />
+              <Metric label="Risk Level" value="5/10" />
+              <Metric label="Team Readiness" value="3/10" />
+            </div>
+          </div>
+
+          <div className="rounded-2xl border border-cyan-400/10 bg-black/40 p-5">
+            <p className="mb-4 font-mono text-[10px] uppercase tracking-[0.3em] text-cyan-300">
+              Agent Findings
+            </p>
+
+            <div className="space-y-3">
+              {agentFindings.map((item) => (
+                <div
+                  key={item.agent}
+                  className={`rounded-xl border bg-black/40 p-4 ${
+                    item.color === "amber"
+                      ? "border-amber-400/30"
+                      : item.color === "emerald"
+                      ? "border-emerald-400/30"
+                      : "border-cyan-400/30"
+                  }`}
+                >
+                  <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
+                    <div>
+                      <h4 className="font-bold text-white">{item.agent}</h4>
+                      <p className="mt-1 text-xs leading-relaxed text-slate-400">
+                        {item.finding}
+                      </p>
+                    </div>
+
+                    <div className="flex shrink-0 gap-2">
+                      <span className="rounded-full border border-white/10 bg-white/5 px-2 py-1 font-mono text-[10px] text-white">
+                        Score {item.score}
+                      </span>
+                      <span className="rounded-full border border-white/10 bg-white/5 px-2 py-1 font-mono text-[10px] text-white">
+                        Weight {item.weight}
+                      </span>
+                      <span
+                        className={`rounded-full border px-2 py-1 font-mono text-[10px] ${
+                          item.stance === "Revise"
+                            ? "border-amber-400/40 bg-amber-400/10 text-amber-300"
+                            : "border-emerald-400/40 bg-emerald-400/10 text-emerald-300"
+                        }`}
+                      >
+                        {item.stance}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <div className="space-y-5">
+          <div className="rounded-2xl border border-amber-400/30 bg-amber-400/10 p-5 shadow-[0_0_35px_rgba(251,191,36,0.12)]">
+            <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-amber-300">
+              Final Score Calculation
+            </p>
+
+            <div className="mt-4 space-y-3 font-mono text-xs">
+              <CalculationRow label="CEO" formula="85 × 0.25" result="21.25" />
+              <CalculationRow label="CFO" formula="90 × 0.25" result="22.50" />
+              <CalculationRow label="HR" formula="50 × 0.50" result="25.00" />
+
+              <div className="mt-4 border-t border-amber-400/20 pt-4">
+                <div className="flex items-center justify-between">
+                  <span className="text-amber-300">Final Score</span>
+                  <span className="text-xl font-black text-white">
+                    68.75 / 100
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-5 rounded-xl border border-amber-400/20 bg-black/40 p-4">
+              <p className="font-mono text-[10px] uppercase tracking-widest text-amber-300">
+                Decision Rule
+              </p>
+              <p className="mt-2 text-xs leading-relaxed text-slate-300">
+                70+ = APPROVE, 50–69 = REVISE, below 50 = REJECT. Since the
+                final score is 68.75, the recommended decision is{" "}
+                <strong className="text-amber-300">REVISE</strong>.
+              </p>
+            </div>
+          </div>
+
+          <div className="rounded-2xl border border-cyan-400/10 bg-black/40 p-5">
+            <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-cyan-300">
+              Recommended Next Steps
+            </p>
+
+            <div className="mt-4 space-y-3">
+              {nextSteps.map((step, index) => (
+                <div
+                  key={step}
+                  className="flex gap-3 rounded-xl border border-white/10 bg-white/5 p-3"
+                >
+                  <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-cyan-400/40 bg-cyan-400/10 font-mono text-[10px] text-cyan-300">
+                    {index + 1}
+                  </div>
+                  <p className="text-xs leading-relaxed text-slate-300">
+                    {step}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="rounded-2xl border border-emerald-400/20 bg-emerald-400/10 p-5">
+            <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-emerald-300">
+              Improvement Target
+            </p>
+
+            <h3 className="mt-3 text-2xl font-black text-emerald-300">
+              REVISE → APPROVE
+            </h3>
+
+            <p className="mt-3 text-xs leading-relaxed text-slate-300">
+              If team readiness is improved from 3/10 to 6/10 while risk remains
+              controlled, the HR bottleneck weakens and the scenario can move
+              toward approval.
+            </p>
+          </div>
+        </div>
+      </div>
+    </Panel>
+  );
+}
+
+function CalculationRow({
+  label,
+  formula,
+  result,
+}: {
+  label: string;
+  formula: string;
+  result: string;
+}) {
+  return (
+    <div className="flex items-center justify-between rounded-xl border border-white/10 bg-black/40 p-3">
+      <span className="text-slate-400">{label}</span>
+      <span className="text-cyan-300">{formula}</span>
+      <span className="font-bold text-white">{result}</span>
+    </div>
+  );
 }
