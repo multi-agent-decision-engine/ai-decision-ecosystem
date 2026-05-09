@@ -1,3 +1,4 @@
+import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from "recharts";
 import { useState, type ReactNode } from "react";
 import { motion } from "framer-motion";
 import {
@@ -331,34 +332,120 @@ function DecisionCore({
 function LiveFeed({ logs }: { logs: string[] }) {
   return (
     <Panel title="Live Analysis Feed" subtitle="Real-time agent execution stream">
-      <div className="h-[520px] overflow-hidden rounded-xl border border-cyan-400/10 bg-black/70 p-4 font-mono text-xs">
-        <div className="mb-3 flex items-center gap-2 text-cyan-300">
-          <Network size={16} />
-          <span>STREAM ACTIVE</span>
+      <div className="space-y-4">
+        <div className="h-[340px] overflow-hidden rounded-xl border border-cyan-400/10 bg-black/70 p-4 font-mono text-xs">
+          <div className="mb-3 flex items-center gap-2 text-cyan-300">
+            <Network size={16} />
+            <span>STREAM ACTIVE</span>
+          </div>
+
+          <div className="space-y-2">
+            {logs.map((log, index) => (
+              <motion.p
+                key={`${log}-${index}`}
+                initial={{ opacity: 0, x: 12 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.02 }}
+                className={
+                  log.toLowerCase().includes("warning") || log.includes("HR weight")
+                    ? "text-amber-300"
+                    : log.toLowerCase().includes("final") ||
+                        log.toLowerCase().includes("completed")
+                      ? "text-emerald-300"
+                      : "text-cyan-200"
+                }
+              >
+                <span className="text-slate-500">
+                  [{String(index + 1).padStart(2, "0")}]
+                </span>{" "}
+                &gt; {log}
+              </motion.p>
+            ))}
+          </div>
         </div>
 
-        <div className="space-y-2">
-          {logs.map((log, index) => (
-            <motion.p
-              key={`${log}-${index}`}
-              initial={{ opacity: 0, x: 12 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.02 }}
-              className={
-                log.toLowerCase().includes("warning") || log.includes("HR weight")
-                  ? "text-amber-300"
-                  : log.toLowerCase().includes("final") || log.toLowerCase().includes("completed")
-                  ? "text-emerald-300"
-                  : "text-cyan-200"
-              }
-            >
-              <span className="text-slate-500">[{String(index + 1).padStart(2, "0")}]</span>{" "}
-              &gt; {log}
-            </motion.p>
+        <AgentContributionChart />
+      </div>
+    </Panel>
+  );
+}
+const contributionData = [
+  { name: "CEO", value: 25, color: "#22d3ee" },
+  { name: "CFO", value: 25, color: "#34d399" },
+  { name: "HR", value: 50, color: "#fbbf24" },
+];
+
+function AgentContributionChart() {
+  return (
+    <div className="rounded-xl border border-cyan-400/10 bg-black/60 p-4">
+      <div className="mb-3 flex items-center justify-between">
+        <div>
+          <h3 className="text-sm font-bold text-cyan-300">
+            Agent Contribution
+          </h3>
+          <p className="font-mono text-[10px] text-slate-500">
+            Dynamic scenario weights
+          </p>
+        </div>
+
+        <span className="rounded-full border border-amber-400/30 bg-amber-400/10 px-2 py-1 font-mono text-[10px] text-amber-300">
+          HR PRIORITY
+        </span>
+      </div>
+
+      <div className="grid grid-cols-[150px_1fr] items-center gap-4">
+        <div className="h-[150px]">
+          <ResponsiveContainer width="100%" height="100%">
+            <PieChart>
+              <Pie
+                data={contributionData}
+                dataKey="value"
+                nameKey="name"
+                innerRadius={42}
+                outerRadius={68}
+                paddingAngle={3}
+                stroke="rgba(255,255,255,0.12)"
+                strokeWidth={1}
+              >
+                {contributionData.map((entry) => (
+                  <Cell key={entry.name} fill={entry.color} />
+                ))}
+              </Pie>
+              <Tooltip
+                contentStyle={{
+                  background: "#020617",
+                  border: "1px solid rgba(34,211,238,0.25)",
+                  borderRadius: "12px",
+                  color: "#fff",
+                }}
+              />
+            </PieChart>
+          </ResponsiveContainer>
+        </div>
+
+        <div className="space-y-3">
+          {contributionData.map((item) => (
+            <div key={item.name}>
+              <div className="mb-1 flex items-center justify-between font-mono text-xs">
+                <span className="text-slate-300">{item.name} Agent</span>
+                <span className="font-bold text-white">{item.value}%</span>
+              </div>
+
+              <div className="h-2 overflow-hidden rounded-full bg-slate-800">
+                <div
+                  className="h-full rounded-full"
+                  style={{
+                    width: `${item.value}%`,
+                    backgroundColor: item.color,
+                    boxShadow: `0 0 14px ${item.color}`,
+                  }}
+                />
+              </div>
+            </div>
           ))}
         </div>
       </div>
-    </Panel>
+    </div>
   );
 }
 
