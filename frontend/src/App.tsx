@@ -196,6 +196,10 @@ export default function App() {
           <AgentRegistry agents={agents} />
           <FinalDecision visible={finalVisible} isRunning={isRunning} />
         </section>
+
+
+    <WhatIfLab />
+
       </div>
     </main>
   );
@@ -662,4 +666,189 @@ function nodeColorClass(color: Agent["color"], status: AgentStatus) {
   if (color === "amber") return "border-amber-400 text-amber-300 shadow-amber-400/30";
   if (color === "purple") return "border-purple-400 text-purple-300 shadow-purple-400/30";
   return "border-cyan-400 text-cyan-300 shadow-cyan-400/30";
+}
+function WhatIfLab() {
+  const [budget, setBudget] = useState(25);
+  const [roi, setRoi] = useState(45);
+  const [risk, setRisk] = useState(5);
+  const [teamReadiness, setTeamReadiness] = useState(3);
+  const [marketConfidence, setMarketConfidence] = useState(7);
+
+  const ceoScore = clamp(
+    35 + roi * 0.65 + marketConfidence * 3 - risk * 2
+  );
+
+  const cfoScore = clamp(
+    55 + roi * 0.55 - budget * 0.7 - risk * 2.5
+  );
+
+  const hrScore = clamp(
+    20 + teamReadiness * 9 - risk * 1.5
+  );
+
+  const finalScore = Number(
+    (ceoScore * 0.25 + cfoScore * 0.25 + hrScore * 0.5).toFixed(2)
+  );
+
+  const decision =
+    finalScore >= 70 ? "APPROVE" : finalScore >= 50 ? "REVISE" : "REJECT";
+
+  const bottleneck =
+    hrScore < ceoScore && hrScore < cfoScore
+      ? "Workforce Capacity"
+      : cfoScore < ceoScore
+      ? "Financial Feasibility"
+      : "Strategic Alignment";
+
+  const decisionClass =
+    decision === "APPROVE"
+      ? "text-emerald-300 border-emerald-400/40 bg-emerald-400/10 shadow-[0_0_35px_rgba(52,211,153,0.16)]"
+      : decision === "REVISE"
+      ? "text-amber-300 border-amber-400/40 bg-amber-400/10 shadow-[0_0_35px_rgba(251,191,36,0.16)]"
+      : "text-red-300 border-red-400/40 bg-red-400/10 shadow-[0_0_35px_rgba(248,113,113,0.16)]";
+
+  return (
+    <Panel
+      title="What-if Simulation Lab"
+      subtitle="Change scenario parameters and watch the decision engine react"
+    >
+      <div className="grid gap-5 xl:grid-cols-[1fr_420px]">
+        <div className="grid gap-4 md:grid-cols-2">
+          <SliderControl
+            label="Budget"
+            value={budget}
+            min={1}
+            max={60}
+            suffix="M$"
+            onChange={setBudget}
+          />
+
+          <SliderControl
+            label="Expected ROI"
+            value={roi}
+            min={0}
+            max={80}
+            suffix="%"
+            onChange={setRoi}
+          />
+
+          <SliderControl
+            label="Risk Level"
+            value={risk}
+            min={1}
+            max={10}
+            suffix="/10"
+            onChange={setRisk}
+          />
+
+          <SliderControl
+            label="Team Readiness"
+            value={teamReadiness}
+            min={1}
+            max={10}
+            suffix="/10"
+            onChange={setTeamReadiness}
+          />
+
+          <SliderControl
+            label="Market Confidence"
+            value={marketConfidence}
+            min={1}
+            max={10}
+            suffix="/10"
+            onChange={setMarketConfidence}
+          />
+        </div>
+
+        <motion.div
+          key={decision + finalScore}
+          initial={{ opacity: 0, scale: 0.97 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className={`rounded-2xl border p-5 ${decisionClass}`}
+        >
+          <p className="font-mono text-xs uppercase tracking-[0.3em]">
+            Simulated Decision
+          </p>
+
+          <h3 className="mt-3 text-5xl font-black">{decision}</h3>
+
+          <div className="mt-5 grid grid-cols-2 gap-3">
+            <Metric label="Final Score" value={`${finalScore} / 100`} />
+            <Metric label="Bottleneck" value={bottleneck} />
+            <Metric label="CEO Score" value={String(ceoScore)} />
+            <Metric label="CFO Score" value={String(cfoScore)} />
+            <Metric label="HR Score" value={String(hrScore)} />
+            <Metric label="Scenario Type" value="TEAM EXPANSION" />
+          </div>
+
+          <div className="mt-5 rounded-xl border border-white/10 bg-black/40 p-4">
+            <p className="font-mono text-[10px] uppercase tracking-widest">
+              Recommendation
+            </p>
+            <p className="mt-2 text-sm leading-relaxed text-white">
+              {decision === "APPROVE"
+                ? "Scenario is viable. Proceed with controlled execution."
+                : decision === "REVISE"
+                ? "Improve the weakest parameter before approval. Team readiness is especially important in this scenario."
+                : "Scenario is not viable under current constraints. Reduce risk or improve financial and workforce capacity."}
+            </p>
+          </div>
+        </motion.div>
+      </div>
+    </Panel>
+  );
+}
+
+function SliderControl({
+  label,
+  value,
+  min,
+  max,
+  suffix,
+  onChange,
+}: {
+  label: string;
+  value: number;
+  min: number;
+  max: number;
+  suffix: string;
+  onChange: (value: number) => void;
+}) {
+  return (
+    <div className="rounded-xl border border-cyan-400/10 bg-black/40 p-4">
+      <div className="mb-3 flex items-center justify-between">
+        <p className="font-mono text-xs uppercase tracking-widest text-slate-400">
+          {label}
+        </p>
+        <p className="font-mono text-sm font-bold text-cyan-300">
+          {value}
+          {suffix}
+        </p>
+      </div>
+
+      <input
+        type="range"
+        min={min}
+        max={max}
+        value={value}
+        onChange={(event) => onChange(Number(event.target.value))}
+        className="h-2 w-full cursor-pointer accent-cyan-300"
+      />
+
+      <div className="mt-2 flex justify-between font-mono text-[10px] text-slate-600">
+        <span>
+          {min}
+          {suffix}
+        </span>
+        <span>
+          {max}
+          {suffix}
+        </span>
+      </div>
+    </div>
+  );
+}
+
+function clamp(value: number) {
+  return Math.max(0, Math.min(100, Math.round(value)));
 }
