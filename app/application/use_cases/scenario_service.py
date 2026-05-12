@@ -157,7 +157,7 @@ class ScenarioSimulationService:
 
         final_messages = rounds[-1].messages
         agent_results = [msg.to_legacy_result() for msg in final_messages]
-        aggregated = self.aggregator.aggregate(agent_results, weights=agent_weights)
+        aggregated = self.aggregator.aggregate(final_messages, weights=agent_weights)
 
         await self.agent_output_repository.create_many(scenario_id, agent_results)
         await self.final_decision_repository.create(scenario_id, aggregated)

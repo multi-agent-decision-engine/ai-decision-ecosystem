@@ -2,6 +2,7 @@ from abc import ABC, abstractmethod
 from typing import TYPE_CHECKING
 
 from app.domain.models import AgentMessage, ScenarioInput
+from app.infrastructure.llm_logger import llm_logger
 
 if TYPE_CHECKING:
     pass
