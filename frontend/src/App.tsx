@@ -37,6 +37,38 @@ type Agent = {
   reasoning: string;
 };
 
+type ApiCreateScenarioResponse = {
+  scenario_id: number;
+};
+
+type ApiAgentMessage = {
+  agent: string;
+  stance: string;
+  confidence: number;
+  reasoning: string;
+  metrics: Record<string, unknown>;
+  round_number: number;
+};
+
+type ApiRound = {
+  round_number: number;
+  messages: ApiAgentMessage[];
+};
+
+type ApiSimulationDetailedResponse = {
+  scenario_id: number;
+  rounds: ApiRound[];
+  total_rounds: number;
+  consensus_reached: boolean;
+  stability_reached: boolean;
+  final_score: number;
+  final_decision: string;
+  scenario_type?: string | null;
+  scenario_type_confidence?: number | null;
+  classification_reasoning?: string | null;
+  agent_weights?: Record<string, number> | null;
+};
+
 const initialAgents: Agent[] = [
   {
     id: "ceo",
@@ -105,6 +137,27 @@ const completedAgents: Agent[] = [
 
 const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
+const API_BASE_URL =
+  (import.meta.env.VITE_API_BASE_URL as string | undefined) ??
+  "http://localhost:8000";
+
+async function fetchJson<T>(path: string, init?: RequestInit): Promise<T> {
+  const response = await fetch(`${API_BASE_URL}${path}`, {
+    ...init,
+    headers: {
+      "Content-Type": "application/json",
+      ...(init?.headers ?? {}),
+    },
+  });
+
+  if (!response.ok) {
+    const text = await response.text().catch(() => "");
+    throw new Error(`HTTP ${response.status} ${response.statusText}${text ? `: ${text}` : ""}`);
+  }
+
+  return (await response.json()) as T;
+}
+
 export default function App() {
   const [agents, setAgents] = useState<Agent[]>(initialAgents);
   const [logs, setLogs] = useState<string[]>([
@@ -115,6 +168,8 @@ export default function App() {
   const [aggregatorStatus, setAggregatorStatus] = useState<AgentStatus>("IDLE");
   const [explainStatus, setExplainStatus] = useState<AgentStatus>("IDLE");
   const [finalVisible, setFinalVisible] = useState(false);
+  const [detailedSimulation, setDetailedSimulation] =
+    useState<ApiSimulationDetailedResponse | null>(null);
 
   const addLog = async (message: string, delay = 450) => {
     setLogs((prev) => [...prev, message]);
@@ -137,6 +192,28 @@ export default function App() {
     setAggregatorStatus("IDLE");
     setExplainStatus("IDLE");
     setLogs([]);
+    setDetailedSimulation(null);
+
+    const transcriptPromise = (async () => {
+      const payload = {
+        name: "AI Market Expansion Initiative",
+        description: "Expand into Southeast Asia market",
+        budget_million_usd: 25.0,
+        expected_roi_percent: 45.0,
+        risk_level: 5,
+        team_readiness: 3,
+      };
+
+      const created = await fetchJson<ApiCreateScenarioResponse>("/api/v1/scenarios", {
+        method: "POST",
+        body: JSON.stringify(payload),
+      });
+
+      return await fetchJson<ApiSimulationDetailedResponse>(
+        `/api/v1/scenarios/${created.scenario_id}/simulate/detailed`,
+        { method: "POST" }
+      );
+    })();
 
     await addLog("Scenario received: AI Market Expansion Initiative");
     setClassifierStatus("ANALYZING");
@@ -183,6 +260,14 @@ export default function App() {
     await addLog("Primary bottleneck detected: Workforce Capacity");
     await addLog("Final decision generated: REVISE");
 
+    try {
+      const detailed = await transcriptPromise;
+      setDetailedSimulation(detailed);
+    } catch (err) {
+      const message = err instanceof Error ? err.message : String(err);
+      await addLog(`Transcript fetch failed: ${message}`);
+    }
+
     setFinalVisible(true);
     setIsRunning(false);
   };
@@ -206,6 +291,8 @@ export default function App() {
           <LiveFeed logs={logs} />
         </section>
 
+        <DebateRoundsPanel simulation={detailedSimulation} />
+
         <section className="grid gap-5 xl:grid-cols-[1fr_430px]">
           <AgentRegistry agents={agents} />
           <FinalDecision visible={finalVisible} isRunning={isRunning} />
@@ -220,6 +307,91 @@ export default function App() {
     </div>
   </main>
 );
+}
+
+function DebateRoundsPanel({
+  simulation,
+}: {
+  simulation: ApiSimulationDetailedResponse | null;
+}) {
+  return (
+    <Panel
+      title="Debate Rounds"
+      subtitle="Agent-to-agent conversation transcript (round-based)"
+    >
+      {!simulation || simulation.rounds.length === 0 ? (
+        <div className="rounded-xl border border-cyan-400/10 bg-black/40 p-4">
+          <p className="font-mono text-xs text-slate-400">
+            Run a simulation to see the round-by-round agent discussion.
+          </p>
+        </div>
+      ) : (
+        <div className="space-y-4">
+          <div className="grid gap-3 md:grid-cols-3">
+            <MetaChip label="Total Rounds" value={String(simulation.total_rounds)} />
+            <MetaChip
+              label="Consensus"
+              value={simulation.consensus_reached ? "REACHED" : "NOT REACHED"}
+            />
+            <MetaChip
+              label="Stability"
+              value={simulation.stability_reached ? "REACHED" : "NOT REACHED"}
+            />
+          </div>
+
+          <div className="space-y-3">
+            {simulation.rounds.map((round) => (
+              <div
+                key={round.round_number}
+                className="rounded-2xl border border-cyan-400/10 bg-black/40 p-4"
+              >
+                <div className="flex items-center justify-between">
+                  <p className="font-mono text-xs font-bold tracking-widest text-cyan-300">
+                    ROUND {round.round_number}
+                  </p>
+                  <p className="font-mono text-[10px] text-slate-500">
+                    {round.messages.length} messages
+                  </p>
+                </div>
+
+                <div className="mt-3 space-y-3">
+                  {round.messages.map((msg) => (
+                    <div
+                      key={`${round.round_number}-${msg.agent}`}
+                      className="rounded-xl border border-white/5 bg-black/60 p-3"
+                    >
+                      <div className="flex flex-wrap items-center justify-between gap-2">
+                        <p className="font-mono text-xs font-bold text-white">
+                          {msg.agent}
+                        </p>
+                        <p className="font-mono text-[10px] uppercase tracking-widest text-slate-400">
+                          {msg.stance} • {Math.round(msg.confidence * 100)}%
+                        </p>
+                      </div>
+                      <p className="mt-2 whitespace-pre-wrap text-xs text-slate-200">
+                        {msg.reasoning}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+    </Panel>
+  );
+}
+
+function MetaChip({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="rounded-xl border border-cyan-400/10 bg-black/40 p-3">
+      <p className="font-mono text-[10px] uppercase tracking-widest text-slate-500">
+        {label}
+      </p>
+      <p className="mt-1 text-sm font-semibold text-white">{value}</p>
+    </div>
+  );
 }
 function Sidebar() {
   const navItems = [
