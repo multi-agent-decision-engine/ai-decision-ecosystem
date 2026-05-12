@@ -23,153 +23,31 @@ import {
   Download,
   Check,
 } from "lucide-react";
+import type { Agent, AgentColor, AgentStatus } from "./types/decision";
+import {
+  completedAgents,
+  contributionData,
+  executiveReportText,
+  initialAgents,
+  initialLogs,
+  reportAgentFindings,
+  reportNextSteps,
+  scenarioRows,
+} from "./data/mockDecision";
 
-type AgentStatus = "IDLE" | "ANALYZING" | "WARNING" | "COMPLETED";
 
-type Agent = {
-  id: string;
-  name: string;
-  role: string;
-  status: AgentStatus;
-  score: number;
-  confidence: number;
-  color: "cyan" | "emerald" | "amber" | "purple";
-  reasoning: string;
-};
 
-type ApiCreateScenarioResponse = {
-  scenario_id: number;
-};
-
-type ApiAgentMessage = {
-  agent: string;
-  stance: string;
-  confidence: number;
-  reasoning: string;
-  metrics: Record<string, unknown>;
-  round_number: number;
-};
-
-type ApiRound = {
-  round_number: number;
-  messages: ApiAgentMessage[];
-};
-
-type ApiSimulationDetailedResponse = {
-  scenario_id: number;
-  rounds: ApiRound[];
-  total_rounds: number;
-  consensus_reached: boolean;
-  stability_reached: boolean;
-  final_score: number;
-  final_decision: string;
-  scenario_type?: string | null;
-  scenario_type_confidence?: number | null;
-  classification_reasoning?: string | null;
-  agent_weights?: Record<string, number> | null;
-};
-
-const initialAgents: Agent[] = [
-  {
-    id: "ceo",
-    name: "CEO Agent",
-    role: "Strategic Vision Evaluator",
-    status: "IDLE",
-    score: 0,
-    confidence: 0,
-    color: "cyan",
-    reasoning: "Waiting for scenario activation.",
-  },
-  {
-    id: "cfo",
-    name: "CFO Agent",
-    role: "Financial Feasibility Evaluator",
-    status: "IDLE",
-    score: 0,
-    confidence: 0,
-    color: "emerald",
-    reasoning: "Waiting for financial analysis request.",
-  },
-  {
-    id: "hr",
-    name: "HR Agent",
-    role: "Workforce Capacity Evaluator",
-    status: "IDLE",
-    score: 0,
-    confidence: 0,
-    color: "amber",
-    reasoning: "Waiting for workforce capacity scan.",
-  },
-];
-
-const completedAgents: Agent[] = [
-  {
-    id: "ceo",
-    name: "CEO Agent",
-    role: "Strategic Vision Evaluator",
-    status: "COMPLETED",
-    score: 85,
-    confidence: 91,
-    color: "cyan",
-    reasoning: "Strong strategic alignment and high ROI detected.",
-  },
-  {
-    id: "cfo",
-    name: "CFO Agent",
-    role: "Financial Feasibility Evaluator",
-    status: "COMPLETED",
-    score: 90,
-    confidence: 88,
-    color: "emerald",
-    reasoning: "Financial feasibility is positive with acceptable budget exposure.",
-  },
-  {
-    id: "hr",
-    name: "HR Agent",
-    role: "Workforce Capacity Evaluator",
-    status: "WARNING",
-    score: 50,
-    confidence: 79,
-    color: "amber",
-    reasoning: "Team readiness is below the recommended execution threshold.",
-  },
-];
 
 const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
-const API_BASE_URL =
-  (import.meta.env.VITE_API_BASE_URL as string | undefined) ??
-  "http://localhost:8000";
-
-async function fetchJson<T>(path: string, init?: RequestInit): Promise<T> {
-  const response = await fetch(`${API_BASE_URL}${path}`, {
-    ...init,
-    headers: {
-      "Content-Type": "application/json",
-      ...(init?.headers ?? {}),
-    },
-  });
-
-  if (!response.ok) {
-    const text = await response.text().catch(() => "");
-    throw new Error(`HTTP ${response.status} ${response.statusText}${text ? `: ${text}` : ""}`);
-  }
-
-  return (await response.json()) as T;
-}
-
 export default function App() {
   const [agents, setAgents] = useState<Agent[]>(initialAgents);
-  const [logs, setLogs] = useState<string[]>([
-    "System ready. Awaiting simulation start...",
-  ]);
+  const [logs, setLogs] = useState<string[]>(initialLogs);
   const [isRunning, setIsRunning] = useState(false);
   const [classifierStatus, setClassifierStatus] = useState<AgentStatus>("IDLE");
   const [aggregatorStatus, setAggregatorStatus] = useState<AgentStatus>("IDLE");
   const [explainStatus, setExplainStatus] = useState<AgentStatus>("IDLE");
   const [finalVisible, setFinalVisible] = useState(false);
-  const [detailedSimulation, setDetailedSimulation] =
-    useState<ApiSimulationDetailedResponse | null>(null);
 
   const addLog = async (message: string, delay = 450) => {
     setLogs((prev) => [...prev, message]);
@@ -192,28 +70,6 @@ export default function App() {
     setAggregatorStatus("IDLE");
     setExplainStatus("IDLE");
     setLogs([]);
-    setDetailedSimulation(null);
-
-    const transcriptPromise = (async () => {
-      const payload = {
-        name: "AI Market Expansion Initiative",
-        description: "Expand into Southeast Asia market",
-        budget_million_usd: 25.0,
-        expected_roi_percent: 45.0,
-        risk_level: 5,
-        team_readiness: 3,
-      };
-
-      const created = await fetchJson<ApiCreateScenarioResponse>("/api/v1/scenarios", {
-        method: "POST",
-        body: JSON.stringify(payload),
-      });
-
-      return await fetchJson<ApiSimulationDetailedResponse>(
-        `/api/v1/scenarios/${created.scenario_id}/simulate/detailed`,
-        { method: "POST" }
-      );
-    })();
 
     await addLog("Scenario received: AI Market Expansion Initiative");
     setClassifierStatus("ANALYZING");
@@ -260,14 +116,6 @@ export default function App() {
     await addLog("Primary bottleneck detected: Workforce Capacity");
     await addLog("Final decision generated: REVISE");
 
-    try {
-      const detailed = await transcriptPromise;
-      setDetailedSimulation(detailed);
-    } catch (err) {
-      const message = err instanceof Error ? err.message : String(err);
-      await addLog(`Transcript fetch failed: ${message}`);
-    }
-
     setFinalVisible(true);
     setIsRunning(false);
   };
@@ -291,8 +139,6 @@ export default function App() {
           <LiveFeed logs={logs} />
         </section>
 
-        <DebateRoundsPanel simulation={detailedSimulation} />
-
         <section className="grid gap-5 xl:grid-cols-[1fr_430px]">
           <AgentRegistry agents={agents} />
           <FinalDecision visible={finalVisible} isRunning={isRunning} />
@@ -307,91 +153,6 @@ export default function App() {
     </div>
   </main>
 );
-}
-
-function DebateRoundsPanel({
-  simulation,
-}: {
-  simulation: ApiSimulationDetailedResponse | null;
-}) {
-  return (
-    <Panel
-      title="Debate Rounds"
-      subtitle="Agent-to-agent conversation transcript (round-based)"
-    >
-      {!simulation || simulation.rounds.length === 0 ? (
-        <div className="rounded-xl border border-cyan-400/10 bg-black/40 p-4">
-          <p className="font-mono text-xs text-slate-400">
-            Run a simulation to see the round-by-round agent discussion.
-          </p>
-        </div>
-      ) : (
-        <div className="space-y-4">
-          <div className="grid gap-3 md:grid-cols-3">
-            <MetaChip label="Total Rounds" value={String(simulation.total_rounds)} />
-            <MetaChip
-              label="Consensus"
-              value={simulation.consensus_reached ? "REACHED" : "NOT REACHED"}
-            />
-            <MetaChip
-              label="Stability"
-              value={simulation.stability_reached ? "REACHED" : "NOT REACHED"}
-            />
-          </div>
-
-          <div className="space-y-3">
-            {simulation.rounds.map((round) => (
-              <div
-                key={round.round_number}
-                className="rounded-2xl border border-cyan-400/10 bg-black/40 p-4"
-              >
-                <div className="flex items-center justify-between">
-                  <p className="font-mono text-xs font-bold tracking-widest text-cyan-300">
-                    ROUND {round.round_number}
-                  </p>
-                  <p className="font-mono text-[10px] text-slate-500">
-                    {round.messages.length} messages
-                  </p>
-                </div>
-
-                <div className="mt-3 space-y-3">
-                  {round.messages.map((msg) => (
-                    <div
-                      key={`${round.round_number}-${msg.agent}`}
-                      className="rounded-xl border border-white/5 bg-black/60 p-3"
-                    >
-                      <div className="flex flex-wrap items-center justify-between gap-2">
-                        <p className="font-mono text-xs font-bold text-white">
-                          {msg.agent}
-                        </p>
-                        <p className="font-mono text-[10px] uppercase tracking-widest text-slate-400">
-                          {msg.stance} • {Math.round(msg.confidence * 100)}%
-                        </p>
-                      </div>
-                      <p className="mt-2 whitespace-pre-wrap text-xs text-slate-200">
-                        {msg.reasoning}
-                      </p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-    </Panel>
-  );
-}
-
-function MetaChip({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="rounded-xl border border-cyan-400/10 bg-black/40 p-3">
-      <p className="font-mono text-[10px] uppercase tracking-widest text-slate-500">
-        {label}
-      </p>
-      <p className="mt-1 text-sm font-semibold text-white">{value}</p>
-    </div>
-  );
 }
 function Sidebar() {
   const navItems = [
@@ -519,21 +280,11 @@ function ScenarioPanel({
   isRunning: boolean;
   onStart: () => void;
 }) {
-  const rows = [
-    ["Project", "AI Market Expansion Initiative"],
-    ["Budget", "$25M"],
-    ["Expected ROI", "45%"],
-    ["Risk Level", "5/10"],
-    ["Team Readiness", "3/10"],
-    ["Market Confidence", "7/10"],
-    ["Strategic Fit", "8/10"],
-    ["Scenario Type", "TEAM EXPANSION"],
-  ];
-
+  
   return (
     <Panel title="Scenario Input" subtitle="Executive decision parameters">
       <div className="space-y-3">
-        {rows.map(([label, value]) => (
+        {scenarioRows.map(([label, value]) => (
           <div key={label} className="rounded-xl border border-cyan-400/10 bg-black/40 p-3">
             <p className="font-mono text-[10px] uppercase tracking-widest text-slate-500">
               {label}
@@ -643,11 +394,7 @@ function LiveFeed({ logs }: { logs: string[] }) {
     </Panel>
   );
 }
-const contributionData = [
-  { name: "CEO", value: 25, color: "#22d3ee" },
-  { name: "CFO", value: 25, color: "#34d399" },
-  { name: "HR", value: 50, color: "#fbbf24" },
-];
+
 
 function AgentContributionChart() {
   return (
@@ -917,15 +664,14 @@ function statusBadgeClass(status: AgentStatus) {
   return "border-slate-500 text-slate-400";
 }
 
-function agentBorderClass(color: Agent["color"], status: AgentStatus) {
+function agentBorderClass(color: AgentColor, status: AgentStatus) {
   if (status === "IDLE") return "border-slate-700/80";
   if (color === "amber") return "border-amber-400/70 shadow-[0_0_25px_rgba(251,191,36,0.18)]";
   if (color === "emerald") return "border-emerald-400/60 shadow-[0_0_25px_rgba(52,211,153,0.18)]";
   if (color === "purple") return "border-purple-400/60 shadow-[0_0_25px_rgba(168,85,247,0.18)]";
   return "border-cyan-400/60 shadow-[0_0_25px_rgba(34,211,238,0.18)]";
 }
-
-function nodeColorClass(color: Agent["color"], status: AgentStatus) {
+function nodeColorClass(color: AgentColor, status: AgentStatus) {
   if (status === "IDLE") return "border-slate-600 text-slate-400 shadow-slate-500/10";
 
   if (status === "WARNING") {
@@ -1123,54 +869,16 @@ function clamp(value: number) {
   return Math.max(0, Math.min(100, Math.round(value)));
 }
 function ExecutiveDecisionReport() {
-const [copied, setCopied] = useState(false);
+  const [copied, setCopied] = useState(false);
 
-const reportText = `AI Decision Ecosystem Engine - Executive Decision Report
+  const copyReport = async () => {
+    await navigator.clipboard.writeText(executiveReportText);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1600);
+  };
 
-Scenario:
-AI Market Expansion Initiative
-
-Inputs:
-- Budget: $25M
-- Expected ROI: 45%
-- Risk Level: 5/10
-- Team Readiness: 3/10
-- Scenario Type: TEAM_EXPANSION
-
-Agent Findings:
-- CEO Agent: Score 85 | Weight 25% | Stance: Support
-  Strong strategic alignment and long-term market expansion potential detected.
-
-- CFO Agent: Score 90 | Weight 25% | Stance: Support
-  Expected ROI is financially attractive and budget exposure is acceptable.
-
-- HR Agent: Score 50 | Weight 50% | Stance: Revise
-  Team readiness is below execution threshold, creating a workforce capacity bottleneck.
-
-Final Score Calculation:
-CEO: 85 × 0.25 = 21.25
-CFO: 90 × 0.25 = 22.50
-HR : 50 × 0.50 = 25.00
-
-Final Score: 68.75 / 100
-Final Decision: REVISE
-Primary Bottleneck: Workforce Capacity
-
-Recommended Next Steps:
-1. Increase team readiness from 3/10 to at least 6/10.
-2. Create a hiring or onboarding plan before approval.
-3. Keep risk level below 6/10 during execution planning.
-4. Re-run the simulation after workforce capacity improvements.
-`;
-
-const copyReport = async () => {
-  await navigator.clipboard.writeText(reportText);
-  setCopied(true);
-  setTimeout(() => setCopied(false), 1600);
-};
-
-const downloadReport = () => {
-  const blob = new Blob([reportText], { type: "text/plain;charset=utf-8" });
+  const downloadReport = () => {
+  const blob = new Blob([executiveReportText], { type: "text/plain;charset=utf-8" });
   const url = URL.createObjectURL(blob);
   const link = document.createElement("a");
   link.href = url;
@@ -1178,42 +886,7 @@ const downloadReport = () => {
   link.click();
   URL.revokeObjectURL(url);
 };
-  const agentFindings = [
-    {
-      agent: "CEO Agent",
-      score: 85,
-      weight: "25%",
-      stance: "Support",
-      color: "cyan",
-      finding:
-        "The initiative has strong strategic alignment and supports long-term market expansion.",
-    },
-    {
-      agent: "CFO Agent",
-      score: 90,
-      weight: "25%",
-      stance: "Support",
-      color: "emerald",
-      finding:
-        "The expected ROI is financially attractive and the budget exposure is acceptable.",
-    },
-    {
-      agent: "HR Agent",
-      score: 50,
-      weight: "50%",
-      stance: "Revise",
-      color: "amber",
-      finding:
-        "Team readiness is below the required execution threshold, creating a workforce capacity bottleneck.",
-    },
-  ];
-
-  const nextSteps = [
-    "Increase team readiness from 3/10 to at least 6/10.",
-    "Create a hiring or onboarding plan before approval.",
-    "Keep risk level below 6/10 during execution planning.",
-    "Re-run the simulation after workforce capacity improvements.",
-  ];
+  
 
   return (
     <Panel
@@ -1288,7 +961,7 @@ const downloadReport = () => {
             </p>
 
             <div className="space-y-3">
-              {agentFindings.map((item) => (
+              {reportAgentFindings.map((item) => (
                 <div
                   key={item.agent}
                   className={`rounded-xl border bg-black/40 p-4 ${
@@ -1370,7 +1043,7 @@ const downloadReport = () => {
             </p>
 
             <div className="mt-4 space-y-3">
-              {nextSteps.map((step, index) => (
+              {reportNextSteps.map((step, index) => (
                 <div
                   key={step}
                   className="flex gap-3 rounded-xl border border-white/10 bg-white/5 p-3"
@@ -1405,8 +1078,8 @@ const downloadReport = () => {
       </div>
     </Panel>
   );
-}
 
+}
 function CalculationRow({
   label,
   formula,
