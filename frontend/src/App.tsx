@@ -25,6 +25,7 @@ import {
 } from "lucide-react";
 import type { Agent, AgentColor, AgentStatus } from "./types/decision";
 import {
+  agentDebateMessages,
   completedAgents,
   contributionData,
   executiveReportText,
@@ -145,7 +146,8 @@ export default function App() {
         </section>
 
 
-    <WhatIfLab />
+   <AgentDebateConsole />
+<WhatIfLab />
 <ExecutiveDecisionReport />
 
              </div>
@@ -556,7 +558,105 @@ function FinalDecision({ visible, isRunning }: { visible: boolean; isRunning: bo
     </motion.section>
   );
 }
+function AgentDebateConsole() {
+  const rounds = Array.from(
+    new Set(agentDebateMessages.map((message) => message.round))
+  );
 
+  return (
+    <Panel
+      title="Agent Debate Console"
+      subtitle="Cross-agent reasoning and boardroom-style deliberation"
+    >
+      <div className="grid gap-5 xl:grid-cols-[1fr_360px]">
+        <div className="space-y-5">
+          {rounds.map((round) => (
+            <div
+              key={round}
+              className="rounded-2xl border border-cyan-400/10 bg-black/40 p-5"
+            >
+              <div className="mb-4 flex items-center justify-between">
+                <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-cyan-300">
+                  {round}
+                </p>
+
+                <span className="rounded-full border border-cyan-400/20 bg-cyan-400/10 px-2 py-1 font-mono text-[10px] text-cyan-300">
+                  LIVE THREAD
+                </span>
+              </div>
+
+              <div className="space-y-3">
+                {agentDebateMessages
+                  .filter((message) => message.round === round)
+                  .map((message, index) => (
+                    <motion.div
+                      key={`${message.round}-${message.agent}-${index}`}
+                      initial={{ opacity: 0, x: -14 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: index * 0.08 }}
+                      className={`rounded-xl border bg-black/50 p-4 ${debateBorderClass(
+                        message.color
+                      )}`}
+                    >
+                      <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
+                        <div>
+                          <div className="flex items-center gap-2">
+                            <span
+                              className={`h-2 w-2 rounded-full ${debateDotClass(
+                                message.color
+                              )}`}
+                            />
+                            <h3 className="text-sm font-bold text-white">
+                              {message.agent}
+                            </h3>
+                          </div>
+
+                          <p className="mt-2 text-xs leading-relaxed text-slate-300">
+                            {message.message}
+                          </p>
+                        </div>
+
+                        <span
+                          className={`shrink-0 rounded-full border px-2 py-1 font-mono text-[10px] ${debateStanceClass(
+                            message.stance
+                          )}`}
+                        >
+                          {message.stance}
+                        </span>
+                      </div>
+                    </motion.div>
+                  ))}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className="rounded-2xl border border-purple-400/20 bg-purple-400/10 p-5 shadow-[0_0_35px_rgba(168,85,247,0.12)]">
+          <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-purple-300">
+            Debate Summary
+          </p>
+
+          <h3 className="mt-3 text-2xl font-black text-white">
+            Multi-Agent Consensus
+          </h3>
+
+          <p className="mt-3 text-sm leading-relaxed text-slate-300">
+            CEO and CFO support the initiative, but HR identifies workforce
+            capacity as the critical execution bottleneck. The agents converge
+            on a conditional decision: revise before approval.
+          </p>
+
+          <div className="mt-5 space-y-3">
+            <Metric label="Consensus" value="REVISE" />
+            <Metric label="Primary Conflict" value="Capacity Risk" />
+            <Metric label="Resolution Path" value="Hiring Plan" />
+            <Metric label="Boardroom Mode" value="Active" />
+          </div>
+        </div>
+      </div>
+    </Panel>
+  );
+}
 function Panel({
   title,
   subtitle,
@@ -682,6 +782,46 @@ function nodeColorClass(color: AgentColor, status: AgentStatus) {
   if (color === "amber") return "border-amber-400 text-amber-300 shadow-amber-400/30";
   if (color === "purple") return "border-purple-400 text-purple-300 shadow-purple-400/30";
   return "border-cyan-400 text-cyan-300 shadow-cyan-400/30";
+}
+function debateBorderClass(color: AgentColor) {
+  if (color === "amber") return "border-amber-400/30";
+  if (color === "emerald") return "border-emerald-400/30";
+  if (color === "purple") return "border-purple-400/30";
+  return "border-cyan-400/30";
+}
+
+function debateDotClass(color: AgentColor) {
+  if (color === "amber") {
+    return "bg-amber-300 shadow-[0_0_12px_rgba(251,191,36,0.9)]";
+  }
+
+  if (color === "emerald") {
+    return "bg-emerald-300 shadow-[0_0_12px_rgba(52,211,153,0.9)]";
+  }
+
+  if (color === "purple") {
+    return "bg-purple-300 shadow-[0_0_12px_rgba(168,85,247,0.9)]";
+  }
+
+  return "bg-cyan-300 shadow-[0_0_12px_rgba(34,211,238,0.9)]";
+}
+
+function debateStanceClass(
+  stance: "Support" | "Warning" | "Revise" | "Consensus"
+) {
+  if (stance === "Support") {
+    return "border-emerald-400/40 bg-emerald-400/10 text-emerald-300";
+  }
+
+  if (stance === "Warning") {
+    return "border-amber-400/40 bg-amber-400/10 text-amber-300";
+  }
+
+  if (stance === "Consensus") {
+    return "border-purple-400/40 bg-purple-400/10 text-purple-300";
+  }
+
+  return "border-cyan-400/40 bg-cyan-400/10 text-cyan-300";
 }
 function WhatIfLab() {
   const [budget, setBudget] = useState(25);

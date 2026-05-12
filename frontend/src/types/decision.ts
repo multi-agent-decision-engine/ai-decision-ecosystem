@@ -31,3 +31,10 @@ export type AgentFinding = {
   color: AgentColor;
   finding: string;
 };
+export type DebateMessage = {
+  round: string;
+  agent: string;
+  stance: "Support" | "Warning" | "Revise" | "Consensus";
+  message: string;
+  color: AgentColor;
+};

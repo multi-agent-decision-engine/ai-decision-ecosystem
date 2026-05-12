@@ -2,6 +2,7 @@ import type {
   Agent,
   AgentFinding,
   ContributionItem,
+  DebateMessage,
   ScenarioRow,
 } from "../types/decision";
 
@@ -166,3 +167,61 @@ Recommended Next Steps:
 3. Keep risk level below 6/10 during execution planning.
 4. Re-run the simulation after workforce capacity improvements.
 `;
+export const agentDebateMessages: DebateMessage[] = [
+  {
+    round: "ROUND 1 — Independent Analysis",
+    agent: "CEO Agent",
+    stance: "Support",
+    color: "cyan",
+    message:
+      "Strategic upside is strong. ROI and market confidence support expansion.",
+  },
+  {
+    round: "ROUND 1 — Independent Analysis",
+    agent: "CFO Agent",
+    stance: "Support",
+    color: "emerald",
+    message:
+      "Financial feasibility is positive. Budget exposure is acceptable under controlled execution.",
+  },
+  {
+    round: "ROUND 1 — Independent Analysis",
+    agent: "HR Agent",
+    stance: "Warning",
+    color: "amber",
+    message:
+      "Execution risk is high because team readiness is only 3/10.",
+  },
+  {
+    round: "ROUND 2 — Cross-Agent Deliberation",
+    agent: "CEO Agent",
+    stance: "Revise",
+    color: "cyan",
+    message:
+      "I accept HR's workforce concern. Approval should depend on hiring readiness.",
+  },
+  {
+    round: "ROUND 2 — Cross-Agent Deliberation",
+    agent: "CFO Agent",
+    stance: "Revise",
+    color: "emerald",
+    message:
+      "If additional hiring cost is planned, financial risk remains manageable.",
+  },
+  {
+    round: "ROUND 2 — Cross-Agent Deliberation",
+    agent: "HR Agent",
+    stance: "Revise",
+    color: "amber",
+    message:
+      "Recommendation: revise the plan with a hiring and onboarding capacity plan.",
+  },
+  {
+    round: "CONSENSUS — Aggregator Decision",
+    agent: "Decision Aggregator",
+    stance: "Consensus",
+    color: "purple",
+    message:
+      "Consensus decision: REVISE. Main bottleneck is Workforce Capacity.",
+  },
+];
