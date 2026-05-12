@@ -51,6 +51,9 @@ htmlcov/
 # Logs
 *.log
 
+# Local helper files
+pr_body.md
+
 # OS
 .DS_Store
 Thumbs.db
