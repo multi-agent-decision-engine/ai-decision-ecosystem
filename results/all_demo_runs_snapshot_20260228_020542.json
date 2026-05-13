@@ -1,0 +1,78 @@
+﻿{
+    "summary":  {
+                    "generated_at":  "2026-02-28T02:05:42.0393622+03:00",
+                    "total_runs":  4,
+                    "decisions":  {
+                                      "APPROVE":  0,
+                                      "REVISE":  4,
+                                      "REJECT":  0
+                                  },
+                    "latest":  {
+                                   "file_name":  "demo_run_20260228_015723.json",
+                                   "timestamp":  "2026-02-28T01:57:25.6897272+03:00",
+                                   "scenario_id":  7,
+                                   "final_score":  59.33,
+                                   "final_decision":  "REVISE",
+                                   "ceo_score":  64,
+                                   "cfo_score":  64,
+                                   "hr_score":  50,
+                                   "ceo_rationale":  "Strategic fit 80% with market risk 0.2 yields strategic score 64.",
+                                   "cfo_rationale":  "ROI 80.0% with risk factor 0.2 yields financial score 64.",
+                                   "hr_rationale":  "Team readiness 8/10 with 2 hires needed and 3 months to readiness yields HR score 50."
+                               }
+                },
+    "runs":  [
+                 {
+                     "file_name":  "demo_run_20260228_015201.json",
+                     "timestamp":  "2026-02-28T01:52:01.4648596+03:00",
+                     "scenario_id":  4,
+                     "final_score":  59.33,
+                     "final_decision":  "REVISE",
+                     "ceo_score":  64,
+                     "cfo_score":  64,
+                     "hr_score":  50,
+                     "ceo_rationale":  "Strategic fit 80% with market risk 0.2 yields strategic score 64.",
+                     "cfo_rationale":  "ROI 80.0% with risk factor 0.2 yields financial score 64.",
+                     "hr_rationale":  "Team readiness 8/10 with 2 hires needed and 3 months to readiness yields HR score 50."
+                 },
+                 {
+                     "file_name":  "demo_run_20260228_015554.json",
+                     "timestamp":  "2026-02-28T01:55:54.8194016+03:00",
+                     "scenario_id":  5,
+                     "final_score":  59.33,
+                     "final_decision":  "REVISE",
+                     "ceo_score":  64,
+                     "cfo_score":  64,
+                     "hr_score":  50,
+                     "ceo_rationale":  "Strategic fit 80% with market risk 0.2 yields strategic score 64.",
+                     "cfo_rationale":  "ROI 80.0% with risk factor 0.2 yields financial score 64.",
+                     "hr_rationale":  "Team readiness 8/10 with 2 hires needed and 3 months to readiness yields HR score 50."
+                 },
+                 {
+                     "file_name":  "demo_run_20260228_015648.json",
+                     "timestamp":  "2026-02-28T01:56:48.9645845+03:00",
+                     "scenario_id":  6,
+                     "final_score":  59.33,
+                     "final_decision":  "REVISE",
+                     "ceo_score":  64,
+                     "cfo_score":  64,
+                     "hr_score":  50,
+                     "ceo_rationale":  "Strategic fit 80% with market risk 0.2 yields strategic score 64.",
+                     "cfo_rationale":  "ROI 80.0% with risk factor 0.2 yields financial score 64.",
+                     "hr_rationale":  "Team readiness 8/10 with 2 hires needed and 3 months to readiness yields HR score 50."
+                 },
+                 {
+                     "file_name":  "demo_run_20260228_015723.json",
+                     "timestamp":  "2026-02-28T01:57:25.6897272+03:00",
+                     "scenario_id":  7,
+                     "final_score":  59.33,
+                     "final_decision":  "REVISE",
+                     "ceo_score":  64,
+                     "cfo_score":  64,
+                     "hr_score":  50,
+                     "ceo_rationale":  "Strategic fit 80% with market risk 0.2 yields strategic score 64.",
+                     "cfo_rationale":  "ROI 80.0% with risk factor 0.2 yields financial score 64.",
+                     "hr_rationale":  "Team readiness 8/10 with 2 hires needed and 3 months to readiness yields HR score 50."
+                 }
+             ]
+}
