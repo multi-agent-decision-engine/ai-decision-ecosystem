@@ -1,0 +1,1402 @@
+[
+    {
+        "source": "Agile",
+        "budget": 26.0,
+        "risk": 4,
+        "readiness": 4,
+        "decision": "APPROVE"
+    },
+    {
+        "source": "Agile",
+        "budget": 18.0,
+        "risk": 5,
+        "readiness": 5,
+        "decision": "REJECT"
+    },
+    {
+        "source": "Agile",
+        "budget": 42.0,
+        "risk": 4,
+        "readiness": 2,
+        "decision": "APPROVE"
+    },
+    {
+        "source": "Agile",
+        "budget": 29.0,
+        "risk": 2,
+        "readiness": 4,
+        "decision": "APPROVE"
+    },
+    {
+        "source": "Agile",
+        "budget": 22.0,
+        "risk": 5,
+        "readiness": 4,
+        "decision": "APPROVE"
+    },
+    {
+        "source": "Agile",
+        "budget": 37.0,
+        "risk": 2,
+        "readiness": 5,
+        "decision": "REJECT"
+    },
+    {
+        "source": "Agile",
+        "budget": 38.0,
+        "risk": 5,
+        "readiness": 2,
+        "decision": "APPROVE"
+    },
+    {
+        "source": "Agile",
+        "budget": 22.0,
+        "risk": 5,
+        "readiness": 2,
+        "decision": "APPROVE"
+    },
+    {
+        "source": "Agile",
+        "budget": 44.0,
+        "risk": 3,
+        "readiness": 4,
+        "decision": "APPROVE"
+    },
+    {
+        "source": "Agile",
+        "budget": 15.0,
+        "risk": 2,
+        "readiness": 3,
+        "decision": "REJECT"
+    },
+    {
+        "source": "Agile",
+        "budget": 27.0,
+        "risk": 4,
+        "readiness": 4,
+        "decision": "APPROVE"
+    },
+    {
+        "source": "Agile",
+        "budget": 14.0,
+        "risk": 4,
+        "readiness": 4,
+        "decision": "REJECT"
+    },
+    {
+        "source": "Agile",
+        "budget": 34.0,
+        "risk": 2,
+        "readiness": 4,
+        "decision": "REJECT"
+    },
+    {
+        "source": "Agile",
+        "budget": 11.0,
+        "risk": 4,
+        "readiness": 4,
+        "decision": "REJECT"
+    },
+    {
+        "source": "Agile",
+        "budget": 19.0,
+        "risk": 4,
+        "readiness": 5,
+        "decision": "REJECT"
+    },
+    {
+        "source": "Agile",
+        "budget": 39.0,
+        "risk": 2,
+        "readiness": 2,
+        "decision": "REJECT"
+    },
+    {
+        "source": "Agile",
+        "budget": 14.0,
+        "risk": 5,
+        "readiness": 5,
+        "decision": "REJECT"
+    },
+    {
+        "source": "Agile",
+        "budget": 42.0,
+        "risk": 2,
+        "readiness": 5,
+        "decision": "APPROVE"
+    },
+    {
+        "source": "Agile",
+        "budget": 10.0,
+        "risk": 5,
+        "readiness": 5,
+        "decision": "REJECT"
+    },
+    {
+        "source": "Agile",
+        "budget": 27.0,
+        "risk": 4,
+        "readiness": 4,
+        "decision": "APPROVE"
+    },
+    {
+        "source": "Agile",
+        "budget": 41.0,
+        "risk": 4,
+        "readiness": 3,
+        "decision": "APPROVE"
+    },
+    {
+        "source": "Agile",
+        "budget": 20.0,
+        "risk": 4,
+        "readiness": 2,
+        "decision": "REJECT"
+    },
+    {
+        "source": "Agile",
+        "budget": 30.0,
+        "risk": 3,
+        "readiness": 3,
+        "decision": "APPROVE"
+    },
+    {
+        "source": "Agile",
+        "budget": 35.0,
+        "risk": 5,
+        "readiness": 5,
+        "decision": "APPROVE"
+    },
+    {
+        "source": "Agile",
+        "budget": 34.0,
+        "risk": 3,
+        "readiness": 5,
+        "decision": "APPROVE"
+    },
+    {
+        "source": "Agile",
+        "budget": 31.0,
+        "risk": 3,
+        "readiness": 3,
+        "decision": "APPROVE"
+    },
+    {
+        "source": "Agile",
+        "budget": 36.0,
+        "risk": 2,
+        "readiness": 3,
+        "decision": "REJECT"
+    },
+    {
+        "source": "Agile",
+        "budget": 22.0,
+        "risk": 3,
+        "readiness": 3,
+        "decision": "APPROVE"
+    },
+    {
+        "source": "Agile",
+        "budget": 42.0,
+        "risk": 2,
+        "readiness": 5,
+        "decision": "REJECT"
+    },
+    {
+        "source": "Agile",
+        "budget": 43.0,
+        "risk": 2,
+        "readiness": 5,
+        "decision": "APPROVE"
+    },
+    {
+        "source": "Agile",
+        "budget": 44.0,
+        "risk": 3,
+        "readiness": 2,
+        "decision": "APPROVE"
+    },
+    {
+        "source": "Agile",
+        "budget": 10.0,
+        "risk": 5,
+        "readiness": 2,
+        "decision": "REJECT"
+    },
+    {
+        "source": "Agile",
+        "budget": 30.0,
+        "risk": 5,
+        "readiness": 5,
+        "decision": "APPROVE"
+    },
+    {
+        "source": "Agile",
+        "budget": 15.0,
+        "risk": 5,
+        "readiness": 3,
+        "decision": "APPROVE"
+    },
+    {
+        "source": "Agile",
+        "budget": 37.0,
+        "risk": 5,
+        "readiness": 3,
+        "decision": "APPROVE"
+    },
+    {
+        "source": "Agile",
+        "budget": 26.0,
+        "risk": 5,
+        "readiness": 2,
+        "decision": "REJECT"
+    },
+    {
+        "source": "Agile",
+        "budget": 14.0,
+        "risk": 3,
+        "readiness": 5,
+        "decision": "APPROVE"
+    },
+    {
+        "source": "Agile",
+        "budget": 40.0,
+        "risk": 3,
+        "readiness": 2,
+        "decision": "REJECT"
+    },
+    {
+        "source": "Agile",
+        "budget": 14.0,
+        "risk": 4,
+        "readiness": 2,
+        "decision": "APPROVE"
+    },
+    {
+        "source": "Agile",
+        "budget": 47.0,
+        "risk": 5,
+        "readiness": 4,
+        "decision": "REJECT"
+    },
+    {
+        "source": "Agile",
+        "budget": 12.0,
+        "risk": 3,
+        "readiness": 4,
+        "decision": "REJECT"
+    },
+    {
+        "source": "Agile",
+        "budget": 32.0,
+        "risk": 4,
+        "readiness": 4,
+        "decision": "APPROVE"
+    },
+    {
+        "source": "Agile",
+        "budget": 46.0,
+        "risk": 5,
+        "readiness": 3,
+        "decision": "APPROVE"
+    },
+    {
+        "source": "Agile",
+        "budget": 46.0,
+        "risk": 2,
+        "readiness": 5,
+        "decision": "REJECT"
+    },
+    {
+        "source": "Agile",
+        "budget": 19.0,
+        "risk": 4,
+        "readiness": 5,
+        "decision": "REJECT"
+    },
+    {
+        "source": "Agile",
+        "budget": 19.0,
+        "risk": 3,
+        "readiness": 5,
+        "decision": "APPROVE"
+    },
+    {
+        "source": "Agile",
+        "budget": 28.0,
+        "risk": 2,
+        "readiness": 5,
+        "decision": "REJECT"
+    },
+    {
+        "source": "Agile",
+        "budget": 26.0,
+        "risk": 2,
+        "readiness": 4,
+        "decision": "APPROVE"
+    },
+    {
+        "source": "Agile",
+        "budget": 30.0,
+        "risk": 2,
+        "readiness": 3,
+        "decision": "APPROVE"
+    },
+    {
+        "source": "Agile",
+        "budget": 23.0,
+        "risk": 4,
+        "readiness": 3,
+        "decision": "APPROVE"
+    },
+    {
+        "source": "Agile",
+        "budget": 18.0,
+        "risk": 3,
+        "readiness": 4,
+        "decision": "APPROVE"
+    },
+    {
+        "source": "Agile",
+        "budget": 10.0,
+        "risk": 2,
+        "readiness": 3,
+        "decision": "REJECT"
+    },
+    {
+        "source": "Agile",
+        "budget": 22.0,
+        "risk": 5,
+        "readiness": 4,
+        "decision": "APPROVE"
+    },
+    {
+        "source": "Agile",
+        "budget": 13.0,
+        "risk": 2,
+        "readiness": 5,
+        "decision": "REJECT"
+    },
+    {
+        "source": "Agile",
+        "budget": 10.0,
+        "risk": 2,
+        "readiness": 4,
+        "decision": "APPROVE"
+    },
+    {
+        "source": "Agile",
+        "budget": 41.0,
+        "risk": 4,
+        "readiness": 5,
+        "decision": "REJECT"
+    },
+    {
+        "source": "Agile",
+        "budget": 43.0,
+        "risk": 4,
+        "readiness": 5,
+        "decision": "APPROVE"
+    },
+    {
+        "source": "Agile",
+        "budget": 37.0,
+        "risk": 3,
+        "readiness": 2,
+        "decision": "REJECT"
+    },
+    {
+        "source": "Agile",
+        "budget": 40.0,
+        "risk": 5,
+        "readiness": 4,
+        "decision": "REJECT"
+    },
+    {
+        "source": "Agile",
+        "budget": 17.0,
+        "risk": 4,
+        "readiness": 2,
+        "decision": "APPROVE"
+    },
+    {
+        "source": "Agile",
+        "budget": 48.0,
+        "risk": 2,
+        "readiness": 4,
+        "decision": "APPROVE"
+    },
+    {
+        "source": "Agile",
+        "budget": 35.0,
+        "risk": 3,
+        "readiness": 4,
+        "decision": "APPROVE"
+    },
+    {
+        "source": "Agile",
+        "budget": 43.0,
+        "risk": 2,
+        "readiness": 2,
+        "decision": "APPROVE"
+    },
+    {
+        "source": "Agile",
+        "budget": 12.0,
+        "risk": 2,
+        "readiness": 2,
+        "decision": "REJECT"
+    },
+    {
+        "source": "Agile",
+        "budget": 21.0,
+        "risk": 4,
+        "readiness": 4,
+        "decision": "APPROVE"
+    },
+    {
+        "source": "Agile",
+        "budget": 10.0,
+        "risk": 3,
+        "readiness": 3,
+        "decision": "REJECT"
+    },
+    {
+        "source": "Agile",
+        "budget": 14.0,
+        "risk": 5,
+        "readiness": 5,
+        "decision": "REJECT"
+    },
+    {
+        "source": "Agile",
+        "budget": 39.0,
+        "risk": 5,
+        "readiness": 2,
+        "decision": "APPROVE"
+    },
+    {
+        "source": "Agile",
+        "budget": 39.0,
+        "risk": 4,
+        "readiness": 5,
+        "decision": "REJECT"
+    },
+    {
+        "source": "Agile",
+        "budget": 26.0,
+        "risk": 4,
+        "readiness": 3,
+        "decision": "REJECT"
+    },
+    {
+        "source": "Agile",
+        "budget": 32.0,
+        "risk": 3,
+        "readiness": 3,
+        "decision": "REJECT"
+    },
+    {
+        "source": "Agile",
+        "budget": 24.0,
+        "risk": 5,
+        "readiness": 3,
+        "decision": "REJECT"
+    },
+    {
+        "source": "Agile",
+        "budget": 46.0,
+        "risk": 5,
+        "readiness": 2,
+        "decision": "APPROVE"
+    },
+    {
+        "source": "Agile",
+        "budget": 30.0,
+        "risk": 5,
+        "readiness": 3,
+        "decision": "APPROVE"
+    },
+    {
+        "source": "Agile",
+        "budget": 23.0,
+        "risk": 2,
+        "readiness": 2,
+        "decision": "APPROVE"
+    },
+    {
+        "source": "Agile",
+        "budget": 11.0,
+        "risk": 5,
+        "readiness": 3,
+        "decision": "APPROVE"
+    },
+    {
+        "source": "Agile",
+        "budget": 20.0,
+        "risk": 2,
+        "readiness": 5,
+        "decision": "REJECT"
+    },
+    {
+        "source": "Agile",
+        "budget": 48.0,
+        "risk": 3,
+        "readiness": 5,
+        "decision": "REJECT"
+    },
+    {
+        "source": "Agile",
+        "budget": 47.0,
+        "risk": 2,
+        "readiness": 4,
+        "decision": "APPROVE"
+    },
+    {
+        "source": "Agile",
+        "budget": 43.0,
+        "risk": 3,
+        "readiness": 5,
+        "decision": "APPROVE"
+    },
+    {
+        "source": "Agile",
+        "budget": 47.0,
+        "risk": 5,
+        "readiness": 4,
+        "decision": "APPROVE"
+    },
+    {
+        "source": "Agile",
+        "budget": 43.0,
+        "risk": 5,
+        "readiness": 5,
+        "decision": "REJECT"
+    },
+    {
+        "source": "Agile",
+        "budget": 27.0,
+        "risk": 3,
+        "readiness": 2,
+        "decision": "APPROVE"
+    },
+    {
+        "source": "Agile",
+        "budget": 39.0,
+        "risk": 4,
+        "readiness": 5,
+        "decision": "APPROVE"
+    },
+    {
+        "source": "Agile",
+        "budget": 24.0,
+        "risk": 3,
+        "readiness": 4,
+        "decision": "APPROVE"
+    },
+    {
+        "source": "Agile",
+        "budget": 36.0,
+        "risk": 4,
+        "readiness": 4,
+        "decision": "REJECT"
+    },
+    {
+        "source": "Agile",
+        "budget": 43.0,
+        "risk": 2,
+        "readiness": 3,
+        "decision": "REJECT"
+    },
+    {
+        "source": "Agile",
+        "budget": 47.0,
+        "risk": 2,
+        "readiness": 2,
+        "decision": "REJECT"
+    },
+    {
+        "source": "Agile",
+        "budget": 42.0,
+        "risk": 2,
+        "readiness": 5,
+        "decision": "REJECT"
+    },
+    {
+        "source": "Agile",
+        "budget": 33.0,
+        "risk": 5,
+        "readiness": 3,
+        "decision": "REJECT"
+    },
+    {
+        "source": "Agile",
+        "budget": 24.0,
+        "risk": 2,
+        "readiness": 5,
+        "decision": "REJECT"
+    },
+    {
+        "source": "Agile",
+        "budget": 39.0,
+        "risk": 4,
+        "readiness": 5,
+        "decision": "REJECT"
+    },
+    {
+        "source": "Agile",
+        "budget": 26.0,
+        "risk": 2,
+        "readiness": 3,
+        "decision": "REJECT"
+    },
+    {
+        "source": "Agile",
+        "budget": 14.0,
+        "risk": 3,
+        "readiness": 3,
+        "decision": "APPROVE"
+    },
+    {
+        "source": "Agile",
+        "budget": 38.0,
+        "risk": 3,
+        "readiness": 3,
+        "decision": "APPROVE"
+    },
+    {
+        "source": "Agile",
+        "budget": 13.0,
+        "risk": 5,
+        "readiness": 3,
+        "decision": "REJECT"
+    },
+    {
+        "source": "Agile",
+        "budget": 19.0,
+        "risk": 3,
+        "readiness": 3,
+        "decision": "REJECT"
+    },
+    {
+        "source": "Agile",
+        "budget": 26.0,
+        "risk": 4,
+        "readiness": 5,
+        "decision": "APPROVE"
+    },
+    {
+        "source": "Agile",
+        "budget": 19.0,
+        "risk": 2,
+        "readiness": 3,
+        "decision": "REJECT"
+    },
+    {
+        "source": "Agile",
+        "budget": 26.0,
+        "risk": 5,
+        "readiness": 2,
+        "decision": "REJECT"
+    },
+    {
+        "source": "Agile",
+        "budget": 29.0,
+        "risk": 2,
+        "readiness": 4,
+        "decision": "REJECT"
+    },
+    {
+        "source": "Agile",
+        "budget": 33.0,
+        "risk": 2,
+        "readiness": 3,
+        "decision": "APPROVE"
+    },
+    {
+        "source": "Agile",
+        "budget": 14.0,
+        "risk": 4,
+        "readiness": 3,
+        "decision": "APPROVE"
+    },
+    {
+        "source": "Agile",
+        "budget": 43.0,
+        "risk": 3,
+        "readiness": 5,
+        "decision": "APPROVE"
+    },
+    {
+        "source": "Agile",
+        "budget": 15.0,
+        "risk": 3,
+        "readiness": 3,
+        "decision": "APPROVE"
+    },
+    {
+        "source": "Agile",
+        "budget": 11.0,
+        "risk": 2,
+        "readiness": 3,
+        "decision": "APPROVE"
+    },
+    {
+        "source": "Agile",
+        "budget": 22.0,
+        "risk": 5,
+        "readiness": 3,
+        "decision": "REJECT"
+    },
+    {
+        "source": "Agile",
+        "budget": 20.0,
+        "risk": 3,
+        "readiness": 5,
+        "decision": "APPROVE"
+    },
+    {
+        "source": "Agile",
+        "budget": 32.0,
+        "risk": 5,
+        "readiness": 3,
+        "decision": "REJECT"
+    },
+    {
+        "source": "Agile",
+        "budget": 25.0,
+        "risk": 3,
+        "readiness": 4,
+        "decision": "REJECT"
+    },
+    {
+        "source": "Agile",
+        "budget": 40.0,
+        "risk": 5,
+        "readiness": 5,
+        "decision": "APPROVE"
+    },
+    {
+        "source": "Agile",
+        "budget": 20.0,
+        "risk": 4,
+        "readiness": 4,
+        "decision": "APPROVE"
+    },
+    {
+        "source": "Agile",
+        "budget": 25.0,
+        "risk": 5,
+        "readiness": 5,
+        "decision": "REJECT"
+    },
+    {
+        "source": "Agile",
+        "budget": 17.0,
+        "risk": 4,
+        "readiness": 3,
+        "decision": "REJECT"
+    },
+    {
+        "source": "Agile",
+        "budget": 13.0,
+        "risk": 4,
+        "readiness": 4,
+        "decision": "REJECT"
+    },
+    {
+        "source": "Agile",
+        "budget": 13.0,
+        "risk": 5,
+        "readiness": 5,
+        "decision": "APPROVE"
+    },
+    {
+        "source": "Agile",
+        "budget": 34.0,
+        "risk": 4,
+        "readiness": 2,
+        "decision": "APPROVE"
+    },
+    {
+        "source": "Agile",
+        "budget": 12.0,
+        "risk": 2,
+        "readiness": 3,
+        "decision": "APPROVE"
+    },
+    {
+        "source": "Agile",
+        "budget": 41.0,
+        "risk": 4,
+        "readiness": 5,
+        "decision": "APPROVE"
+    },
+    {
+        "source": "Agile",
+        "budget": 12.0,
+        "risk": 3,
+        "readiness": 2,
+        "decision": "APPROVE"
+    },
+    {
+        "source": "Agile",
+        "budget": 36.0,
+        "risk": 5,
+        "readiness": 5,
+        "decision": "REJECT"
+    },
+    {
+        "source": "Agile",
+        "budget": 38.0,
+        "risk": 2,
+        "readiness": 2,
+        "decision": "APPROVE"
+    },
+    {
+        "source": "Agile",
+        "budget": 41.0,
+        "risk": 5,
+        "readiness": 3,
+        "decision": "REJECT"
+    },
+    {
+        "source": "Agile",
+        "budget": 28.0,
+        "risk": 3,
+        "readiness": 4,
+        "decision": "REJECT"
+    },
+    {
+        "source": "Agile",
+        "budget": 30.0,
+        "risk": 3,
+        "readiness": 2,
+        "decision": "REJECT"
+    },
+    {
+        "source": "Agile",
+        "budget": 14.0,
+        "risk": 3,
+        "readiness": 5,
+        "decision": "APPROVE"
+    },
+    {
+        "source": "Agile",
+        "budget": 27.0,
+        "risk": 4,
+        "readiness": 3,
+        "decision": "APPROVE"
+    },
+    {
+        "source": "Agile",
+        "budget": 37.0,
+        "risk": 4,
+        "readiness": 2,
+        "decision": "APPROVE"
+    },
+    {
+        "source": "Agile",
+        "budget": 31.0,
+        "risk": 5,
+        "readiness": 5,
+        "decision": "REJECT"
+    },
+    {
+        "source": "Agile",
+        "budget": 30.0,
+        "risk": 5,
+        "readiness": 5,
+        "decision": "REJECT"
+    },
+    {
+        "source": "Agile",
+        "budget": 15.0,
+        "risk": 2,
+        "readiness": 5,
+        "decision": "REJECT"
+    },
+    {
+        "source": "Agile",
+        "budget": 10.0,
+        "risk": 2,
+        "readiness": 2,
+        "decision": "REJECT"
+    },
+    {
+        "source": "Agile",
+        "budget": 14.0,
+        "risk": 5,
+        "readiness": 2,
+        "decision": "REJECT"
+    },
+    {
+        "source": "Agile",
+        "budget": 21.0,
+        "risk": 4,
+        "readiness": 2,
+        "decision": "REJECT"
+    },
+    {
+        "source": "Agile",
+        "budget": 35.0,
+        "risk": 3,
+        "readiness": 4,
+        "decision": "APPROVE"
+    },
+    {
+        "source": "Agile",
+        "budget": 43.0,
+        "risk": 5,
+        "readiness": 2,
+        "decision": "APPROVE"
+    },
+    {
+        "source": "Agile",
+        "budget": 23.0,
+        "risk": 2,
+        "readiness": 2,
+        "decision": "APPROVE"
+    },
+    {
+        "source": "Agile",
+        "budget": 35.0,
+        "risk": 4,
+        "readiness": 2,
+        "decision": "APPROVE"
+    },
+    {
+        "source": "Agile",
+        "budget": 36.0,
+        "risk": 5,
+        "readiness": 4,
+        "decision": "REJECT"
+    },
+    {
+        "source": "Agile",
+        "budget": 18.0,
+        "risk": 5,
+        "readiness": 2,
+        "decision": "REJECT"
+    },
+    {
+        "source": "Agile",
+        "budget": 35.0,
+        "risk": 4,
+        "readiness": 5,
+        "decision": "APPROVE"
+    },
+    {
+        "source": "Agile",
+        "budget": 31.0,
+        "risk": 5,
+        "readiness": 2,
+        "decision": "REJECT"
+    },
+    {
+        "source": "Agile",
+        "budget": 39.0,
+        "risk": 4,
+        "readiness": 5,
+        "decision": "APPROVE"
+    },
+    {
+        "source": "Agile",
+        "budget": 26.0,
+        "risk": 3,
+        "readiness": 5,
+        "decision": "APPROVE"
+    },
+    {
+        "source": "Agile",
+        "budget": 35.0,
+        "risk": 4,
+        "readiness": 5,
+        "decision": "APPROVE"
+    },
+    {
+        "source": "Agile",
+        "budget": 45.0,
+        "risk": 4,
+        "readiness": 4,
+        "decision": "REJECT"
+    },
+    {
+        "source": "Agile",
+        "budget": 10.0,
+        "risk": 4,
+        "readiness": 4,
+        "decision": "APPROVE"
+    },
+    {
+        "source": "Agile",
+        "budget": 17.0,
+        "risk": 5,
+        "readiness": 4,
+        "decision": "APPROVE"
+    },
+    {
+        "source": "Agile",
+        "budget": 44.0,
+        "risk": 5,
+        "readiness": 2,
+        "decision": "APPROVE"
+    },
+    {
+        "source": "Agile",
+        "budget": 24.0,
+        "risk": 4,
+        "readiness": 5,
+        "decision": "REJECT"
+    },
+    {
+        "source": "Agile",
+        "budget": 31.0,
+        "risk": 5,
+        "readiness": 4,
+        "decision": "REJECT"
+    },
+    {
+        "source": "Agile",
+        "budget": 23.0,
+        "risk": 2,
+        "readiness": 4,
+        "decision": "APPROVE"
+    },
+    {
+        "source": "Agile",
+        "budget": 35.0,
+        "risk": 2,
+        "readiness": 2,
+        "decision": "REJECT"
+    },
+    {
+        "source": "Agile",
+        "budget": 37.0,
+        "risk": 5,
+        "readiness": 4,
+        "decision": "REJECT"
+    },
+    {
+        "source": "Agile",
+        "budget": 32.0,
+        "risk": 5,
+        "readiness": 2,
+        "decision": "REJECT"
+    },
+    {
+        "source": "Agile",
+        "budget": 23.0,
+        "risk": 4,
+        "readiness": 3,
+        "decision": "REJECT"
+    },
+    {
+        "source": "Agile",
+        "budget": 33.0,
+        "risk": 3,
+        "readiness": 4,
+        "decision": "REJECT"
+    },
+    {
+        "source": "Agile",
+        "budget": 11.0,
+        "risk": 5,
+        "readiness": 3,
+        "decision": "REJECT"
+    },
+    {
+        "source": "Agile",
+        "budget": 35.0,
+        "risk": 2,
+        "readiness": 2,
+        "decision": "REJECT"
+    },
+    {
+        "source": "Agile",
+        "budget": 23.0,
+        "risk": 4,
+        "readiness": 5,
+        "decision": "REJECT"
+    },
+    {
+        "source": "Agile",
+        "budget": 16.0,
+        "risk": 5,
+        "readiness": 4,
+        "decision": "REJECT"
+    },
+    {
+        "source": "Agile",
+        "budget": 12.0,
+        "risk": 2,
+        "readiness": 2,
+        "decision": "REJECT"
+    },
+    {
+        "source": "Agile",
+        "budget": 32.0,
+        "risk": 2,
+        "readiness": 5,
+        "decision": "APPROVE"
+    },
+    {
+        "source": "Agile",
+        "budget": 27.0,
+        "risk": 3,
+        "readiness": 5,
+        "decision": "APPROVE"
+    },
+    {
+        "source": "Agile",
+        "budget": 47.0,
+        "risk": 4,
+        "readiness": 3,
+        "decision": "REJECT"
+    },
+    {
+        "source": "Agile",
+        "budget": 44.0,
+        "risk": 4,
+        "readiness": 2,
+        "decision": "APPROVE"
+    },
+    {
+        "source": "Agile",
+        "budget": 24.0,
+        "risk": 3,
+        "readiness": 5,
+        "decision": "APPROVE"
+    },
+    {
+        "source": "Agile",
+        "budget": 34.0,
+        "risk": 3,
+        "readiness": 4,
+        "decision": "REJECT"
+    },
+    {
+        "source": "Agile",
+        "budget": 46.0,
+        "risk": 4,
+        "readiness": 4,
+        "decision": "REJECT"
+    },
+    {
+        "source": "Agile",
+        "budget": 37.0,
+        "risk": 4,
+        "readiness": 3,
+        "decision": "REJECT"
+    },
+    {
+        "source": "Agile",
+        "budget": 19.0,
+        "risk": 5,
+        "readiness": 5,
+        "decision": "APPROVE"
+    },
+    {
+        "source": "Agile",
+        "budget": 48.0,
+        "risk": 5,
+        "readiness": 2,
+        "decision": "APPROVE"
+    },
+    {
+        "source": "Agile",
+        "budget": 26.0,
+        "risk": 3,
+        "readiness": 4,
+        "decision": "REJECT"
+    },
+    {
+        "source": "Agile",
+        "budget": 48.0,
+        "risk": 5,
+        "readiness": 5,
+        "decision": "REJECT"
+    },
+    {
+        "source": "Agile",
+        "budget": 31.0,
+        "risk": 2,
+        "readiness": 5,
+        "decision": "REJECT"
+    },
+    {
+        "source": "Agile",
+        "budget": 35.0,
+        "risk": 5,
+        "readiness": 3,
+        "decision": "APPROVE"
+    },
+    {
+        "source": "Agile",
+        "budget": 34.0,
+        "risk": 5,
+        "readiness": 4,
+        "decision": "APPROVE"
+    },
+    {
+        "source": "Agile",
+        "budget": 26.0,
+        "risk": 2,
+        "readiness": 4,
+        "decision": "APPROVE"
+    },
+    {
+        "source": "Agile",
+        "budget": 22.0,
+        "risk": 3,
+        "readiness": 2,
+        "decision": "APPROVE"
+    },
+    {
+        "source": "Agile",
+        "budget": 29.0,
+        "risk": 2,
+        "readiness": 4,
+        "decision": "REJECT"
+    },
+    {
+        "source": "Agile",
+        "budget": 34.0,
+        "risk": 5,
+        "readiness": 2,
+        "decision": "REJECT"
+    },
+    {
+        "source": "Agile",
+        "budget": 13.0,
+        "risk": 3,
+        "readiness": 4,
+        "decision": "REJECT"
+    },
+    {
+        "source": "Agile",
+        "budget": 19.0,
+        "risk": 5,
+        "readiness": 3,
+        "decision": "REJECT"
+    },
+    {
+        "source": "Agile",
+        "budget": 12.0,
+        "risk": 2,
+        "readiness": 4,
+        "decision": "APPROVE"
+    },
+    {
+        "source": "Agile",
+        "budget": 27.0,
+        "risk": 2,
+        "readiness": 2,
+        "decision": "APPROVE"
+    },
+    {
+        "source": "Agile",
+        "budget": 45.0,
+        "risk": 5,
+        "readiness": 2,
+        "decision": "REJECT"
+    },
+    {
+        "source": "Agile",
+        "budget": 31.0,
+        "risk": 4,
+        "readiness": 3,
+        "decision": "REJECT"
+    },
+    {
+        "source": "Agile",
+        "budget": 43.0,
+        "risk": 4,
+        "readiness": 4,
+        "decision": "APPROVE"
+    },
+    {
+        "source": "Agile",
+        "budget": 17.0,
+        "risk": 2,
+        "readiness": 4,
+        "decision": "REJECT"
+    },
+    {
+        "source": "Agile",
+        "budget": 28.0,
+        "risk": 2,
+        "readiness": 3,
+        "decision": "APPROVE"
+    },
+    {
+        "source": "Agile",
+        "budget": 46.0,
+        "risk": 4,
+        "readiness": 4,
+        "decision": "REJECT"
+    },
+    {
+        "source": "Agile",
+        "budget": 15.0,
+        "risk": 4,
+        "readiness": 4,
+        "decision": "REJECT"
+    },
+    {
+        "source": "Agile",
+        "budget": 35.0,
+        "risk": 5,
+        "readiness": 2,
+        "decision": "REJECT"
+    },
+    {
+        "source": "Agile",
+        "budget": 43.0,
+        "risk": 5,
+        "readiness": 4,
+        "decision": "REJECT"
+    },
+    {
+        "source": "Agile",
+        "budget": 15.0,
+        "risk": 4,
+        "readiness": 4,
+        "decision": "REJECT"
+    },
+    {
+        "source": "Agile",
+        "budget": 46.0,
+        "risk": 5,
+        "readiness": 3,
+        "decision": "REJECT"
+    },
+    {
+        "source": "Agile",
+        "budget": 42.0,
+        "risk": 5,
+        "readiness": 3,
+        "decision": "REJECT"
+    },
+    {
+        "source": "Agile",
+        "budget": 31.0,
+        "risk": 3,
+        "readiness": 5,
+        "decision": "APPROVE"
+    },
+    {
+        "source": "Agile",
+        "budget": 30.0,
+        "risk": 5,
+        "readiness": 2,
+        "decision": "APPROVE"
+    },
+    {
+        "source": "Agile",
+        "budget": 15.0,
+        "risk": 2,
+        "readiness": 4,
+        "decision": "APPROVE"
+    }
+]
