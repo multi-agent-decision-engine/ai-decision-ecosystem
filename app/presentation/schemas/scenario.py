@@ -53,6 +53,42 @@ class SimulationDetailResponse(BaseModel):
     final_decision: str
 
 
+class AgentMessageResponse(BaseModel):
+    """Round-based agent message (new protocol) for UI visualization."""
+
+    agent: str
+    stance: str
+    confidence: float = Field(ge=0.0, le=1.0)
+    reasoning: str
+    metrics: dict
+    round_number: int = Field(ge=1)
+
+
+class RoundResponse(BaseModel):
+    """Single debate round containing all agent messages."""
+
+    round_number: int = Field(ge=1)
+    messages: list[AgentMessageResponse]
+
+
+class SimulationDetailedResponse(BaseModel):
+    """Detailed simulation response including full round-by-round debate."""
+
+    scenario_id: int
+    rounds: list[RoundResponse]
+    total_rounds: int = Field(ge=1)
+    consensus_reached: bool
+    stability_reached: bool
+    final_score: float
+    final_decision: str
+
+    # Optional classification info (used to explain weighting)
+    scenario_type: str | None = None
+    scenario_type_confidence: float | None = None
+    classification_reasoning: str | None = None
+    agent_weights: dict[str, float] | None = None
+
+
 # Classification schemas
 class ClassificationRequest(BaseModel):
     """Request to classify a scenario without saving it."""
