@@ -207,10 +207,13 @@ await addDebateMessage(agentDebateMessages[6]);
   <ScenarioComparisonBoard />
 </div>
 
+<div id="action-plan" className="scroll-mt-5">
+  <ExecutionActionPlan />
+</div>
+
 <div id="reports" className="scroll-mt-5">
   <ExecutiveDecisionReport />
 </div>
-
 <div id="history" className="scroll-mt-5">
   <SimulationHistory />
 </div>
@@ -1359,6 +1362,96 @@ function ScenarioComparisonBoard() {
     </Panel>
   );
 }
+function ExecutionActionPlan() {
+  const actions = [
+    {
+      phase: "01",
+      title: "Workforce Readiness Sprint",
+      owner: "HR Agent",
+      priority: "CRITICAL",
+      duration: "2-4 weeks",
+      tone: "amber",
+      description:
+        "Increase team readiness from 3/10 to at least 6/10 with hiring, onboarding and internal capability mapping.",
+    },
+    {
+      phase: "02",
+      title: "Budget Guardrail Review",
+      owner: "CFO Agent",
+      priority: "HIGH",
+      duration: "1 week",
+      tone: "emerald",
+      description:
+        "Validate whether additional hiring and onboarding costs keep the expected ROI financially acceptable.",
+    },
+    {
+      phase: "03",
+      title: "Strategic Approval Gate",
+      owner: "CEO Agent",
+      priority: "HIGH",
+      duration: "Decision meeting",
+      tone: "cyan",
+      description:
+        "Re-check strategic fit after HR and CFO constraints are updated, then decide whether the scenario can move to approval.",
+    },
+    {
+      phase: "04",
+      title: "Re-run Decision Simulation",
+      owner: "Decision Aggregator",
+      priority: "FINAL",
+      duration: "After updates",
+      tone: "purple",
+      description:
+        "Run the decision engine again with improved readiness values and compare the result against the current REVISE outcome.",
+    },
+  ];
+
+  return (
+    <Panel
+      title="Execution Action Plan"
+      subtitle="Recommended steps to move the scenario from REVISE toward APPROVE"
+    >
+      <div className="grid gap-4 xl:grid-cols-4">
+        {actions.map((action, index) => (
+          <motion.div
+            key={action.title}
+            initial={{ opacity: 0, y: 14 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: index * 0.06 }}
+            className={`rounded-2xl border bg-black/40 p-5 ${actionCardClass(
+              action.tone
+            )}`}
+          >
+            <div className="mb-4 flex items-center justify-between">
+              <span className="font-mono text-[10px] text-slate-500">
+                PHASE {action.phase}
+              </span>
+
+              <span
+                className={`rounded-full border px-2 py-1 font-mono text-[10px] ${actionBadgeClass(
+                  action.tone
+                )}`}
+              >
+                {action.priority}
+              </span>
+            </div>
+
+            <h3 className="text-base font-black text-white">{action.title}</h3>
+
+            <p className="mt-2 text-xs leading-relaxed text-slate-300">
+              {action.description}
+            </p>
+
+            <div className="mt-5 grid gap-3">
+              <Metric label="Owner" value={action.owner} />
+              <Metric label="Duration" value={action.duration} />
+            </div>
+          </motion.div>
+        ))}
+      </div>
+    </Panel>
+  );
+}
 function WhatIfLab() {
   const [budget, setBudget] = useState(25);
   const [roi, setRoi] = useState(45);
@@ -2028,4 +2121,35 @@ function scenarioBarClass(tone: string) {
   }
 
   return "bg-amber-300 shadow-[0_0_14px_rgba(251,191,36,0.9)]";
+}
+function actionCardClass(tone: string) {
+  if (tone === "emerald") {
+    return "border-emerald-400/30 shadow-[0_0_25px_rgba(52,211,153,0.10)]";
+  }
+
+  if (tone === "cyan") {
+    return "border-cyan-400/30 shadow-[0_0_25px_rgba(34,211,238,0.10)]";
+  }
+
+  if (tone === "purple") {
+    return "border-purple-400/30 shadow-[0_0_25px_rgba(168,85,247,0.10)]";
+  }
+
+  return "border-amber-400/40 shadow-[0_0_25px_rgba(251,191,36,0.12)]";
+}
+
+function actionBadgeClass(tone: string) {
+  if (tone === "emerald") {
+    return "border-emerald-400/40 bg-emerald-400/10 text-emerald-300";
+  }
+
+  if (tone === "cyan") {
+    return "border-cyan-400/40 bg-cyan-400/10 text-cyan-300";
+  }
+
+  if (tone === "purple") {
+    return "border-purple-400/40 bg-purple-400/10 text-purple-300";
+  }
+
+  return "border-amber-400/40 bg-amber-400/10 text-amber-300";
 }
