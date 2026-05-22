@@ -10,7 +10,7 @@ import {
   ResponsiveContainer,
   Tooltip,
 } from "recharts";
-import { useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { motion } from "framer-motion";
 import {
   Activity,
@@ -727,7 +727,6 @@ function ScenarioPanel({
     </Panel>
   );
 }
-
 function DecisionCore({
   agents,
   classifierStatus,
@@ -739,48 +738,90 @@ function DecisionCore({
   aggregatorStatus: AgentStatus;
   explainStatus: AgentStatus;
 }) {
-  const getStatus = (id: string) => agents.find((agent) => agent.id === id)?.status ?? "IDLE";
+  const getStatus = (id: string) =>
+    agents.find((agent) => agent.id === id)?.status ?? "IDLE";
 
   return (
     <Panel title="Decision Core Network" subtitle="Live multi-agent orchestration">
-      <div className="relative flex min-h-[520px] items-center justify-center overflow-hidden rounded-2xl border border-cyan-400/10 bg-black/40">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(34,211,238,0.20),transparent_45%)]" />
+      <div className="relative flex min-h-[540px] items-center justify-center overflow-hidden rounded-2xl border border-cyan-400/10 bg-black/40">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(34,211,238,0.18),transparent_50%)]" />
 
-        <motion.div
-          initial={{ scale: 0.9, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          className="relative flex h-56 w-56 items-center justify-center rounded-full border border-cyan-300/50 bg-cyan-400/10 shadow-[0_0_80px_rgba(34,211,238,0.3)]"
-        >
+        <div className="relative flex h-64 w-64 items-center justify-center rounded-full border border-cyan-300/50 bg-cyan-400/10 shadow-[0_0_80px_rgba(34,211,238,0.28)]">
           <motion.div
             animate={{ rotate: 360 }}
             transition={{ repeat: Infinity, duration: 18, ease: "linear" }}
-            className="absolute inset-[-28px] rounded-full border border-dashed border-cyan-300/30"
+            className="absolute inset-[-34px] rounded-full border border-dashed border-cyan-300/30"
           />
 
           <div className="text-center">
-            <p className="font-mono text-xs tracking-[0.4em] text-cyan-300">DECISION</p>
+            <p className="font-mono text-xs tracking-[0.4em] text-cyan-300">
+              DECISION
+            </p>
             <p className="text-3xl font-black text-white drop-shadow-[0_0_14px_rgba(34,211,238,0.9)]">
               CORE
             </p>
           </div>
+        </div>
 
-          <CoreNode label="CEO" className="-top-14 left-1/2 -translate-x-1/2" color="cyan" status={getStatus("ceo")} />
-          <CoreNode label="CFO" className="right-[-92px] top-1/2 -translate-y-1/2" color="emerald" status={getStatus("cfo")} />
-          <CoreNode label="HR" className="-bottom-14 left-1/2 -translate-x-1/2" color="amber" status={getStatus("hr")} />
-          <CoreNode label="CLASSIFIER" className="left-[-132px] top-1/2 -translate-y-1/2" color="purple" status={classifierStatus} />
-          <CoreNode label="AGGREGATOR" className="right-[-110px] bottom-2" color="cyan" status={aggregatorStatus} />
-          <CoreNode label="EXPLAIN" className="left-[-96px] bottom-2" color="cyan" status={explainStatus} />
-        </motion.div>
+        <CoreNode
+          label="CEO"
+          className="left-1/2 top-8 -translate-x-1/2"
+          color="cyan"
+          status={getStatus("ceo")}
+        />
+
+        <CoreNode
+          label="CFO"
+          className="right-8 top-1/2 -translate-y-1/2"
+          color="emerald"
+          status={getStatus("cfo")}
+        />
+
+        <CoreNode
+          label="HR"
+          className="bottom-8 left-1/2 -translate-x-1/2"
+          color="amber"
+          status={getStatus("hr")}
+        />
+
+        <CoreNode
+          label="CLASSIFIER"
+          className="left-8 top-1/2 -translate-y-1/2"
+          color="purple"
+          status={classifierStatus}
+        />
+
+        <CoreNode
+          label="AGGREGATOR"
+          className="bottom-20 right-8"
+          color="cyan"
+          status={aggregatorStatus}
+        />
+
+        <CoreNode
+          label="EXPLAIN"
+          className="bottom-20 left-8"
+          color="cyan"
+          status={explainStatus}
+        />
       </div>
     </Panel>
   );
 }
-
 function LiveFeed({ logs }: { logs: string[] }) {
+   const logEndRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    logEndRef.current?.scrollIntoView({
+      behavior: "smooth",
+      block: "end",
+    });
+  }, [logs]);
+
   return (
     <Panel title="Live Analysis Feed" subtitle="Real-time agent execution stream">
       <div className="space-y-4">
-        <div className="h-[340px] overflow-hidden rounded-xl border border-cyan-400/10 bg-black/70 p-4 font-mono text-xs">
+        <div className="h-[420px] overflow-y-auto rounded-xl border border-cyan-400/10 bg-black/70 p-4 pr-2 font-mono text-xs [scrollbar-color:rgba(34,211,238,0.55)_rgba(15,23,42,0.8)] [scrollbar-width:thin]">
           <div className="mb-3 flex items-center gap-2 text-cyan-300">
             <Network size={16} />
             <span>STREAM ACTIVE</span>
@@ -794,7 +835,8 @@ function LiveFeed({ logs }: { logs: string[] }) {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.02 }}
                 className={
-                  log.toLowerCase().includes("warning") || log.includes("HR weight")
+                  log.toLowerCase().includes("warning") ||
+                  log.includes("HR weight")
                     ? "text-amber-300"
                     : log.toLowerCase().includes("final") ||
                         log.toLowerCase().includes("completed")
@@ -808,6 +850,8 @@ function LiveFeed({ logs }: { logs: string[] }) {
                 &gt; {log}
               </motion.p>
             ))}
+
+            <div ref={logEndRef} />
           </div>
         </div>
 
@@ -816,7 +860,6 @@ function LiveFeed({ logs }: { logs: string[] }) {
     </Panel>
   );
 }
-
 
 function AgentContributionChart() {
   return (
@@ -1019,21 +1062,29 @@ function CoreNode({
 }: {
   label: string;
   className: string;
-  color: "cyan" | "emerald" | "amber" | "purple";
+  color: AgentColor;
   status: AgentStatus;
 }) {
   return (
-    <motion.div
-      animate={
-        status === "ANALYZING"
-          ? { scale: [1, 1.12, 1], opacity: [0.85, 1, 0.85] }
-          : { scale: 1, opacity: status === "IDLE" ? 0.55 : 1 }
-      }
-      transition={{ repeat: status === "ANALYZING" ? Infinity : 0, duration: 1.2 }}
-      className={`absolute rounded-full border bg-black px-4 py-2 font-mono text-[10px] font-bold shadow-lg ${nodeColorClass(color, status)} ${className}`}
-    >
-      {label}
-    </motion.div>
+    <div className={`absolute z-10 ${className}`}>
+      <motion.div
+        animate={
+          status === "ANALYZING"
+            ? { scale: [1, 1.12, 1], opacity: [0.85, 1, 0.85] }
+            : { scale: 1, opacity: status === "IDLE" ? 0.55 : 1 }
+        }
+        transition={{
+          repeat: status === "ANALYZING" ? Infinity : 0,
+          duration: 1.2,
+        }}
+        className={`rounded-full border bg-black px-4 py-2 font-mono text-[10px] font-bold shadow-lg ${nodeColorClass(
+          color,
+          status
+        )}`}
+      >
+        {label}
+      </motion.div>
+    </div>
   );
 }
 
