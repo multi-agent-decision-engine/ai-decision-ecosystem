@@ -154,7 +154,7 @@ await addDebateMessage(agentDebateMessages[6]);
     explainStatus={explainStatus}
     finalVisible={finalVisible}
     />
-
+       <DecisionSignalMatrix />
         <section className="grid gap-5 xl:grid-cols-[320px_1fr_380px]">
           <ScenarioPanel isRunning={isRunning} onStart={runSimulation} />
           <DecisionCore
@@ -411,6 +411,94 @@ function MissionTimeline({
         ))}
       </div>
     </section>
+  );
+}
+function DecisionSignalMatrix() {
+  const signals = [
+    {
+      label: "Strategic Fit",
+      value: 85,
+      status: "STRONG",
+      description: "High alignment with growth and market expansion goals.",
+      tone: "cyan",
+    },
+    {
+      label: "Financial Viability",
+      value: 90,
+      status: "STRONG",
+      description: "Expected ROI is attractive and budget exposure is acceptable.",
+      tone: "emerald",
+    },
+    {
+      label: "Workforce Capacity",
+      value: 50,
+      status: "BOTTLENECK",
+      description: "Team readiness is below the recommended execution threshold.",
+      tone: "amber",
+    },
+    {
+      label: "Risk Exposure",
+      value: 62,
+      status: "MODERATE",
+      description: "Risk is manageable, but execution capacity needs revision.",
+      tone: "purple",
+    },
+  ];
+
+  return (
+    <Panel
+      title="Decision Signal Matrix"
+      subtitle="High-level decision signals behind the final recommendation"
+    >
+      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+        {signals.map((signal, index) => (
+          <motion.div
+            key={signal.label}
+            initial={{ opacity: 0, y: 14 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: index * 0.06 }}
+            className={`rounded-2xl border bg-black/40 p-4 ${signalCardClass(
+              signal.tone
+            )}`}
+          >
+            <div className="mb-4 flex items-start justify-between gap-3">
+              <div>
+                <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-slate-500">
+                  Signal
+                </p>
+                <h3 className="mt-1 text-base font-black text-white">
+                  {signal.label}
+                </h3>
+              </div>
+
+              <span className={`rounded-full border px-2 py-1 font-mono text-[10px] ${signalBadgeClass(signal.tone)}`}>
+                {signal.status}
+              </span>
+            </div>
+
+            <div className="mb-3 flex items-end justify-between">
+              <span className="text-3xl font-black text-white">
+                {signal.value}
+              </span>
+              <span className="font-mono text-[10px] text-slate-500">
+                /100
+              </span>
+            </div>
+
+            <div className="h-2 overflow-hidden rounded-full bg-slate-800">
+              <div
+                className={`h-full rounded-full ${signalBarClass(signal.tone)}`}
+                style={{ width: `${signal.value}%` }}
+              />
+            </div>
+
+            <p className="mt-4 text-xs leading-relaxed text-slate-300">
+              {signal.description}
+            </p>
+          </motion.div>
+        ))}
+      </div>
+    </Panel>
   );
 }
 function ScenarioPanel({
@@ -1193,6 +1281,44 @@ function timelineTextClass(status: AgentStatus) {
   if (status === "ANALYZING") return "text-cyan-300";
   if (status === "WARNING") return "text-amber-300";
   return "text-slate-500";
+}
+function signalCardClass(tone: string) {
+  if (tone === "emerald") {
+    return "border-emerald-400/30 shadow-[0_0_22px_rgba(52,211,153,0.10)]";
+  }
+
+  if (tone === "amber") {
+    return "border-amber-400/40 shadow-[0_0_22px_rgba(251,191,36,0.14)]";
+  }
+
+  if (tone === "purple") {
+    return "border-purple-400/30 shadow-[0_0_22px_rgba(168,85,247,0.10)]";
+  }
+
+  return "border-cyan-400/30 shadow-[0_0_22px_rgba(34,211,238,0.10)]";
+}
+
+function signalBadgeClass(tone: string) {
+  if (tone === "emerald") {
+    return "border-emerald-400/40 bg-emerald-400/10 text-emerald-300";
+  }
+
+  if (tone === "amber") {
+    return "border-amber-400/40 bg-amber-400/10 text-amber-300";
+  }
+
+  if (tone === "purple") {
+    return "border-purple-400/40 bg-purple-400/10 text-purple-300";
+  }
+
+  return "border-cyan-400/40 bg-cyan-400/10 text-cyan-300";
+}
+
+function signalBarClass(tone: string) {
+  if (tone === "emerald") return "bg-emerald-300 shadow-[0_0_14px_rgba(52,211,153,0.9)]";
+  if (tone === "amber") return "bg-amber-300 shadow-[0_0_14px_rgba(251,191,36,0.9)]";
+  if (tone === "purple") return "bg-purple-300 shadow-[0_0_14px_rgba(168,85,247,0.9)]";
+  return "bg-cyan-300 shadow-[0_0_14px_rgba(34,211,238,0.9)]";
 }
 function clamp(value: number) {
   return Math.max(0, Math.min(100, Math.round(value)));
