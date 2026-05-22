@@ -147,6 +147,14 @@ await addDebateMessage(agentDebateMessages[6]);
       <div className="flex-1">
         <div className="mx-auto max-w-[1600px] space-y-5 p-5">
           <TopBar isRunning={isRunning} />
+    <MissionTimeline
+    agents={agents}
+    classifierStatus={classifierStatus}
+    aggregatorStatus={aggregatorStatus}
+    explainStatus={explainStatus}
+    finalVisible={finalVisible}
+    />
+
         <section className="grid gap-5 xl:grid-cols-[320px_1fr_380px]">
           <ScenarioPanel isRunning={isRunning} onStart={runSimulation} />
           <DecisionCore
@@ -292,7 +300,119 @@ function TopBar({ isRunning }: { isRunning: boolean }) {
     </motion.header>
   );
 }
+function MissionTimeline({
+  agents,
+  classifierStatus,
+  aggregatorStatus,
+  explainStatus,
+  finalVisible,
+}: {
+  agents: Agent[];
+  classifierStatus: AgentStatus;
+  aggregatorStatus: AgentStatus;
+  explainStatus: AgentStatus;
+  finalVisible: boolean;
+}) {
+  const getAgentStatus = (id: string) =>
+    agents.find((agent) => agent.id === id)?.status ?? "IDLE";
 
+  const steps = [
+    {
+      label: "Scenario",
+      status: "COMPLETED" as AgentStatus,
+      detail: "Input locked",
+    },
+    {
+      label: "Classifier",
+      status: classifierStatus,
+      detail: "Type detection",
+    },
+    {
+      label: "CEO",
+      status: getAgentStatus("ceo"),
+      detail: "Strategy",
+    },
+    {
+      label: "CFO",
+      status: getAgentStatus("cfo"),
+      detail: "Finance",
+    },
+    {
+      label: "HR",
+      status: getAgentStatus("hr"),
+      detail: "Workforce",
+    },
+    {
+      label: "Aggregator",
+      status: aggregatorStatus,
+      detail: "Weighted score",
+    },
+    {
+      label: "Explain",
+      status: explainStatus,
+      detail: "Recommendation",
+    },
+    {
+      label: "Final",
+      status: finalVisible ? ("COMPLETED" as AgentStatus) : ("IDLE" as AgentStatus),
+      detail: finalVisible ? "REVISE" : "Awaiting",
+    },
+  ];
+
+  return (
+    <section className="rounded-2xl border border-cyan-400/20 bg-slate-950/80 p-5 shadow-[0_0_30px_rgba(34,211,238,0.12)] backdrop-blur-xl">
+      <div className="mb-4 flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
+        <div>
+          <h2 className="text-sm font-bold text-cyan-300 drop-shadow-[0_0_10px_rgba(34,211,238,0.7)]">
+            Mission Timeline
+          </h2>
+          <p className="mt-1 font-mono text-xs text-slate-500">
+            Real-time decision pipeline status
+          </p>
+        </div>
+
+        <span className="rounded-full border border-cyan-400/30 bg-cyan-400/10 px-3 py-1 font-mono text-[10px] text-cyan-300">
+          EXECUTIVE PIPELINE
+        </span>
+      </div>
+
+      <div className="grid gap-3 md:grid-cols-4 xl:grid-cols-8">
+        {steps.map((step, index) => (
+          <motion.div
+            key={step.label}
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: index * 0.04 }}
+            className={`rounded-xl border bg-black/40 p-3 ${timelineStatusClass(
+              step.status
+            )}`}
+          >
+            <div className="mb-3 flex items-center justify-between">
+              <span className="font-mono text-[10px] text-slate-500">
+                {String(index + 1).padStart(2, "0")}
+              </span>
+
+              <span
+                className={`h-2 w-2 rounded-full ${timelineDotClass(
+                  step.status
+                )}`}
+              />
+            </div>
+
+            <p className="text-sm font-bold text-white">{step.label}</p>
+            <p className="mt-1 font-mono text-[10px] text-slate-500">
+              {step.detail}
+            </p>
+
+            <p className={`mt-3 font-mono text-[10px] ${timelineTextClass(step.status)}`}>
+              {step.status}
+            </p>
+          </motion.div>
+        ))}
+      </div>
+    </section>
+  );
+}
 function ScenarioPanel({
   isRunning,
   onStart,
@@ -1036,7 +1156,44 @@ function SliderControl({
     </div>
   );
 }
+function timelineStatusClass(status: AgentStatus) {
+  if (status === "COMPLETED") {
+    return "border-emerald-400/30 shadow-[0_0_18px_rgba(52,211,153,0.10)]";
+  }
 
+  if (status === "ANALYZING") {
+    return "border-cyan-400/40 shadow-[0_0_20px_rgba(34,211,238,0.16)]";
+  }
+
+  if (status === "WARNING") {
+    return "border-amber-400/40 shadow-[0_0_20px_rgba(251,191,36,0.14)]";
+  }
+
+  return "border-slate-700/70";
+}
+
+function timelineDotClass(status: AgentStatus) {
+  if (status === "COMPLETED") {
+    return "bg-emerald-300 shadow-[0_0_12px_rgba(52,211,153,0.9)]";
+  }
+
+  if (status === "ANALYZING") {
+    return "bg-cyan-300 shadow-[0_0_12px_rgba(34,211,238,0.9)] animate-pulse";
+  }
+
+  if (status === "WARNING") {
+    return "bg-amber-300 shadow-[0_0_12px_rgba(251,191,36,0.9)]";
+  }
+
+  return "bg-slate-600";
+}
+
+function timelineTextClass(status: AgentStatus) {
+  if (status === "COMPLETED") return "text-emerald-300";
+  if (status === "ANALYZING") return "text-cyan-300";
+  if (status === "WARNING") return "text-amber-300";
+  return "text-slate-500";
+}
 function clamp(value: number) {
   return Math.max(0, Math.min(100, Math.round(value)));
 }
