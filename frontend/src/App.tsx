@@ -203,6 +203,10 @@ await addDebateMessage(agentDebateMessages[6]);
   <WhatIfLab />
 </div>
 
+<div id="scenario-comparison" className="scroll-mt-5">
+  <ScenarioComparisonBoard />
+</div>
+
 <div id="reports" className="scroll-mt-5">
   <ExecutiveDecisionReport />
 </div>
@@ -1250,6 +1254,111 @@ function AgentDebateConsole({
     </Panel>
   );
 }
+function ScenarioComparisonBoard() {
+  const scenarios = [
+    {
+      name: "Current Plan",
+      decision: "REVISE",
+      score: 68.75,
+      risk: "Medium",
+      bottleneck: "Workforce Capacity",
+      recommendation: "Improve team readiness before approval.",
+      tone: "amber",
+    },
+    {
+      name: "Improved Team Plan",
+      decision: "APPROVE",
+      score: 76.25,
+      risk: "Controlled",
+      bottleneck: "None critical",
+      recommendation: "Proceed with controlled execution.",
+      tone: "emerald",
+    },
+    {
+      name: "High Risk Pivot",
+      decision: "REJECT",
+      score: 44.2,
+      risk: "High",
+      bottleneck: "Risk Exposure",
+      recommendation: "Reduce risk before reconsideration.",
+      tone: "red",
+    },
+  ];
+
+  return (
+    <Panel
+      title="Scenario Comparison Board"
+      subtitle="Compare alternative decision paths before executive approval"
+    >
+      <div className="grid gap-4 lg:grid-cols-3">
+        {scenarios.map((scenario, index) => (
+          <motion.div
+            key={scenario.name}
+            initial={{ opacity: 0, y: 14 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: index * 0.06 }}
+            className={`rounded-2xl border bg-black/40 p-5 ${scenarioCardClass(
+              scenario.tone
+            )}`}
+          >
+            <div className="mb-4 flex items-start justify-between gap-3">
+              <div>
+                <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-slate-500">
+                  Scenario Variant
+                </p>
+                <h3 className="mt-1 text-lg font-black text-white">
+                  {scenario.name}
+                </h3>
+              </div>
+
+              <span
+                className={`rounded-full border px-2 py-1 font-mono text-[10px] ${scenarioBadgeClass(
+                  scenario.tone
+                )}`}
+              >
+                {scenario.decision}
+              </span>
+            </div>
+
+            <div className="mb-4">
+              <div className="flex items-end justify-between">
+                <span className="text-4xl font-black text-white">
+                  {scenario.score}
+                </span>
+                <span className="font-mono text-[10px] text-slate-500">
+                  /100
+                </span>
+              </div>
+
+              <div className="mt-3 h-2 overflow-hidden rounded-full bg-slate-800">
+                <div
+                  className={`h-full rounded-full ${scenarioBarClass(
+                    scenario.tone
+                  )}`}
+                  style={{ width: `${scenario.score}%` }}
+                />
+              </div>
+            </div>
+
+            <div className="grid gap-3">
+              <Metric label="Risk" value={scenario.risk} />
+              <Metric label="Bottleneck" value={scenario.bottleneck} />
+            </div>
+
+            <div className="mt-4 rounded-xl border border-white/10 bg-white/5 p-3">
+              <p className="font-mono text-[10px] uppercase tracking-widest text-slate-500">
+                Recommendation
+              </p>
+              <p className="mt-2 text-xs leading-relaxed text-slate-300">
+                {scenario.recommendation}
+              </p>
+            </div>
+          </motion.div>
+        ))}
+      </div>
+    </Panel>
+  );
+}
 function WhatIfLab() {
   const [budget, setBudget] = useState(25);
   const [roi, setRoi] = useState(45);
@@ -1885,4 +1994,38 @@ function CalculationRow({
       <span className="font-bold text-white">{result}</span>
     </div>
   );
+}function scenarioCardClass(tone: string) {
+  if (tone === "emerald") {
+    return "border-emerald-400/30 shadow-[0_0_25px_rgba(52,211,153,0.10)]";
+  }
+
+  if (tone === "red") {
+    return "border-red-400/30 shadow-[0_0_25px_rgba(248,113,113,0.10)]";
+  }
+
+  return "border-amber-400/40 shadow-[0_0_25px_rgba(251,191,36,0.12)]";
+}
+
+function scenarioBadgeClass(tone: string) {
+  if (tone === "emerald") {
+    return "border-emerald-400/40 bg-emerald-400/10 text-emerald-300";
+  }
+
+  if (tone === "red") {
+    return "border-red-400/40 bg-red-400/10 text-red-300";
+  }
+
+  return "border-amber-400/40 bg-amber-400/10 text-amber-300";
+}
+
+function scenarioBarClass(tone: string) {
+  if (tone === "emerald") {
+    return "bg-emerald-300 shadow-[0_0_14px_rgba(52,211,153,0.9)]";
+  }
+
+  if (tone === "red") {
+    return "bg-red-300 shadow-[0_0_14px_rgba(248,113,113,0.9)]";
+  }
+
+  return "bg-amber-300 shadow-[0_0_14px_rgba(251,191,36,0.9)]";
 }
