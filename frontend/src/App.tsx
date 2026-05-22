@@ -1,4 +1,15 @@
-import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from "recharts";
+import {
+  Cell,
+  Pie,
+  PieChart,
+  PolarAngleAxis,
+  PolarGrid,
+  PolarRadiusAxis,
+  Radar,
+  RadarChart,
+  ResponsiveContainer,
+  Tooltip,
+} from "recharts";
 import { useState, type ReactNode } from "react";
 import { motion } from "framer-motion";
 import {
@@ -156,6 +167,7 @@ await addDebateMessage(agentDebateMessages[6]);
     finalVisible={finalVisible}
     />
        <DecisionSignalMatrix />
+       <DecisionRadarPanel />
         <section className="grid gap-5 xl:grid-cols-[320px_1fr_380px]">
           <ScenarioPanel isRunning={isRunning} onStart={runSimulation} />
           <DecisionCore
@@ -562,6 +574,80 @@ function DecisionSignalMatrix() {
             </p>
           </motion.div>
         ))}
+      </div>
+    </Panel>
+  );
+}
+function DecisionRadarPanel() {
+  const radarData = [
+    { metric: "Strategy", value: 85 },
+    { metric: "Finance", value: 90 },
+    { metric: "Workforce", value: 50 },
+    { metric: "Risk Control", value: 62 },
+    { metric: "Market", value: 70 },
+    { metric: "Execution", value: 58 },
+  ];
+
+  return (
+    <Panel
+      title="Decision Radar"
+      subtitle="Radar view of decision strength, risk and execution readiness"
+    >
+      <div className="grid gap-5 xl:grid-cols-[1fr_380px]">
+        <div className="h-[360px] rounded-2xl border border-cyan-400/10 bg-black/40 p-4">
+          <ResponsiveContainer width="100%" height="100%">
+            <RadarChart data={radarData}>
+              <PolarGrid stroke="rgba(34,211,238,0.18)" />
+              <PolarAngleAxis
+                dataKey="metric"
+                tick={{ fill: "#94a3b8", fontSize: 11 }}
+              />
+              <PolarRadiusAxis
+                angle={90}
+                domain={[0, 100]}
+                tick={{ fill: "#64748b", fontSize: 10 }}
+              />
+              <Radar
+                name="Decision Strength"
+                dataKey="value"
+                stroke="#22d3ee"
+                fill="#22d3ee"
+                fillOpacity={0.18}
+              />
+              <Tooltip
+                contentStyle={{
+                  background: "#020617",
+                  border: "1px solid rgba(34,211,238,0.25)",
+                  borderRadius: "12px",
+                  color: "#fff",
+                }}
+              />
+            </RadarChart>
+          </ResponsiveContainer>
+        </div>
+
+        <div className="rounded-2xl border border-amber-400/30 bg-amber-400/10 p-5 shadow-[0_0_35px_rgba(251,191,36,0.12)]">
+          <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-amber-300">
+            Radar Insight
+          </p>
+
+          <h3 className="mt-3 text-2xl font-black text-white">
+            Workforce is the weakest signal
+          </h3>
+
+          <p className="mt-3 text-sm leading-relaxed text-slate-300">
+            Strategy and financial signals are strong, but workforce readiness
+            and execution capacity reduce the final decision confidence. This
+            explains why the system recommends revision instead of approval.
+          </p>
+
+          <div className="mt-5 space-y-3">
+            <Metric label="Strongest Signal" value="Finance 90" />
+            <Metric label="Weakest Signal" value="Workforce 50" />
+            <Metric label="Decision Pressure" value="Execution Risk" />
+            <Metric label="Recommended Action" value="Capacity Plan" />
+          </div>
+        </div>
       </div>
     </Panel>
   );
