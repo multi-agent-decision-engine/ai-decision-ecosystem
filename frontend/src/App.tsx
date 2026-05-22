@@ -147,6 +147,7 @@ await addDebateMessage(agentDebateMessages[6]);
       <div className="flex-1">
         <div className="mx-auto max-w-[1600px] space-y-5 p-5">
           <TopBar isRunning={isRunning} />
+<ExecutiveKpiStrip finalVisible={finalVisible} isRunning={isRunning} />
     <MissionTimeline
     agents={agents}
     classifierStatus={classifierStatus}
@@ -298,6 +299,70 @@ function TopBar({ isRunning }: { isRunning: boolean }) {
         </div>
       </div>
     </motion.header>
+  );
+}
+function ExecutiveKpiStrip({
+  finalVisible,
+  isRunning,
+}: {
+  finalVisible: boolean;
+  isRunning: boolean;
+}) {
+  const kpis = [
+    {
+      label: "Final Decision",
+      value: finalVisible ? "REVISE" : isRunning ? "CALCULATING" : "WAITING",
+      detail: finalVisible ? "Revision required" : "Awaiting simulation",
+      tone: finalVisible ? "amber" : isRunning ? "cyan" : "slate",
+    },
+    {
+      label: "Overall Score",
+      value: finalVisible ? "68.75" : "--",
+      detail: "/100 weighted consensus",
+      tone: "cyan",
+    },
+    {
+      label: "Primary Bottleneck",
+      value: finalVisible ? "Workforce" : "--",
+      detail: finalVisible ? "Capacity risk detected" : "Not analyzed yet",
+      tone: finalVisible ? "amber" : "slate",
+    },
+    {
+      label: "Confidence",
+      value: finalVisible ? "82%" : "--",
+      detail: "Explainability confidence",
+      tone: "emerald",
+    },
+  ];
+
+  return (
+    <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+      {kpis.map((kpi, index) => (
+        <motion.div
+          key={kpi.label}
+          initial={{ opacity: 0, y: 14 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: index * 0.05 }}
+          className={`rounded-2xl border bg-slate-950/80 p-4 shadow-[0_0_25px_rgba(34,211,238,0.08)] backdrop-blur-xl ${kpiCardClass(
+            kpi.tone
+          )}`}
+        >
+          <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-slate-500">
+            {kpi.label}
+          </p>
+
+          <div className="mt-3 flex items-end justify-between gap-3">
+            <h3 className={`text-2xl font-black ${kpiValueClass(kpi.tone)}`}>
+              {kpi.value}
+            </h3>
+
+            <span className={`h-2 w-2 rounded-full ${kpiDotClass(kpi.tone)}`} />
+          </div>
+
+          <p className="mt-2 text-xs text-slate-400">{kpi.detail}</p>
+        </motion.div>
+      ))}
+    </section>
   );
 }
 function MissionTimeline({
@@ -1319,6 +1384,44 @@ function signalBarClass(tone: string) {
   if (tone === "amber") return "bg-amber-300 shadow-[0_0_14px_rgba(251,191,36,0.9)]";
   if (tone === "purple") return "bg-purple-300 shadow-[0_0_14px_rgba(168,85,247,0.9)]";
   return "bg-cyan-300 shadow-[0_0_14px_rgba(34,211,238,0.9)]";
+}
+function kpiCardClass(tone: string) {
+  if (tone === "amber") {
+    return "border-amber-400/40 shadow-[0_0_25px_rgba(251,191,36,0.12)]";
+  }
+
+  if (tone === "emerald") {
+    return "border-emerald-400/30 shadow-[0_0_25px_rgba(52,211,153,0.10)]";
+  }
+
+  if (tone === "cyan") {
+    return "border-cyan-400/30 shadow-[0_0_25px_rgba(34,211,238,0.10)]";
+  }
+
+  return "border-slate-700/70";
+}
+
+function kpiValueClass(tone: string) {
+  if (tone === "amber") return "text-amber-300";
+  if (tone === "emerald") return "text-emerald-300";
+  if (tone === "cyan") return "text-cyan-300";
+  return "text-slate-300";
+}
+
+function kpiDotClass(tone: string) {
+  if (tone === "amber") {
+    return "bg-amber-300 shadow-[0_0_12px_rgba(251,191,36,0.9)]";
+  }
+
+  if (tone === "emerald") {
+    return "bg-emerald-300 shadow-[0_0_12px_rgba(52,211,153,0.9)]";
+  }
+
+  if (tone === "cyan") {
+    return "bg-cyan-300 shadow-[0_0_12px_rgba(34,211,238,0.9)]";
+  }
+
+  return "bg-slate-600";
 }
 function clamp(value: number) {
   return Math.max(0, Math.min(100, Math.round(value)));
