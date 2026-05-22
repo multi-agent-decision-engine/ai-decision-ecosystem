@@ -157,8 +157,10 @@ await addDebateMessage(agentDebateMessages[6]);
 
       <div className="flex-1">
         <div className="mx-auto max-w-[1600px] space-y-5 p-5">
-          <TopBar isRunning={isRunning} />
+          <div id="mission-control" className="scroll-mt-5">
+  <TopBar isRunning={isRunning} />
 <ExecutiveKpiStrip finalVisible={finalVisible} isRunning={isRunning} />
+</div>
     <MissionTimeline
     agents={agents}
     classifierStatus={classifierStatus}
@@ -168,27 +170,50 @@ await addDebateMessage(agentDebateMessages[6]);
     />
        <DecisionSignalMatrix />
        <DecisionRadarPanel />
-        <section className="grid gap-5 xl:grid-cols-[320px_1fr_380px]">
+        <section 
+        id="new-simulation"
+        className="grid scroll-mt-5 gap-5 xl:grid-cols-[320px_1fr_380px]"
+         >
           <ScenarioPanel isRunning={isRunning} onStart={runSimulation} />
-          <DecisionCore
-            agents={agents}
-            classifierStatus={classifierStatus}
-            aggregatorStatus={aggregatorStatus}
-            explainStatus={explainStatus}
-          />
-          <LiveFeed logs={logs} />
-        </section>
+           <div id="live-analysis" className="scroll-mt-5">
+    <DecisionCore
+      agents={agents}
+      classifierStatus={classifierStatus}
+      aggregatorStatus={aggregatorStatus}
+      explainStatus={explainStatus}
+    />
+  </div>
 
-        <section className="grid gap-5 xl:grid-cols-[1fr_430px]">
-          <AgentRegistry agents={agents} />
-          <FinalDecision visible={finalVisible} isRunning={isRunning} />
-        </section>
+  <LiveFeed logs={logs} />
+</section>
 
+     <section
+  id="agent-registry"
+  className="grid scroll-mt-5 gap-5 xl:grid-cols-[1fr_430px]"
+>
+  <AgentRegistry agents={agents} />
+  <FinalDecision visible={finalVisible} isRunning={isRunning} />
+</section>
 
-   <AgentDebateConsole messages={debateMessages} isRunning={isRunning} />
-<WhatIfLab />
-<ExecutiveDecisionReport />
+   <div id="agent-debate" className="scroll-mt-5">
+  <AgentDebateConsole messages={debateMessages} isRunning={isRunning} />
+</div>
 
+<div id="what-if-lab" className="scroll-mt-5">
+  <WhatIfLab />
+</div>
+
+<div id="reports" className="scroll-mt-5">
+  <ExecutiveDecisionReport />
+</div>
+
+<div id="history" className="scroll-mt-5">
+  <SimulationHistory />
+</div>
+
+<div id="system-settings" className="scroll-mt-5">
+  <SystemSettingsPanel />
+</div>
              </div>
       </div>
     </div>
@@ -197,16 +222,26 @@ await addDebateMessage(agentDebateMessages[6]);
 }
 function Sidebar() {
   const navItems = [
-    { label: "Mission Control", icon: LayoutDashboard, active: true },
-    { label: "New Simulation", icon: PlusCircle },
-    { label: "Agent Registry", icon: Users },
-    { label: "Live Analysis", icon: Radio },
-    { label: "What-if Lab", icon: FlaskConical },
-    { label: "Reports", icon: FileText },
-    { label: "History", icon: History },
-    { label: "System Settings", icon: Settings },
-  ];
+  { label: "Mission Control", icon: LayoutDashboard, target: "mission-control" },
+  { label: "New Simulation", icon: PlusCircle, target: "new-simulation" },
+  { label: "Agent Registry", icon: Users, target: "agent-registry" },
+  { label: "Live Analysis", icon: Radio, target: "live-analysis" },
+  { label: "What-if Lab", icon: FlaskConical, target: "what-if-lab" },
+  { label: "Reports", icon: FileText, target: "reports" },
+  { label: "History", icon: History, target: "history" },
+  { label: "System Settings", icon: Settings, target: "system-settings" },
+];
 
+const [activeSection, setActiveSection] = useState("mission-control");
+
+const scrollToSection = (target: string) => {
+  setActiveSection(target);
+
+  document.getElementById(target)?.scrollIntoView({
+    behavior: "smooth",
+    block: "start",
+  });
+};
   return (
     <aside className="hidden w-72 shrink-0 border-r border-cyan-400/20 bg-slate-950/90 p-5 shadow-[0_0_35px_rgba(34,211,238,0.10)] backdrop-blur-xl xl:block">
       <div className="mb-8">
@@ -233,8 +268,9 @@ function Sidebar() {
           return (
             <button
               key={item.label}
+              onClick={() => scrollToSection(item.target)}
               className={`flex w-full items-center gap-3 rounded-xl border px-3 py-3 text-left font-mono text-xs transition ${
-                item.active
+                activeSection === item.target
                   ? "border-cyan-400/40 bg-cyan-400/10 text-cyan-300 shadow-[0_0_18px_rgba(34,211,238,0.16)]"
                   : "border-transparent text-slate-400 hover:border-cyan-400/20 hover:bg-cyan-400/5 hover:text-cyan-200"
               }`}
@@ -1723,6 +1759,115 @@ function ExecutiveDecisionReport() {
     </Panel>
   );
 
+}
+function SimulationHistory() {
+  const historyItems = [
+    {
+      title: "AI Market Expansion Initiative",
+      decision: "REVISE",
+      score: "68.75",
+      date: "Latest simulation",
+      bottleneck: "Workforce Capacity",
+    },
+    {
+      title: "Cost Optimization Program",
+      decision: "APPROVE",
+      score: "81.40",
+      date: "Demo record",
+      bottleneck: "Low risk",
+    },
+    {
+      title: "Strategic Pivot Scenario",
+      decision: "REJECT",
+      score: "44.20",
+      date: "Demo record",
+      bottleneck: "High risk exposure",
+    },
+  ];
+
+  return (
+    <Panel
+      title="Simulation History"
+      subtitle="Previous decision runs and executive outcomes"
+    >
+      <div className="grid gap-4 lg:grid-cols-3">
+        {historyItems.map((item) => (
+          <div
+            key={item.title}
+            className="rounded-2xl border border-cyan-400/10 bg-black/40 p-4"
+          >
+            <div className="mb-4 flex items-start justify-between gap-3">
+              <div>
+                <h3 className="text-sm font-bold text-white">{item.title}</h3>
+                <p className="mt-1 font-mono text-[10px] text-slate-500">
+                  {item.date}
+                </p>
+              </div>
+
+              <span
+                className={`rounded-full border px-2 py-1 font-mono text-[10px] ${
+                  item.decision === "APPROVE"
+                    ? "border-emerald-400/40 bg-emerald-400/10 text-emerald-300"
+                    : item.decision === "REVISE"
+                      ? "border-amber-400/40 bg-amber-400/10 text-amber-300"
+                      : "border-red-400/40 bg-red-400/10 text-red-300"
+                }`}
+              >
+                {item.decision}
+              </span>
+            </div>
+
+            <div className="grid grid-cols-2 gap-3">
+              <Metric label="Score" value={item.score} />
+              <Metric label="Bottleneck" value={item.bottleneck} />
+            </div>
+          </div>
+        ))}
+      </div>
+    </Panel>
+  );
+}
+function SystemSettingsPanel() {
+  const settings = [
+    ["Simulation Mode", "Frontend Mock"],
+    ["Agent Count", "CEO / CFO / HR"],
+    ["Debate Mode", "Interactive"],
+    ["Report Export", "TXT Enabled"],
+    ["Backend Status", "Not connected yet"],
+    ["UI Theme", "Decision OS Dark"],
+  ];
+
+  return (
+    <Panel
+      title="System Settings"
+      subtitle="Frontend cockpit configuration and prototype status"
+    >
+      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+        {settings.map(([label, value]) => (
+          <div
+            key={label}
+            className="rounded-xl border border-cyan-400/10 bg-black/40 p-4"
+          >
+            <p className="font-mono text-[10px] uppercase tracking-widest text-slate-500">
+              {label}
+            </p>
+            <p className="mt-2 text-sm font-bold text-cyan-300">{value}</p>
+          </div>
+        ))}
+      </div>
+
+      <div className="mt-5 rounded-2xl border border-amber-400/20 bg-amber-400/10 p-4">
+        <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-amber-300">
+          Prototype Note
+        </p>
+        <p className="mt-2 text-sm leading-relaxed text-slate-300">
+          This cockpit currently uses frontend mock data. The next integration
+          step is connecting scenario input, agent outputs, debate messages and
+          executive reports to the FastAPI backend.
+        </p>
+      </div>
+    </Panel>
+  );
 }
 function CalculationRow({
   label,
