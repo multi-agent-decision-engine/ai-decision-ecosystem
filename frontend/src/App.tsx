@@ -23,7 +23,12 @@ import {
   Download,
   Check,
 } from "lucide-react";
-import type { Agent, AgentColor, AgentStatus } from "./types/decision";
+import type {
+  Agent,
+  AgentColor,
+  AgentStatus,
+  DebateMessage,
+} from "./types/decision";
 import {
   agentDebateMessages,
   completedAgents,
@@ -44,6 +49,7 @@ const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 export default function App() {
   const [agents, setAgents] = useState<Agent[]>(initialAgents);
   const [logs, setLogs] = useState<string[]>(initialLogs);
+const [debateMessages, setDebateMessages] = useState<DebateMessage[]>([]);
   const [isRunning, setIsRunning] = useState(false);
   const [classifierStatus, setClassifierStatus] = useState<AgentStatus>("IDLE");
   const [aggregatorStatus, setAggregatorStatus] = useState<AgentStatus>("IDLE");
@@ -54,6 +60,10 @@ export default function App() {
     setLogs((prev) => [...prev, message]);
     await wait(delay);
   };
+const addDebateMessage = async (message: DebateMessage, delay = 500) => {
+  setDebateMessages((prev) => [...prev, message]);
+  await wait(delay);
+};
 
   const updateAgent = (id: string, patch: Partial<Agent>) => {
     setAgents((prev) =>
@@ -71,6 +81,7 @@ export default function App() {
     setAggregatorStatus("IDLE");
     setExplainStatus("IDLE");
     setLogs([]);
+    setDebateMessages([]);
 
     await addLog("Scenario received: AI Market Expansion Initiative");
     setClassifierStatus("ANALYZING");
@@ -86,6 +97,7 @@ export default function App() {
     await addLog("CEO Agent analyzing strategic alignment...");
     updateAgent("ceo", completedAgents[0]);
     await addLog("CEO Agent completed: Score 85 | Confidence 91%");
+await addDebateMessage(agentDebateMessages[0]);
 
     updateAgent("cfo", {
       status: "ANALYZING",
@@ -94,6 +106,7 @@ export default function App() {
     await addLog("CFO Agent evaluating financial feasibility...");
     updateAgent("cfo", completedAgents[1]);
     await addLog("CFO Agent completed: Score 90 | Confidence 88%");
+await addDebateMessage(agentDebateMessages[1]);
 
     updateAgent("hr", {
       status: "ANALYZING",
@@ -102,9 +115,13 @@ export default function App() {
     await addLog("HR Agent checking workforce capacity...");
     updateAgent("hr", completedAgents[2]);
     await addLog("HR Agent warning: Team readiness insufficient");
+await addDebateMessage(agentDebateMessages[2]);
 
     setAggregatorStatus("ANALYZING");
     await addLog("Aggregator applying dynamic weights...");
+await addDebateMessage(agentDebateMessages[3]);
+await addDebateMessage(agentDebateMessages[4]);
+await addDebateMessage(agentDebateMessages[5]);
     await addLog("CEO weight: 25%");
     await addLog("CFO weight: 25%");
     await addLog("HR weight: 50%");
@@ -116,6 +133,7 @@ export default function App() {
     setExplainStatus("COMPLETED");
     await addLog("Primary bottleneck detected: Workforce Capacity");
     await addLog("Final decision generated: REVISE");
+await addDebateMessage(agentDebateMessages[6]);
 
     setFinalVisible(true);
     setIsRunning(false);
@@ -146,7 +164,7 @@ export default function App() {
         </section>
 
 
-   <AgentDebateConsole />
+   <AgentDebateConsole messages={debateMessages} isRunning={isRunning} />
 <WhatIfLab />
 <ExecutiveDecisionReport />
 
@@ -558,105 +576,6 @@ function FinalDecision({ visible, isRunning }: { visible: boolean; isRunning: bo
     </motion.section>
   );
 }
-function AgentDebateConsole() {
-  const rounds = Array.from(
-    new Set(agentDebateMessages.map((message) => message.round))
-  );
-
-  return (
-    <Panel
-      title="Agent Debate Console"
-      subtitle="Cross-agent reasoning and boardroom-style deliberation"
-    >
-      <div className="grid gap-5 xl:grid-cols-[1fr_360px]">
-        <div className="space-y-5">
-          {rounds.map((round) => (
-            <div
-              key={round}
-              className="rounded-2xl border border-cyan-400/10 bg-black/40 p-5"
-            >
-              <div className="mb-4 flex items-center justify-between">
-                <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-cyan-300">
-                  {round}
-                </p>
-
-                <span className="rounded-full border border-cyan-400/20 bg-cyan-400/10 px-2 py-1 font-mono text-[10px] text-cyan-300">
-                  LIVE THREAD
-                </span>
-              </div>
-
-              <div className="space-y-3">
-                {agentDebateMessages
-                  .filter((message) => message.round === round)
-                  .map((message, index) => (
-                    <motion.div
-                      key={`${message.round}-${message.agent}-${index}`}
-                      initial={{ opacity: 0, x: -14 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: index * 0.08 }}
-                      className={`rounded-xl border bg-black/50 p-4 ${debateBorderClass(
-                        message.color
-                      )}`}
-                    >
-                      <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
-                        <div>
-                          <div className="flex items-center gap-2">
-                            <span
-                              className={`h-2 w-2 rounded-full ${debateDotClass(
-                                message.color
-                              )}`}
-                            />
-                            <h3 className="text-sm font-bold text-white">
-                              {message.agent}
-                            </h3>
-                          </div>
-
-                          <p className="mt-2 text-xs leading-relaxed text-slate-300">
-                            {message.message}
-                          </p>
-                        </div>
-
-                        <span
-                          className={`shrink-0 rounded-full border px-2 py-1 font-mono text-[10px] ${debateStanceClass(
-                            message.stance
-                          )}`}
-                        >
-                          {message.stance}
-                        </span>
-                      </div>
-                    </motion.div>
-                  ))}
-              </div>
-            </div>
-          ))}
-        </div>
-
-        <div className="rounded-2xl border border-purple-400/20 bg-purple-400/10 p-5 shadow-[0_0_35px_rgba(168,85,247,0.12)]">
-          <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-purple-300">
-            Debate Summary
-          </p>
-
-          <h3 className="mt-3 text-2xl font-black text-white">
-            Multi-Agent Consensus
-          </h3>
-
-          <p className="mt-3 text-sm leading-relaxed text-slate-300">
-            CEO and CFO support the initiative, but HR identifies workforce
-            capacity as the critical execution bottleneck. The agents converge
-            on a conditional decision: revise before approval.
-          </p>
-
-          <div className="mt-5 space-y-3">
-            <Metric label="Consensus" value="REVISE" />
-            <Metric label="Primary Conflict" value="Capacity Risk" />
-            <Metric label="Resolution Path" value="Hiring Plan" />
-            <Metric label="Boardroom Mode" value="Active" />
-          </div>
-        </div>
-      </div>
-    </Panel>
-  );
-}
 function Panel({
   title,
   subtitle,
@@ -822,6 +741,119 @@ function debateStanceClass(
   }
 
   return "border-cyan-400/40 bg-cyan-400/10 text-cyan-300";
+}
+function AgentDebateConsole({
+  messages,
+  isRunning,
+}: {
+  messages: DebateMessage[];
+  isRunning: boolean;
+}) {
+  const rounds = Array.from(new Set(messages.map((message) => message.round)));
+
+  return (
+    <Panel
+      title="Agent Debate Console"
+      subtitle="Cross-agent reasoning and boardroom-style deliberation"
+    >
+      <div className="grid gap-5 xl:grid-cols-[1fr_360px]">
+        <div className="space-y-5">
+          {messages.length === 0 && (
+            <div className="rounded-2xl border border-cyan-400/10 bg-black/40 p-5 text-center">
+              <p className="font-mono text-xs text-cyan-300">
+                {isRunning
+                  ? "Agent debate is initializing..."
+                  : "Run simulation to start cross-agent debate."}
+              </p>
+            </div>
+          )}
+
+          {rounds.map((round) => (
+            <div
+              key={round}
+              className="rounded-2xl border border-cyan-400/10 bg-black/40 p-5"
+            >
+              <div className="mb-4 flex items-center justify-between">
+                <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-cyan-300">
+                  {round}
+                </p>
+
+                <span className="rounded-full border border-cyan-400/20 bg-cyan-400/10 px-2 py-1 font-mono text-[10px] text-cyan-300">
+                  LIVE THREAD
+                </span>
+              </div>
+
+              <div className="space-y-3">
+                {messages
+                  .filter((message) => message.round === round)
+                  .map((message, index) => (
+                    <motion.div
+                      key={`${message.round}-${message.agent}-${index}`}
+                      initial={{ opacity: 0, x: -14 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: index * 0.08 }}
+                      className={`rounded-xl border bg-black/50 p-4 ${debateBorderClass(
+                        message.color
+                      )}`}
+                    >
+                      <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
+                        <div>
+                          <div className="flex items-center gap-2">
+                            <span
+                              className={`h-2 w-2 rounded-full ${debateDotClass(
+                                message.color
+                              )}`}
+                            />
+                            <h3 className="text-sm font-bold text-white">
+                              {message.agent}
+                            </h3>
+                          </div>
+
+                          <p className="mt-2 text-xs leading-relaxed text-slate-300">
+                            {message.message}
+                          </p>
+                        </div>
+
+                        <span
+                          className={`shrink-0 rounded-full border px-2 py-1 font-mono text-[10px] ${debateStanceClass(
+                            message.stance
+                          )}`}
+                        >
+                          {message.stance}
+                        </span>
+                      </div>
+                    </motion.div>
+                  ))}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className="rounded-2xl border border-purple-400/20 bg-purple-400/10 p-5 shadow-[0_0_35px_rgba(168,85,247,0.12)]">
+          <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-purple-300">
+            Debate Summary
+          </p>
+
+          <h3 className="mt-3 text-2xl font-black text-white">
+            Multi-Agent Consensus
+          </h3>
+
+          <p className="mt-3 text-sm leading-relaxed text-slate-300">
+            CEO and CFO support the initiative, but HR identifies workforce
+            capacity as the critical execution bottleneck. The agents converge
+            on a conditional decision: revise before approval.
+          </p>
+
+          <div className="mt-5 space-y-3">
+            <Metric label="Consensus" value="REVISE" />
+            <Metric label="Primary Conflict" value="Capacity Risk" />
+            <Metric label="Resolution Path" value="Hiring Plan" />
+            <Metric label="Boardroom Mode" value="Active" />
+          </div>
+        </div>
+      </div>
+    </Panel>
+  );
 }
 function WhatIfLab() {
   const [budget, setBudget] = useState(25);
