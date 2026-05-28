@@ -1,5 +1,16 @@
-import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from "recharts";
-import { useState, type ReactNode } from "react";
+import {
+  Cell,
+  Pie,
+  PieChart,
+  PolarAngleAxis,
+  PolarGrid,
+  PolarRadiusAxis,
+  Radar,
+  RadarChart,
+  ResponsiveContainer,
+  Tooltip,
+} from "recharts";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { motion } from "framer-motion";
 import {
   Activity,
@@ -23,7 +34,12 @@ import {
   Download,
   Check,
 } from "lucide-react";
-import type { Agent, AgentColor, AgentStatus } from "./types/decision";
+import type {
+  Agent,
+  AgentColor,
+  AgentStatus,
+  DebateMessage,
+} from "./types/decision";
 import {
   agentDebateMessages,
   completedAgents,
@@ -44,6 +60,7 @@ const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 export default function App() {
   const [agents, setAgents] = useState<Agent[]>(initialAgents);
   const [logs, setLogs] = useState<string[]>(initialLogs);
+const [debateMessages, setDebateMessages] = useState<DebateMessage[]>([]);
   const [isRunning, setIsRunning] = useState(false);
   const [classifierStatus, setClassifierStatus] = useState<AgentStatus>("IDLE");
   const [aggregatorStatus, setAggregatorStatus] = useState<AgentStatus>("IDLE");
@@ -54,6 +71,10 @@ export default function App() {
     setLogs((prev) => [...prev, message]);
     await wait(delay);
   };
+const addDebateMessage = async (message: DebateMessage, delay = 500) => {
+  setDebateMessages((prev) => [...prev, message]);
+  await wait(delay);
+};
 
   const updateAgent = (id: string, patch: Partial<Agent>) => {
     setAgents((prev) =>
@@ -71,6 +92,7 @@ export default function App() {
     setAggregatorStatus("IDLE");
     setExplainStatus("IDLE");
     setLogs([]);
+    setDebateMessages([]);
 
     await addLog("Scenario received: AI Market Expansion Initiative");
     setClassifierStatus("ANALYZING");
@@ -86,6 +108,7 @@ export default function App() {
     await addLog("CEO Agent analyzing strategic alignment...");
     updateAgent("ceo", completedAgents[0]);
     await addLog("CEO Agent completed: Score 85 | Confidence 91%");
+await addDebateMessage(agentDebateMessages[0]);
 
     updateAgent("cfo", {
       status: "ANALYZING",
@@ -94,6 +117,7 @@ export default function App() {
     await addLog("CFO Agent evaluating financial feasibility...");
     updateAgent("cfo", completedAgents[1]);
     await addLog("CFO Agent completed: Score 90 | Confidence 88%");
+await addDebateMessage(agentDebateMessages[1]);
 
     updateAgent("hr", {
       status: "ANALYZING",
@@ -102,9 +126,13 @@ export default function App() {
     await addLog("HR Agent checking workforce capacity...");
     updateAgent("hr", completedAgents[2]);
     await addLog("HR Agent warning: Team readiness insufficient");
+await addDebateMessage(agentDebateMessages[2]);
 
     setAggregatorStatus("ANALYZING");
     await addLog("Aggregator applying dynamic weights...");
+await addDebateMessage(agentDebateMessages[3]);
+await addDebateMessage(agentDebateMessages[4]);
+await addDebateMessage(agentDebateMessages[5]);
     await addLog("CEO weight: 25%");
     await addLog("CFO weight: 25%");
     await addLog("HR weight: 50%");
@@ -116,6 +144,7 @@ export default function App() {
     setExplainStatus("COMPLETED");
     await addLog("Primary bottleneck detected: Workforce Capacity");
     await addLog("Final decision generated: REVISE");
+await addDebateMessage(agentDebateMessages[6]);
 
     setFinalVisible(true);
     setIsRunning(false);
@@ -128,28 +157,70 @@ export default function App() {
 
       <div className="flex-1">
         <div className="mx-auto max-w-[1600px] space-y-5 p-5">
-          <TopBar isRunning={isRunning} />
-        <section className="grid gap-5 xl:grid-cols-[320px_1fr_380px]">
+          <div id="mission-control" className="scroll-mt-5">
+  <TopBar isRunning={isRunning} />
+<ExecutiveKpiStrip finalVisible={finalVisible} isRunning={isRunning} />
+</div>
+    <MissionTimeline
+    agents={agents}
+    classifierStatus={classifierStatus}
+    aggregatorStatus={aggregatorStatus}
+    explainStatus={explainStatus}
+    finalVisible={finalVisible}
+    />
+       <DecisionSignalMatrix />
+       <DecisionRadarPanel />
+        <section 
+        id="new-simulation"
+        className="grid scroll-mt-5 gap-5 xl:grid-cols-[320px_1fr_380px]"
+         >
           <ScenarioPanel isRunning={isRunning} onStart={runSimulation} />
-          <DecisionCore
-            agents={agents}
-            classifierStatus={classifierStatus}
-            aggregatorStatus={aggregatorStatus}
-            explainStatus={explainStatus}
-          />
-          <LiveFeed logs={logs} />
-        </section>
+           <div id="live-analysis" className="scroll-mt-5">
+    <DecisionCore
+      agents={agents}
+      classifierStatus={classifierStatus}
+      aggregatorStatus={aggregatorStatus}
+      explainStatus={explainStatus}
+    />
+  </div>
 
-        <section className="grid gap-5 xl:grid-cols-[1fr_430px]">
-          <AgentRegistry agents={agents} />
-          <FinalDecision visible={finalVisible} isRunning={isRunning} />
-        </section>
+  <LiveFeed logs={logs} />
+</section>
 
+     <section
+  id="agent-registry"
+  className="grid scroll-mt-5 gap-5 xl:grid-cols-[1fr_430px]"
+>
+  <AgentRegistry agents={agents} />
+  <FinalDecision visible={finalVisible} isRunning={isRunning} />
+</section>
 
-   <AgentDebateConsole />
-<WhatIfLab />
-<ExecutiveDecisionReport />
+   <div id="agent-debate" className="scroll-mt-5">
+  <AgentDebateConsole messages={debateMessages} isRunning={isRunning} />
+</div>
 
+<div id="what-if-lab" className="scroll-mt-5">
+  <WhatIfLab />
+</div>
+
+<div id="scenario-comparison" className="scroll-mt-5">
+  <ScenarioComparisonBoard />
+</div>
+
+<div id="action-plan" className="scroll-mt-5">
+  <ExecutionActionPlan />
+</div>
+
+<div id="reports" className="scroll-mt-5">
+  <ExecutiveDecisionReport />
+</div>
+<div id="history" className="scroll-mt-5">
+  <SimulationHistory />
+</div>
+
+<div id="system-settings" className="scroll-mt-5">
+  <SystemSettingsPanel />
+</div>
              </div>
       </div>
     </div>
@@ -158,16 +229,26 @@ export default function App() {
 }
 function Sidebar() {
   const navItems = [
-    { label: "Mission Control", icon: LayoutDashboard, active: true },
-    { label: "New Simulation", icon: PlusCircle },
-    { label: "Agent Registry", icon: Users },
-    { label: "Live Analysis", icon: Radio },
-    { label: "What-if Lab", icon: FlaskConical },
-    { label: "Reports", icon: FileText },
-    { label: "History", icon: History },
-    { label: "System Settings", icon: Settings },
-  ];
+  { label: "Mission Control", icon: LayoutDashboard, target: "mission-control" },
+  { label: "New Simulation", icon: PlusCircle, target: "new-simulation" },
+  { label: "Agent Registry", icon: Users, target: "agent-registry" },
+  { label: "Live Analysis", icon: Radio, target: "live-analysis" },
+  { label: "What-if Lab", icon: FlaskConical, target: "what-if-lab" },
+  { label: "Reports", icon: FileText, target: "reports" },
+  { label: "History", icon: History, target: "history" },
+  { label: "System Settings", icon: Settings, target: "system-settings" },
+];
 
+const [activeSection, setActiveSection] = useState("mission-control");
+
+const scrollToSection = (target: string) => {
+  setActiveSection(target);
+
+  document.getElementById(target)?.scrollIntoView({
+    behavior: "smooth",
+    block: "start",
+  });
+};
   return (
     <aside className="hidden w-72 shrink-0 border-r border-cyan-400/20 bg-slate-950/90 p-5 shadow-[0_0_35px_rgba(34,211,238,0.10)] backdrop-blur-xl xl:block">
       <div className="mb-8">
@@ -194,8 +275,9 @@ function Sidebar() {
           return (
             <button
               key={item.label}
+              onClick={() => scrollToSection(item.target)}
               className={`flex w-full items-center gap-3 rounded-xl border px-3 py-3 text-left font-mono text-xs transition ${
-                item.active
+                activeSection === item.target
                   ? "border-cyan-400/40 bg-cyan-400/10 text-cyan-300 shadow-[0_0_18px_rgba(34,211,238,0.16)]"
                   : "border-transparent text-slate-400 hover:border-cyan-400/20 hover:bg-cyan-400/5 hover:text-cyan-200"
               }`}
@@ -274,7 +356,345 @@ function TopBar({ isRunning }: { isRunning: boolean }) {
     </motion.header>
   );
 }
+function ExecutiveKpiStrip({
+  finalVisible,
+  isRunning,
+}: {
+  finalVisible: boolean;
+  isRunning: boolean;
+}) {
+  const kpis = [
+    {
+      label: "Final Decision",
+      value: finalVisible ? "REVISE" : isRunning ? "CALCULATING" : "WAITING",
+      detail: finalVisible ? "Revision required" : "Awaiting simulation",
+      tone: finalVisible ? "amber" : isRunning ? "cyan" : "slate",
+    },
+    {
+      label: "Overall Score",
+      value: finalVisible ? "68.75" : "--",
+      detail: "/100 weighted consensus",
+      tone: "cyan",
+    },
+    {
+      label: "Primary Bottleneck",
+      value: finalVisible ? "Workforce" : "--",
+      detail: finalVisible ? "Capacity risk detected" : "Not analyzed yet",
+      tone: finalVisible ? "amber" : "slate",
+    },
+    {
+      label: "Confidence",
+      value: finalVisible ? "82%" : "--",
+      detail: "Explainability confidence",
+      tone: "emerald",
+    },
+  ];
 
+  return (
+    <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+      {kpis.map((kpi, index) => (
+        <motion.div
+          key={kpi.label}
+          initial={{ opacity: 0, y: 14 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: index * 0.05 }}
+          className={`rounded-2xl border bg-slate-950/80 p-4 shadow-[0_0_25px_rgba(34,211,238,0.08)] backdrop-blur-xl ${kpiCardClass(
+            kpi.tone
+          )}`}
+        >
+          <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-slate-500">
+            {kpi.label}
+          </p>
+
+          <div className="mt-3 flex items-end justify-between gap-3">
+            <h3 className={`text-2xl font-black ${kpiValueClass(kpi.tone)}`}>
+              {kpi.value}
+            </h3>
+
+            <span className={`h-2 w-2 rounded-full ${kpiDotClass(kpi.tone)}`} />
+          </div>
+
+          <p className="mt-2 text-xs text-slate-400">{kpi.detail}</p>
+        </motion.div>
+      ))}
+    </section>
+  );
+}
+function MissionTimeline({
+  agents,
+  classifierStatus,
+  aggregatorStatus,
+  explainStatus,
+  finalVisible,
+}: {
+  agents: Agent[];
+  classifierStatus: AgentStatus;
+  aggregatorStatus: AgentStatus;
+  explainStatus: AgentStatus;
+  finalVisible: boolean;
+}) {
+  const getAgentStatus = (id: string) =>
+    agents.find((agent) => agent.id === id)?.status ?? "IDLE";
+
+  const steps = [
+    {
+      label: "Scenario",
+      status: "COMPLETED" as AgentStatus,
+      detail: "Input locked",
+    },
+    {
+      label: "Classifier",
+      status: classifierStatus,
+      detail: "Type detection",
+    },
+    {
+      label: "CEO",
+      status: getAgentStatus("ceo"),
+      detail: "Strategy",
+    },
+    {
+      label: "CFO",
+      status: getAgentStatus("cfo"),
+      detail: "Finance",
+    },
+    {
+      label: "HR",
+      status: getAgentStatus("hr"),
+      detail: "Workforce",
+    },
+    {
+      label: "Aggregator",
+      status: aggregatorStatus,
+      detail: "Weighted score",
+    },
+    {
+      label: "Explain",
+      status: explainStatus,
+      detail: "Recommendation",
+    },
+    {
+      label: "Final",
+      status: finalVisible ? ("COMPLETED" as AgentStatus) : ("IDLE" as AgentStatus),
+      detail: finalVisible ? "REVISE" : "Awaiting",
+    },
+  ];
+
+  return (
+    <section className="rounded-2xl border border-cyan-400/20 bg-slate-950/80 p-5 shadow-[0_0_30px_rgba(34,211,238,0.12)] backdrop-blur-xl">
+      <div className="mb-4 flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
+        <div>
+          <h2 className="text-sm font-bold text-cyan-300 drop-shadow-[0_0_10px_rgba(34,211,238,0.7)]">
+            Mission Timeline
+          </h2>
+          <p className="mt-1 font-mono text-xs text-slate-500">
+            Real-time decision pipeline status
+          </p>
+        </div>
+
+        <span className="rounded-full border border-cyan-400/30 bg-cyan-400/10 px-3 py-1 font-mono text-[10px] text-cyan-300">
+          EXECUTIVE PIPELINE
+        </span>
+      </div>
+
+      <div className="grid gap-3 md:grid-cols-4 xl:grid-cols-8">
+        {steps.map((step, index) => (
+          <motion.div
+            key={step.label}
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: index * 0.04 }}
+            className={`rounded-xl border bg-black/40 p-3 ${timelineStatusClass(
+              step.status
+            )}`}
+          >
+            <div className="mb-3 flex items-center justify-between">
+              <span className="font-mono text-[10px] text-slate-500">
+                {String(index + 1).padStart(2, "0")}
+              </span>
+
+              <span
+                className={`h-2 w-2 rounded-full ${timelineDotClass(
+                  step.status
+                )}`}
+              />
+            </div>
+
+            <p className="text-sm font-bold text-white">{step.label}</p>
+            <p className="mt-1 font-mono text-[10px] text-slate-500">
+              {step.detail}
+            </p>
+
+            <p className={`mt-3 font-mono text-[10px] ${timelineTextClass(step.status)}`}>
+              {step.status}
+            </p>
+          </motion.div>
+        ))}
+      </div>
+    </section>
+  );
+}
+function DecisionSignalMatrix() {
+  const signals = [
+    {
+      label: "Strategic Fit",
+      value: 85,
+      status: "STRONG",
+      description: "High alignment with growth and market expansion goals.",
+      tone: "cyan",
+    },
+    {
+      label: "Financial Viability",
+      value: 90,
+      status: "STRONG",
+      description: "Expected ROI is attractive and budget exposure is acceptable.",
+      tone: "emerald",
+    },
+    {
+      label: "Workforce Capacity",
+      value: 50,
+      status: "BOTTLENECK",
+      description: "Team readiness is below the recommended execution threshold.",
+      tone: "amber",
+    },
+    {
+      label: "Risk Exposure",
+      value: 62,
+      status: "MODERATE",
+      description: "Risk is manageable, but execution capacity needs revision.",
+      tone: "purple",
+    },
+  ];
+
+  return (
+    <Panel
+      title="Decision Signal Matrix"
+      subtitle="High-level decision signals behind the final recommendation"
+    >
+      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+        {signals.map((signal, index) => (
+          <motion.div
+            key={signal.label}
+            initial={{ opacity: 0, y: 14 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: index * 0.06 }}
+            className={`rounded-2xl border bg-black/40 p-4 ${signalCardClass(
+              signal.tone
+            )}`}
+          >
+            <div className="mb-4 flex items-start justify-between gap-3">
+              <div>
+                <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-slate-500">
+                  Signal
+                </p>
+                <h3 className="mt-1 text-base font-black text-white">
+                  {signal.label}
+                </h3>
+              </div>
+
+              <span className={`rounded-full border px-2 py-1 font-mono text-[10px] ${signalBadgeClass(signal.tone)}`}>
+                {signal.status}
+              </span>
+            </div>
+
+            <div className="mb-3 flex items-end justify-between">
+              <span className="text-3xl font-black text-white">
+                {signal.value}
+              </span>
+              <span className="font-mono text-[10px] text-slate-500">
+                /100
+              </span>
+            </div>
+
+            <div className="h-2 overflow-hidden rounded-full bg-slate-800">
+              <div
+                className={`h-full rounded-full ${signalBarClass(signal.tone)}`}
+                style={{ width: `${signal.value}%` }}
+              />
+            </div>
+
+            <p className="mt-4 text-xs leading-relaxed text-slate-300">
+              {signal.description}
+            </p>
+          </motion.div>
+        ))}
+      </div>
+    </Panel>
+  );
+}
+function DecisionRadarPanel() {
+  const radarData = [
+    { metric: "Strategy", value: 85 },
+    { metric: "Finance", value: 90 },
+    { metric: "Workforce", value: 50 },
+    { metric: "Risk Control", value: 62 },
+    { metric: "Market", value: 70 },
+    { metric: "Execution", value: 58 },
+  ];
+
+  return (
+    <Panel
+      title="Decision Radar"
+      subtitle="Radar view of decision strength, risk and execution readiness"
+    >
+      <div className="grid gap-5 xl:grid-cols-[1fr_380px]">
+        <div className="h-[360px] rounded-2xl border border-cyan-400/10 bg-black/40 p-4">
+          <ResponsiveContainer width="100%" height="100%">
+            <RadarChart data={radarData}>
+              <PolarGrid stroke="rgba(34,211,238,0.18)" />
+              <PolarAngleAxis
+                dataKey="metric"
+                tick={{ fill: "#94a3b8", fontSize: 11 }}
+              />
+              <PolarRadiusAxis
+                angle={90}
+                domain={[0, 100]}
+                tick={{ fill: "#64748b", fontSize: 10 }}
+              />
+              <Radar
+                name="Decision Strength"
+                dataKey="value"
+                stroke="#22d3ee"
+                fill="#22d3ee"
+                fillOpacity={0.18}
+              />
+              <Tooltip
+                contentStyle={{
+                  background: "#020617",
+                  border: "1px solid rgba(34,211,238,0.25)",
+                  borderRadius: "12px",
+                  color: "#fff",
+                }}
+              />
+            </RadarChart>
+          </ResponsiveContainer>
+        </div>
+
+        <div className="rounded-2xl border border-amber-400/30 bg-amber-400/10 p-5 shadow-[0_0_35px_rgba(251,191,36,0.12)]">
+          <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-amber-300">
+            Radar Insight
+          </p>
+
+          <h3 className="mt-3 text-2xl font-black text-white">
+            Workforce is the weakest signal
+          </h3>
+
+          <p className="mt-3 text-sm leading-relaxed text-slate-300">
+            Strategy and financial signals are strong, but workforce readiness
+            and execution capacity reduce the final decision confidence. This
+            explains why the system recommends revision instead of approval.
+          </p>
+
+          <div className="mt-5 space-y-3">
+            <Metric label="Strongest Signal" value="Finance 90" />
+            <Metric label="Weakest Signal" value="Workforce 50" />
+            <Metric label="Decision Pressure" value="Execution Risk" />
+            <Metric label="Recommended Action" value="Capacity Plan" />
+          </div>
+        </div>
+      </div>
+    </Panel>
+  );
+}
 function ScenarioPanel({
   isRunning,
   onStart,
@@ -307,7 +727,6 @@ function ScenarioPanel({
     </Panel>
   );
 }
-
 function DecisionCore({
   agents,
   classifierStatus,
@@ -319,48 +738,90 @@ function DecisionCore({
   aggregatorStatus: AgentStatus;
   explainStatus: AgentStatus;
 }) {
-  const getStatus = (id: string) => agents.find((agent) => agent.id === id)?.status ?? "IDLE";
+  const getStatus = (id: string) =>
+    agents.find((agent) => agent.id === id)?.status ?? "IDLE";
 
   return (
     <Panel title="Decision Core Network" subtitle="Live multi-agent orchestration">
-      <div className="relative flex min-h-[520px] items-center justify-center overflow-hidden rounded-2xl border border-cyan-400/10 bg-black/40">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(34,211,238,0.20),transparent_45%)]" />
+      <div className="relative flex min-h-[540px] items-center justify-center overflow-hidden rounded-2xl border border-cyan-400/10 bg-black/40">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(34,211,238,0.18),transparent_50%)]" />
 
-        <motion.div
-          initial={{ scale: 0.9, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          className="relative flex h-56 w-56 items-center justify-center rounded-full border border-cyan-300/50 bg-cyan-400/10 shadow-[0_0_80px_rgba(34,211,238,0.3)]"
-        >
+        <div className="relative flex h-64 w-64 items-center justify-center rounded-full border border-cyan-300/50 bg-cyan-400/10 shadow-[0_0_80px_rgba(34,211,238,0.28)]">
           <motion.div
             animate={{ rotate: 360 }}
             transition={{ repeat: Infinity, duration: 18, ease: "linear" }}
-            className="absolute inset-[-28px] rounded-full border border-dashed border-cyan-300/30"
+            className="absolute inset-[-34px] rounded-full border border-dashed border-cyan-300/30"
           />
 
           <div className="text-center">
-            <p className="font-mono text-xs tracking-[0.4em] text-cyan-300">DECISION</p>
+            <p className="font-mono text-xs tracking-[0.4em] text-cyan-300">
+              DECISION
+            </p>
             <p className="text-3xl font-black text-white drop-shadow-[0_0_14px_rgba(34,211,238,0.9)]">
               CORE
             </p>
           </div>
+        </div>
 
-          <CoreNode label="CEO" className="-top-14 left-1/2 -translate-x-1/2" color="cyan" status={getStatus("ceo")} />
-          <CoreNode label="CFO" className="right-[-92px] top-1/2 -translate-y-1/2" color="emerald" status={getStatus("cfo")} />
-          <CoreNode label="HR" className="-bottom-14 left-1/2 -translate-x-1/2" color="amber" status={getStatus("hr")} />
-          <CoreNode label="CLASSIFIER" className="left-[-132px] top-1/2 -translate-y-1/2" color="purple" status={classifierStatus} />
-          <CoreNode label="AGGREGATOR" className="right-[-110px] bottom-2" color="cyan" status={aggregatorStatus} />
-          <CoreNode label="EXPLAIN" className="left-[-96px] bottom-2" color="cyan" status={explainStatus} />
-        </motion.div>
+        <CoreNode
+          label="CEO"
+          className="left-1/2 top-8 -translate-x-1/2"
+          color="cyan"
+          status={getStatus("ceo")}
+        />
+
+        <CoreNode
+          label="CFO"
+          className="right-8 top-1/2 -translate-y-1/2"
+          color="emerald"
+          status={getStatus("cfo")}
+        />
+
+        <CoreNode
+          label="HR"
+          className="bottom-8 left-1/2 -translate-x-1/2"
+          color="amber"
+          status={getStatus("hr")}
+        />
+
+        <CoreNode
+          label="CLASSIFIER"
+          className="left-8 top-1/2 -translate-y-1/2"
+          color="purple"
+          status={classifierStatus}
+        />
+
+        <CoreNode
+          label="AGGREGATOR"
+          className="bottom-20 right-8"
+          color="cyan"
+          status={aggregatorStatus}
+        />
+
+        <CoreNode
+          label="EXPLAIN"
+          className="bottom-20 left-8"
+          color="cyan"
+          status={explainStatus}
+        />
       </div>
     </Panel>
   );
 }
-
 function LiveFeed({ logs }: { logs: string[] }) {
+   const logEndRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    logEndRef.current?.scrollIntoView({
+      behavior: "smooth",
+      block: "end",
+    });
+  }, [logs]);
+
   return (
     <Panel title="Live Analysis Feed" subtitle="Real-time agent execution stream">
       <div className="space-y-4">
-        <div className="h-[340px] overflow-hidden rounded-xl border border-cyan-400/10 bg-black/70 p-4 font-mono text-xs">
+        <div className="h-[420px] overflow-y-auto rounded-xl border border-cyan-400/10 bg-black/70 p-4 pr-2 font-mono text-xs [scrollbar-color:rgba(34,211,238,0.55)_rgba(15,23,42,0.8)] [scrollbar-width:thin]">
           <div className="mb-3 flex items-center gap-2 text-cyan-300">
             <Network size={16} />
             <span>STREAM ACTIVE</span>
@@ -374,7 +835,8 @@ function LiveFeed({ logs }: { logs: string[] }) {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.02 }}
                 className={
-                  log.toLowerCase().includes("warning") || log.includes("HR weight")
+                  log.toLowerCase().includes("warning") ||
+                  log.includes("HR weight")
                     ? "text-amber-300"
                     : log.toLowerCase().includes("final") ||
                         log.toLowerCase().includes("completed")
@@ -388,6 +850,8 @@ function LiveFeed({ logs }: { logs: string[] }) {
                 &gt; {log}
               </motion.p>
             ))}
+
+            <div ref={logEndRef} />
           </div>
         </div>
 
@@ -396,7 +860,6 @@ function LiveFeed({ logs }: { logs: string[] }) {
     </Panel>
   );
 }
-
 
 function AgentContributionChart() {
   return (
@@ -558,105 +1021,6 @@ function FinalDecision({ visible, isRunning }: { visible: boolean; isRunning: bo
     </motion.section>
   );
 }
-function AgentDebateConsole() {
-  const rounds = Array.from(
-    new Set(agentDebateMessages.map((message) => message.round))
-  );
-
-  return (
-    <Panel
-      title="Agent Debate Console"
-      subtitle="Cross-agent reasoning and boardroom-style deliberation"
-    >
-      <div className="grid gap-5 xl:grid-cols-[1fr_360px]">
-        <div className="space-y-5">
-          {rounds.map((round) => (
-            <div
-              key={round}
-              className="rounded-2xl border border-cyan-400/10 bg-black/40 p-5"
-            >
-              <div className="mb-4 flex items-center justify-between">
-                <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-cyan-300">
-                  {round}
-                </p>
-
-                <span className="rounded-full border border-cyan-400/20 bg-cyan-400/10 px-2 py-1 font-mono text-[10px] text-cyan-300">
-                  LIVE THREAD
-                </span>
-              </div>
-
-              <div className="space-y-3">
-                {agentDebateMessages
-                  .filter((message) => message.round === round)
-                  .map((message, index) => (
-                    <motion.div
-                      key={`${message.round}-${message.agent}-${index}`}
-                      initial={{ opacity: 0, x: -14 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: index * 0.08 }}
-                      className={`rounded-xl border bg-black/50 p-4 ${debateBorderClass(
-                        message.color
-                      )}`}
-                    >
-                      <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
-                        <div>
-                          <div className="flex items-center gap-2">
-                            <span
-                              className={`h-2 w-2 rounded-full ${debateDotClass(
-                                message.color
-                              )}`}
-                            />
-                            <h3 className="text-sm font-bold text-white">
-                              {message.agent}
-                            </h3>
-                          </div>
-
-                          <p className="mt-2 text-xs leading-relaxed text-slate-300">
-                            {message.message}
-                          </p>
-                        </div>
-
-                        <span
-                          className={`shrink-0 rounded-full border px-2 py-1 font-mono text-[10px] ${debateStanceClass(
-                            message.stance
-                          )}`}
-                        >
-                          {message.stance}
-                        </span>
-                      </div>
-                    </motion.div>
-                  ))}
-              </div>
-            </div>
-          ))}
-        </div>
-
-        <div className="rounded-2xl border border-purple-400/20 bg-purple-400/10 p-5 shadow-[0_0_35px_rgba(168,85,247,0.12)]">
-          <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-purple-300">
-            Debate Summary
-          </p>
-
-          <h3 className="mt-3 text-2xl font-black text-white">
-            Multi-Agent Consensus
-          </h3>
-
-          <p className="mt-3 text-sm leading-relaxed text-slate-300">
-            CEO and CFO support the initiative, but HR identifies workforce
-            capacity as the critical execution bottleneck. The agents converge
-            on a conditional decision: revise before approval.
-          </p>
-
-          <div className="mt-5 space-y-3">
-            <Metric label="Consensus" value="REVISE" />
-            <Metric label="Primary Conflict" value="Capacity Risk" />
-            <Metric label="Resolution Path" value="Hiring Plan" />
-            <Metric label="Boardroom Mode" value="Active" />
-          </div>
-        </div>
-      </div>
-    </Panel>
-  );
-}
 function Panel({
   title,
   subtitle,
@@ -698,21 +1062,29 @@ function CoreNode({
 }: {
   label: string;
   className: string;
-  color: "cyan" | "emerald" | "amber" | "purple";
+  color: AgentColor;
   status: AgentStatus;
 }) {
   return (
-    <motion.div
-      animate={
-        status === "ANALYZING"
-          ? { scale: [1, 1.12, 1], opacity: [0.85, 1, 0.85] }
-          : { scale: 1, opacity: status === "IDLE" ? 0.55 : 1 }
-      }
-      transition={{ repeat: status === "ANALYZING" ? Infinity : 0, duration: 1.2 }}
-      className={`absolute rounded-full border bg-black px-4 py-2 font-mono text-[10px] font-bold shadow-lg ${nodeColorClass(color, status)} ${className}`}
-    >
-      {label}
-    </motion.div>
+    <div className={`absolute z-10 ${className}`}>
+      <motion.div
+        animate={
+          status === "ANALYZING"
+            ? { scale: [1, 1.12, 1], opacity: [0.85, 1, 0.85] }
+            : { scale: 1, opacity: status === "IDLE" ? 0.55 : 1 }
+        }
+        transition={{
+          repeat: status === "ANALYZING" ? Infinity : 0,
+          duration: 1.2,
+        }}
+        className={`rounded-full border bg-black px-4 py-2 font-mono text-[10px] font-bold shadow-lg ${nodeColorClass(
+          color,
+          status
+        )}`}
+      >
+        {label}
+      </motion.div>
+    </div>
   );
 }
 
@@ -822,6 +1194,314 @@ function debateStanceClass(
   }
 
   return "border-cyan-400/40 bg-cyan-400/10 text-cyan-300";
+}
+function AgentDebateConsole({
+  messages,
+  isRunning,
+}: {
+  messages: DebateMessage[];
+  isRunning: boolean;
+}) {
+  const rounds = Array.from(new Set(messages.map((message) => message.round)));
+
+  return (
+    <Panel
+      title="Agent Debate Console"
+      subtitle="Cross-agent reasoning and boardroom-style deliberation"
+    >
+      <div className="grid gap-5 xl:grid-cols-[1fr_360px]">
+        <div className="space-y-5">
+          {messages.length === 0 && (
+            <div className="rounded-2xl border border-cyan-400/10 bg-black/40 p-5 text-center">
+              <p className="font-mono text-xs text-cyan-300">
+                {isRunning
+                  ? "Agent debate is initializing..."
+                  : "Run simulation to start cross-agent debate."}
+              </p>
+            </div>
+          )}
+
+          {rounds.map((round) => (
+            <div
+              key={round}
+              className="rounded-2xl border border-cyan-400/10 bg-black/40 p-5"
+            >
+              <div className="mb-4 flex items-center justify-between">
+                <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-cyan-300">
+                  {round}
+                </p>
+
+                <span className="rounded-full border border-cyan-400/20 bg-cyan-400/10 px-2 py-1 font-mono text-[10px] text-cyan-300">
+                  LIVE THREAD
+                </span>
+              </div>
+
+              <div className="space-y-3">
+                {messages
+                  .filter((message) => message.round === round)
+                  .map((message, index) => (
+                    <motion.div
+                      key={`${message.round}-${message.agent}-${index}`}
+                      initial={{ opacity: 0, x: -14 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: index * 0.08 }}
+                      className={`rounded-xl border bg-black/50 p-4 ${debateBorderClass(
+                        message.color
+                      )}`}
+                    >
+                      <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
+                        <div>
+                          <div className="flex items-center gap-2">
+                            <span
+                              className={`h-2 w-2 rounded-full ${debateDotClass(
+                                message.color
+                              )}`}
+                            />
+                            <h3 className="text-sm font-bold text-white">
+                              {message.agent}
+                            </h3>
+                          </div>
+
+                          <p className="mt-2 text-xs leading-relaxed text-slate-300">
+                            {message.message}
+                          </p>
+                        </div>
+
+                        <span
+                          className={`shrink-0 rounded-full border px-2 py-1 font-mono text-[10px] ${debateStanceClass(
+                            message.stance
+                          )}`}
+                        >
+                          {message.stance}
+                        </span>
+                      </div>
+                    </motion.div>
+                  ))}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className="rounded-2xl border border-purple-400/20 bg-purple-400/10 p-5 shadow-[0_0_35px_rgba(168,85,247,0.12)]">
+          <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-purple-300">
+            Debate Summary
+          </p>
+
+          <h3 className="mt-3 text-2xl font-black text-white">
+            Multi-Agent Consensus
+          </h3>
+
+          <p className="mt-3 text-sm leading-relaxed text-slate-300">
+            CEO and CFO support the initiative, but HR identifies workforce
+            capacity as the critical execution bottleneck. The agents converge
+            on a conditional decision: revise before approval.
+          </p>
+
+          <div className="mt-5 space-y-3">
+            <Metric label="Consensus" value="REVISE" />
+            <Metric label="Primary Conflict" value="Capacity Risk" />
+            <Metric label="Resolution Path" value="Hiring Plan" />
+            <Metric label="Boardroom Mode" value="Active" />
+          </div>
+        </div>
+      </div>
+    </Panel>
+  );
+}
+function ScenarioComparisonBoard() {
+  const scenarios = [
+    {
+      name: "Current Plan",
+      decision: "REVISE",
+      score: 68.75,
+      risk: "Medium",
+      bottleneck: "Workforce Capacity",
+      recommendation: "Improve team readiness before approval.",
+      tone: "amber",
+    },
+    {
+      name: "Improved Team Plan",
+      decision: "APPROVE",
+      score: 76.25,
+      risk: "Controlled",
+      bottleneck: "None critical",
+      recommendation: "Proceed with controlled execution.",
+      tone: "emerald",
+    },
+    {
+      name: "High Risk Pivot",
+      decision: "REJECT",
+      score: 44.2,
+      risk: "High",
+      bottleneck: "Risk Exposure",
+      recommendation: "Reduce risk before reconsideration.",
+      tone: "red",
+    },
+  ];
+
+  return (
+    <Panel
+      title="Scenario Comparison Board"
+      subtitle="Compare alternative decision paths before executive approval"
+    >
+      <div className="grid gap-4 lg:grid-cols-3">
+        {scenarios.map((scenario, index) => (
+          <motion.div
+            key={scenario.name}
+            initial={{ opacity: 0, y: 14 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: index * 0.06 }}
+            className={`rounded-2xl border bg-black/40 p-5 ${scenarioCardClass(
+              scenario.tone
+            )}`}
+          >
+            <div className="mb-4 flex items-start justify-between gap-3">
+              <div>
+                <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-slate-500">
+                  Scenario Variant
+                </p>
+                <h3 className="mt-1 text-lg font-black text-white">
+                  {scenario.name}
+                </h3>
+              </div>
+
+              <span
+                className={`rounded-full border px-2 py-1 font-mono text-[10px] ${scenarioBadgeClass(
+                  scenario.tone
+                )}`}
+              >
+                {scenario.decision}
+              </span>
+            </div>
+
+            <div className="mb-4">
+              <div className="flex items-end justify-between">
+                <span className="text-4xl font-black text-white">
+                  {scenario.score}
+                </span>
+                <span className="font-mono text-[10px] text-slate-500">
+                  /100
+                </span>
+              </div>
+
+              <div className="mt-3 h-2 overflow-hidden rounded-full bg-slate-800">
+                <div
+                  className={`h-full rounded-full ${scenarioBarClass(
+                    scenario.tone
+                  )}`}
+                  style={{ width: `${scenario.score}%` }}
+                />
+              </div>
+            </div>
+
+            <div className="grid gap-3">
+              <Metric label="Risk" value={scenario.risk} />
+              <Metric label="Bottleneck" value={scenario.bottleneck} />
+            </div>
+
+            <div className="mt-4 rounded-xl border border-white/10 bg-white/5 p-3">
+              <p className="font-mono text-[10px] uppercase tracking-widest text-slate-500">
+                Recommendation
+              </p>
+              <p className="mt-2 text-xs leading-relaxed text-slate-300">
+                {scenario.recommendation}
+              </p>
+            </div>
+          </motion.div>
+        ))}
+      </div>
+    </Panel>
+  );
+}
+function ExecutionActionPlan() {
+  const actions = [
+    {
+      phase: "01",
+      title: "Workforce Readiness Sprint",
+      owner: "HR Agent",
+      priority: "CRITICAL",
+      duration: "2-4 weeks",
+      tone: "amber",
+      description:
+        "Increase team readiness from 3/10 to at least 6/10 with hiring, onboarding and internal capability mapping.",
+    },
+    {
+      phase: "02",
+      title: "Budget Guardrail Review",
+      owner: "CFO Agent",
+      priority: "HIGH",
+      duration: "1 week",
+      tone: "emerald",
+      description:
+        "Validate whether additional hiring and onboarding costs keep the expected ROI financially acceptable.",
+    },
+    {
+      phase: "03",
+      title: "Strategic Approval Gate",
+      owner: "CEO Agent",
+      priority: "HIGH",
+      duration: "Decision meeting",
+      tone: "cyan",
+      description:
+        "Re-check strategic fit after HR and CFO constraints are updated, then decide whether the scenario can move to approval.",
+    },
+    {
+      phase: "04",
+      title: "Re-run Decision Simulation",
+      owner: "Decision Aggregator",
+      priority: "FINAL",
+      duration: "After updates",
+      tone: "purple",
+      description:
+        "Run the decision engine again with improved readiness values and compare the result against the current REVISE outcome.",
+    },
+  ];
+
+  return (
+    <Panel
+      title="Execution Action Plan"
+      subtitle="Recommended steps to move the scenario from REVISE toward APPROVE"
+    >
+      <div className="grid gap-4 xl:grid-cols-4">
+        {actions.map((action, index) => (
+          <motion.div
+            key={action.title}
+            initial={{ opacity: 0, y: 14 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: index * 0.06 }}
+            className={`rounded-2xl border bg-black/40 p-5 ${actionCardClass(
+              action.tone
+            )}`}
+          >
+            <div className="mb-4 flex items-center justify-between">
+              <span className="font-mono text-[10px] text-slate-500">
+                PHASE {action.phase}
+              </span>
+
+              <span
+                className={`rounded-full border px-2 py-1 font-mono text-[10px] ${actionBadgeClass(
+                  action.tone
+                )}`}
+              >
+                {action.priority}
+              </span>
+            </div>
+
+            <h3 className="text-base font-black text-white">{action.title}</h3>
+
+            <p className="mt-2 text-xs leading-relaxed text-slate-300">
+              {action.description}
+            </p>
+
+            <div className="mt-5 grid gap-3">
+              <Metric label="Owner" value={action.owner} />
+              <Metric label="Duration" value={action.duration} />
+            </div>
+          </motion.div>
+        ))}
+      </div>
+    </Panel>
+  );
 }
 function WhatIfLab() {
   const [budget, setBudget] = useState(25);
@@ -1004,7 +1684,120 @@ function SliderControl({
     </div>
   );
 }
+function timelineStatusClass(status: AgentStatus) {
+  if (status === "COMPLETED") {
+    return "border-emerald-400/30 shadow-[0_0_18px_rgba(52,211,153,0.10)]";
+  }
 
+  if (status === "ANALYZING") {
+    return "border-cyan-400/40 shadow-[0_0_20px_rgba(34,211,238,0.16)]";
+  }
+
+  if (status === "WARNING") {
+    return "border-amber-400/40 shadow-[0_0_20px_rgba(251,191,36,0.14)]";
+  }
+
+  return "border-slate-700/70";
+}
+
+function timelineDotClass(status: AgentStatus) {
+  if (status === "COMPLETED") {
+    return "bg-emerald-300 shadow-[0_0_12px_rgba(52,211,153,0.9)]";
+  }
+
+  if (status === "ANALYZING") {
+    return "bg-cyan-300 shadow-[0_0_12px_rgba(34,211,238,0.9)] animate-pulse";
+  }
+
+  if (status === "WARNING") {
+    return "bg-amber-300 shadow-[0_0_12px_rgba(251,191,36,0.9)]";
+  }
+
+  return "bg-slate-600";
+}
+
+function timelineTextClass(status: AgentStatus) {
+  if (status === "COMPLETED") return "text-emerald-300";
+  if (status === "ANALYZING") return "text-cyan-300";
+  if (status === "WARNING") return "text-amber-300";
+  return "text-slate-500";
+}
+function signalCardClass(tone: string) {
+  if (tone === "emerald") {
+    return "border-emerald-400/30 shadow-[0_0_22px_rgba(52,211,153,0.10)]";
+  }
+
+  if (tone === "amber") {
+    return "border-amber-400/40 shadow-[0_0_22px_rgba(251,191,36,0.14)]";
+  }
+
+  if (tone === "purple") {
+    return "border-purple-400/30 shadow-[0_0_22px_rgba(168,85,247,0.10)]";
+  }
+
+  return "border-cyan-400/30 shadow-[0_0_22px_rgba(34,211,238,0.10)]";
+}
+
+function signalBadgeClass(tone: string) {
+  if (tone === "emerald") {
+    return "border-emerald-400/40 bg-emerald-400/10 text-emerald-300";
+  }
+
+  if (tone === "amber") {
+    return "border-amber-400/40 bg-amber-400/10 text-amber-300";
+  }
+
+  if (tone === "purple") {
+    return "border-purple-400/40 bg-purple-400/10 text-purple-300";
+  }
+
+  return "border-cyan-400/40 bg-cyan-400/10 text-cyan-300";
+}
+
+function signalBarClass(tone: string) {
+  if (tone === "emerald") return "bg-emerald-300 shadow-[0_0_14px_rgba(52,211,153,0.9)]";
+  if (tone === "amber") return "bg-amber-300 shadow-[0_0_14px_rgba(251,191,36,0.9)]";
+  if (tone === "purple") return "bg-purple-300 shadow-[0_0_14px_rgba(168,85,247,0.9)]";
+  return "bg-cyan-300 shadow-[0_0_14px_rgba(34,211,238,0.9)]";
+}
+function kpiCardClass(tone: string) {
+  if (tone === "amber") {
+    return "border-amber-400/40 shadow-[0_0_25px_rgba(251,191,36,0.12)]";
+  }
+
+  if (tone === "emerald") {
+    return "border-emerald-400/30 shadow-[0_0_25px_rgba(52,211,153,0.10)]";
+  }
+
+  if (tone === "cyan") {
+    return "border-cyan-400/30 shadow-[0_0_25px_rgba(34,211,238,0.10)]";
+  }
+
+  return "border-slate-700/70";
+}
+
+function kpiValueClass(tone: string) {
+  if (tone === "amber") return "text-amber-300";
+  if (tone === "emerald") return "text-emerald-300";
+  if (tone === "cyan") return "text-cyan-300";
+  return "text-slate-300";
+}
+
+function kpiDotClass(tone: string) {
+  if (tone === "amber") {
+    return "bg-amber-300 shadow-[0_0_12px_rgba(251,191,36,0.9)]";
+  }
+
+  if (tone === "emerald") {
+    return "bg-emerald-300 shadow-[0_0_12px_rgba(52,211,153,0.9)]";
+  }
+
+  if (tone === "cyan") {
+    return "bg-cyan-300 shadow-[0_0_12px_rgba(34,211,238,0.9)]";
+  }
+
+  return "bg-slate-600";
+}
 function clamp(value: number) {
   return Math.max(0, Math.min(100, Math.round(value)));
 }
@@ -1220,6 +2013,115 @@ function ExecutiveDecisionReport() {
   );
 
 }
+function SimulationHistory() {
+  const historyItems = [
+    {
+      title: "AI Market Expansion Initiative",
+      decision: "REVISE",
+      score: "68.75",
+      date: "Latest simulation",
+      bottleneck: "Workforce Capacity",
+    },
+    {
+      title: "Cost Optimization Program",
+      decision: "APPROVE",
+      score: "81.40",
+      date: "Demo record",
+      bottleneck: "Low risk",
+    },
+    {
+      title: "Strategic Pivot Scenario",
+      decision: "REJECT",
+      score: "44.20",
+      date: "Demo record",
+      bottleneck: "High risk exposure",
+    },
+  ];
+
+  return (
+    <Panel
+      title="Simulation History"
+      subtitle="Previous decision runs and executive outcomes"
+    >
+      <div className="grid gap-4 lg:grid-cols-3">
+        {historyItems.map((item) => (
+          <div
+            key={item.title}
+            className="rounded-2xl border border-cyan-400/10 bg-black/40 p-4"
+          >
+            <div className="mb-4 flex items-start justify-between gap-3">
+              <div>
+                <h3 className="text-sm font-bold text-white">{item.title}</h3>
+                <p className="mt-1 font-mono text-[10px] text-slate-500">
+                  {item.date}
+                </p>
+              </div>
+
+              <span
+                className={`rounded-full border px-2 py-1 font-mono text-[10px] ${
+                  item.decision === "APPROVE"
+                    ? "border-emerald-400/40 bg-emerald-400/10 text-emerald-300"
+                    : item.decision === "REVISE"
+                      ? "border-amber-400/40 bg-amber-400/10 text-amber-300"
+                      : "border-red-400/40 bg-red-400/10 text-red-300"
+                }`}
+              >
+                {item.decision}
+              </span>
+            </div>
+
+            <div className="grid grid-cols-2 gap-3">
+              <Metric label="Score" value={item.score} />
+              <Metric label="Bottleneck" value={item.bottleneck} />
+            </div>
+          </div>
+        ))}
+      </div>
+    </Panel>
+  );
+}
+function SystemSettingsPanel() {
+  const settings = [
+    ["Simulation Mode", "Frontend Mock"],
+    ["Agent Count", "CEO / CFO / HR"],
+    ["Debate Mode", "Interactive"],
+    ["Report Export", "TXT Enabled"],
+    ["Backend Status", "Not connected yet"],
+    ["UI Theme", "Decision OS Dark"],
+  ];
+
+  return (
+    <Panel
+      title="System Settings"
+      subtitle="Frontend cockpit configuration and prototype status"
+    >
+      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+        {settings.map(([label, value]) => (
+          <div
+            key={label}
+            className="rounded-xl border border-cyan-400/10 bg-black/40 p-4"
+          >
+            <p className="font-mono text-[10px] uppercase tracking-widest text-slate-500">
+              {label}
+            </p>
+            <p className="mt-2 text-sm font-bold text-cyan-300">{value}</p>
+          </div>
+        ))}
+      </div>
+
+      <div className="mt-5 rounded-2xl border border-amber-400/20 bg-amber-400/10 p-4">
+        <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-amber-300">
+          Prototype Note
+        </p>
+        <p className="mt-2 text-sm leading-relaxed text-slate-300">
+          This cockpit currently uses frontend mock data. The next integration
+          step is connecting scenario input, agent outputs, debate messages and
+          executive reports to the FastAPI backend.
+        </p>
+      </div>
+    </Panel>
+  );
+}
 function CalculationRow({
   label,
   formula,
@@ -1236,4 +2138,69 @@ function CalculationRow({
       <span className="font-bold text-white">{result}</span>
     </div>
   );
+}function scenarioCardClass(tone: string) {
+  if (tone === "emerald") {
+    return "border-emerald-400/30 shadow-[0_0_25px_rgba(52,211,153,0.10)]";
+  }
+
+  if (tone === "red") {
+    return "border-red-400/30 shadow-[0_0_25px_rgba(248,113,113,0.10)]";
+  }
+
+  return "border-amber-400/40 shadow-[0_0_25px_rgba(251,191,36,0.12)]";
+}
+
+function scenarioBadgeClass(tone: string) {
+  if (tone === "emerald") {
+    return "border-emerald-400/40 bg-emerald-400/10 text-emerald-300";
+  }
+
+  if (tone === "red") {
+    return "border-red-400/40 bg-red-400/10 text-red-300";
+  }
+
+  return "border-amber-400/40 bg-amber-400/10 text-amber-300";
+}
+
+function scenarioBarClass(tone: string) {
+  if (tone === "emerald") {
+    return "bg-emerald-300 shadow-[0_0_14px_rgba(52,211,153,0.9)]";
+  }
+
+  if (tone === "red") {
+    return "bg-red-300 shadow-[0_0_14px_rgba(248,113,113,0.9)]";
+  }
+
+  return "bg-amber-300 shadow-[0_0_14px_rgba(251,191,36,0.9)]";
+}
+function actionCardClass(tone: string) {
+  if (tone === "emerald") {
+    return "border-emerald-400/30 shadow-[0_0_25px_rgba(52,211,153,0.10)]";
+  }
+
+  if (tone === "cyan") {
+    return "border-cyan-400/30 shadow-[0_0_25px_rgba(34,211,238,0.10)]";
+  }
+
+  if (tone === "purple") {
+    return "border-purple-400/30 shadow-[0_0_25px_rgba(168,85,247,0.10)]";
+  }
+
+  return "border-amber-400/40 shadow-[0_0_25px_rgba(251,191,36,0.12)]";
+}
+
+function actionBadgeClass(tone: string) {
+  if (tone === "emerald") {
+    return "border-emerald-400/40 bg-emerald-400/10 text-emerald-300";
+  }
+
+  if (tone === "cyan") {
+    return "border-cyan-400/40 bg-cyan-400/10 text-cyan-300";
+  }
+
+  if (tone === "purple") {
+    return "border-purple-400/40 bg-purple-400/10 text-purple-300";
+  }
+
+  return "border-amber-400/40 bg-amber-400/10 text-amber-300";
 }
