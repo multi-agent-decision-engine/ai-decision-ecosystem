@@ -1,0 +1,56 @@
+digraph Architecture {
+    rankdir=TB;
+    bgcolor="white";
+    compound=true;
+    fontname="Helvetica";
+    node [shape=box, style="filled,rounded", fontname="Helvetica", fontsize=11, margin="0.15,0.10"];
+    edge [fontname="Helvetica", fontsize=9, color="#444444"];
+
+    subgraph cluster_pres {
+        label="Presentation Layer";
+        style="filled,rounded"; fillcolor="#EEF3FB"; color="#2E5BBA"; fontcolor="#2E5BBA"; penwidth=2;
+        UI   [label="React + Vite Cockpit\n(Scenario List, Debate Console,\nExecutive Report)", fillcolor="#FFFFFF", color="#2E5BBA"];
+        API  [label="FastAPI Routes\n/api/v1/scenarios, /simulate,\n/classify, /weights", fillcolor="#FFFFFF", color="#2E5BBA"];
+        SCH  [label="Pydantic Schemas\n(Request / Response Contract)", fillcolor="#FFFFFF", color="#2E5BBA"];
+    }
+
+    subgraph cluster_app {
+        label="Application Layer";
+        style="filled,rounded"; fillcolor="#EAF6EE"; color="#2E8B57"; fontcolor="#2E8B57"; penwidth=2;
+        UC [label="Use Cases\nScenarioSimulationService\nScenarioQueryService", fillcolor="#FFFFFF", color="#2E8B57"];
+    }
+
+    subgraph cluster_dom {
+        label="Domain Layer";
+        style="filled,rounded"; fillcolor="#FFF4E0"; color="#B8860B"; fontcolor="#B8860B"; penwidth=2;
+        AG  [label="Agents\nCEO / CFO / HR\n(Strategy + Factory)", fillcolor="#FFFFFF", color="#B8860B"];
+        DO  [label="DiscussionOrchestrator\n(Round-based debate)", fillcolor="#FFFFFF", color="#B8860B"];
+        CL  [label="ScenarioClassifier", fillcolor="#FFFFFF", color="#B8860B"];
+        AGG [label="DecisionAggregator", fillcolor="#FFFFFF", color="#B8860B"];
+        MOD [label="Domain Models\nScenario, AgentMessage,\nFinalDecision", fillcolor="#FFFFFF", color="#B8860B"];
+    }
+
+    subgraph cluster_inf {
+        label="Infrastructure Layer";
+        style="filled,rounded"; fillcolor="#F5E8EE"; color="#8B2E5B"; fontcolor="#8B2E5B"; penwidth=2;
+        REPO [label="SQLAlchemy Async\nRepositories", fillcolor="#FFFFFF", color="#8B2E5B"];
+        DB   [label="PostgreSQL\nscenarios / agent_outputs /\nfinal_decisions", shape=cylinder, fillcolor="#FFFFFF", color="#8B2E5B"];
+        LLM  [label="LLM Adapter\n(Ollama / LangChain)", fillcolor="#FFFFFF", color="#8B2E5B"];
+        LOG  [label="Logger / Config", fillcolor="#FFFFFF", color="#8B2E5B"];
+    }
+
+    UI  -> API  [label=" HTTPS / JSON "];
+    API -> SCH  [style=dashed];
+    API -> UC;
+    UC  -> AG;
+    UC  -> DO;
+    UC  -> CL;
+    UC  -> AGG;
+    DO  -> AG;
+    AGG -> MOD;
+    AG  -> MOD;
+    UC  -> REPO;
+    REPO -> DB;
+    AG  -> LLM [style=dashed, label=" optional "];
+    UC  -> LOG [style=dashed];
+}
