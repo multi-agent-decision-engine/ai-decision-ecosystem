@@ -210,6 +210,19 @@ class TestAgentsSeeHistory:
             assert received_messages["CFO"][1] == 4
             assert received_messages["HR"][1] == 5
 
+    async def test_hr_references_previous_agents_in_later_rounds(self, service):
+        """HR should explicitly show cross-analysis after reading prior messages."""
+        result = await service.run_simulation(scenario_id=1, n_rounds=2)
+
+        if result.total_rounds >= 2:
+            hr_round_2 = next(
+                message
+                for message in result.rounds[1].messages
+                if message.agent == "HR"
+            )
+            assert "Cross-analysis:" in hr_round_2.reasoning
+            assert "CEO" in hr_round_2.reasoning or "CFO" in hr_round_2.reasoning
+
     async def test_cfo_sees_ceo_message_in_same_round(self, service):
         """CFO should see CEO's message from the same round."""
         result = await service.run_simulation(scenario_id=1, n_rounds=1)

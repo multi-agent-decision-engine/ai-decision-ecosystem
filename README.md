@@ -101,10 +101,36 @@ pytest tests/ -v
 
 ## API Endpoints
 - `POST /api/v1/scenarios` - Create scenario
-- `POST /api/v1/scenarios/{id}/simulate` - Run simulation and persist outputs + final decision
+- `POST /api/v1/scenarios/{id}/simulate` - Run round-based agent simulation and persist outputs + final decision
 - `GET /api/v1/scenarios?limit=20&offset=0` - List scenarios (paginated)
 - `GET /api/v1/scenarios/{id}` - Get scenario details
 - `GET /api/v1/scenarios/{id}/simulation` - Get scenario with agent outputs and final decision
+
+Detailed simulation response contract:
+
+- `rounds` - CEO, CFO and HR messages grouped by discussion round
+- `total_rounds` - number of rounds executed
+- `consensus_reached` - whether all agents reached the same stance
+- `stability_reached` - whether agent positions stabilized between rounds
+- `agent_outputs` - final legacy agent scores and rationales
+- `final_score` / `final_decision` - aggregated recommendation
+- `scenario_type`, `scenario_type_confidence`, `agent_weights` - classifier-driven context
+
+See [`docs/backend_simulation_contract.md`](docs/backend_simulation_contract.md) for the frontend/backend response contract.
+
+Minimal response shape:
+
+```json
+{
+  "scenario_id": 5,
+  "rounds": [{"round_number": 1, "messages": [{"agent": "CEO", "stance": "neutral", "confidence": 0.6}]}],
+  "total_rounds": 2,
+  "final_score": 46.0,
+  "final_decision": "REJECT",
+  "scenario_type": "team_expansion",
+  "agent_weights": {"CEO": 0.25, "CFO": 0.25, "HR": 0.5}
+}
+```
 
 ## Scenario Input Contract
 
