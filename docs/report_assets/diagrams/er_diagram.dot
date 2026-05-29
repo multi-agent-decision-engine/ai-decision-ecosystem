@@ -1,0 +1,44 @@
+digraph ER {
+    rankdir=LR;
+    bgcolor="white";
+    node [shape=plaintext, fontname="Helvetica", fontsize=11];
+    edge [fontname="Helvetica", fontsize=10, color="#333333"];
+
+    Scenario [label=<
+      <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="6">
+        <TR><TD BGCOLOR="#2E5BBA" COLSPAN="2"><FONT COLOR="white"><B>Scenario</B></FONT></TD></TR>
+        <TR><TD ALIGN="LEFT"><B>id</B></TD><TD ALIGN="LEFT">INTEGER, PK</TD></TR>
+        <TR><TD ALIGN="LEFT">name</TD><TD ALIGN="LEFT">VARCHAR(120)</TD></TR>
+        <TR><TD ALIGN="LEFT">description</TD><TD ALIGN="LEFT">TEXT</TD></TR>
+        <TR><TD ALIGN="LEFT">budget_million_usd</TD><TD ALIGN="LEFT">FLOAT</TD></TR>
+        <TR><TD ALIGN="LEFT">expected_roi_percent</TD><TD ALIGN="LEFT">FLOAT</TD></TR>
+        <TR><TD ALIGN="LEFT">risk_level</TD><TD ALIGN="LEFT">INTEGER (1-10)</TD></TR>
+        <TR><TD ALIGN="LEFT">team_readiness</TD><TD ALIGN="LEFT">INTEGER (1-10)</TD></TR>
+        <TR><TD ALIGN="LEFT">created_at</TD><TD ALIGN="LEFT">DATETIME</TD></TR>
+      </TABLE>
+    >];
+
+    AgentOutput [label=<
+      <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="6">
+        <TR><TD BGCOLOR="#2E8B57" COLSPAN="2"><FONT COLOR="white"><B>AgentOutput</B></FONT></TD></TR>
+        <TR><TD ALIGN="LEFT"><B>id</B></TD><TD ALIGN="LEFT">INTEGER, PK</TD></TR>
+        <TR><TD ALIGN="LEFT"><I>scenario_id</I></TD><TD ALIGN="LEFT">INTEGER, FK</TD></TR>
+        <TR><TD ALIGN="LEFT">agent_name</TD><TD ALIGN="LEFT">VARCHAR(30)</TD></TR>
+        <TR><TD ALIGN="LEFT">score</TD><TD ALIGN="LEFT">INTEGER</TD></TR>
+        <TR><TD ALIGN="LEFT">rationale</TD><TD ALIGN="LEFT">TEXT</TD></TR>
+      </TABLE>
+    >];
+
+    FinalDecision [label=<
+      <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="6">
+        <TR><TD BGCOLOR="#B8860B" COLSPAN="2"><FONT COLOR="white"><B>FinalDecision</B></FONT></TD></TR>
+        <TR><TD ALIGN="LEFT"><B>id</B></TD><TD ALIGN="LEFT">INTEGER, PK</TD></TR>
+        <TR><TD ALIGN="LEFT"><I>scenario_id</I></TD><TD ALIGN="LEFT">INTEGER, FK, UNIQUE</TD></TR>
+        <TR><TD ALIGN="LEFT">final_score</TD><TD ALIGN="LEFT">FLOAT</TD></TR>
+        <TR><TD ALIGN="LEFT">decision</TD><TD ALIGN="LEFT">VARCHAR(20)</TD></TR>
+      </TABLE>
+    >];
+
+    Scenario -> AgentOutput   [label=" 1..N  (ON DELETE CASCADE) ", arrowhead=crow, arrowtail=tee, dir=both];
+    Scenario -> FinalDecision [label=" 1..1  (ON DELETE CASCADE) ", arrowhead=tee,  arrowtail=tee, dir=both];
+}

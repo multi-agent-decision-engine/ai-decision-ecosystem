@@ -1,0 +1,42 @@
+%% Mimari Diyagram - Multi-Agent Decision Engine
+%% Mermaid Live Editor'da (https://mermaid.live) PNG olarak export edilecek.
+flowchart TB
+    subgraph Presentation["Presentation Layer"]
+        UI["React + Vite Cockpit\n(Scenario List, Debate Console,\nExecutive Report)"]
+        API["FastAPI Routes\n/api/v1/scenarios\n/simulate /classify /weights"]
+        SCH["Pydantic Schemas\n(Request / Response Contract)"]
+    end
+
+    subgraph Application["Application Layer"]
+        UC["Use Cases\nScenarioSimulationService\nScenarioQueryService"]
+    end
+
+    subgraph Domain["Domain Layer"]
+        AG["Agents\nCEO / CFO / HR\n(Strategy + Factory)"]
+        DO["DiscussionOrchestrator\n(Round-based debate)"]
+        CL["ScenarioClassifier"]
+        AGG["DecisionAggregator"]
+        MOD["Domain Models\nScenario, AgentMessage,\nFinalDecision"]
+    end
+
+    subgraph Infrastructure["Infrastructure Layer"]
+        REPO["SQLAlchemy Async\nRepositories"]
+        DB[("PostgreSQL\nscenarios / agent_outputs /\nfinal_decisions")]
+        LLM["LLM Adapter\n(Ollama / LangChain)"]
+        LOG["Logger / Config"]
+    end
+
+    UI -->|HTTPS JSON| API
+    API --> SCH
+    API --> UC
+    UC --> AG
+    UC --> DO
+    UC --> CL
+    UC --> AGG
+    DO --> AG
+    AGG --> MOD
+    AG --> MOD
+    UC --> REPO
+    REPO --> DB
+    AG -.->|optional| LLM
+    UC -.-> LOG
