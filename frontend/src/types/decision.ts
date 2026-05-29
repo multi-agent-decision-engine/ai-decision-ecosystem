@@ -2,8 +2,6 @@ export type AgentStatus = "IDLE" | "ANALYZING" | "WARNING" | "COMPLETED";
 
 export type AgentColor = "cyan" | "emerald" | "amber" | "purple";
 
-export type DecisionResult = "APPROVE" | "REVISE" | "REJECT";
-
 export type Agent = {
   id: string;
   name: string;
@@ -15,26 +13,75 @@ export type Agent = {
   reasoning: string;
 };
 
-export type ScenarioRow = [label: string, value: string];
+export type Scenario = {
+  id: number;
+  name: string;
+  description: string;
+  budget_million_usd: number;
+  expected_roi_percent: number;
+  risk_level: number;
+  team_readiness: number;
+  created_at: string;
+};
 
-export type ContributionItem = {
+export type ScenarioListResponse = {
+  items: Scenario[];
+  limit: number;
+  offset: number;
+};
+
+export type AgentOutputResponse = {
+  agent_name?: string;
+  name?: string;
+  id?: string;
+  role?: string;
+  score: number;
+  rationale?: string;
+  reasoning?: string;
+  confidence?: number;
+  weight?: number;
+};
+
+export type AgentMessageResponse = {
+  agent?: string;
+  agent_name?: string;
+  stance?: string;
+  confidence?: number;
+  reasoning?: string;
+  rationale?: string;
+  round_number?: number;
+};
+
+export type RoundResponse = {
+  round_number: number;
+  messages: AgentMessageResponse[];
+};
+
+export type SimulationDetailResponse = {
+  scenario_id?: number;
+  scenario?: Scenario;
+  agents?: AgentOutputResponse[];
+  agent_outputs?: AgentOutputResponse[];
+  rounds?: RoundResponse[];
+  final_score: number;
+  final_decision: string;
+  consensus_reached?: boolean;
+  stability_reached?: boolean;
+  scenario_type?: string | null;
+  scenario_type_confidence?: number | null;
+  agent_weights?: Record<string, number> | null;
+};
+
+export type DebateMessage = {
+  id: string;
+  agent: string;
+  stance: string;
+  confidence: number;
+  reasoning: string;
+};
+
+export type ContributionDatum = {
   name: string;
   value: number;
   color: string;
-};
-
-export type AgentFinding = {
-  agent: string;
-  score: number;
-  weight: string;
-  stance: "Support" | "Revise" | "Reject";
-  color: AgentColor;
-  finding: string;
-};
-export type DebateMessage = {
-  round: string;
-  agent: string;
-  stance: "Support" | "Warning" | "Revise" | "Consensus";
-  message: string;
-  color: AgentColor;
 };
