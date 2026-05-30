@@ -1,6 +1,18 @@
 from datetime import datetime
+from typing import Any, Literal
 
 from pydantic import BaseModel, Field
+
+
+DecisionLabel = Literal["APPROVE", "REVISE", "REJECT"]
+ScenarioTypeLabel = Literal[
+    "high_growth",
+    "cost_optimization",
+    "team_expansion",
+    "strategic_pivot",
+    "maintenance",
+]
+StanceLabel = Literal["support", "oppose", "neutral"]
 
 
 class CreateScenarioRequest(BaseModel):
@@ -18,8 +30,22 @@ class CreateScenarioResponse(BaseModel):
 
 class AgentOutputResponse(BaseModel):
     agent_name: str
-    score: int
+    score: float
     rationale: str
+
+
+class AgentMessageResponse(BaseModel):
+    agent: str
+    stance: StanceLabel
+    confidence: float = Field(ge=0.0, le=1.0)
+    reasoning: str
+    metrics: dict[str, Any]
+    round_number: int
+
+
+class RoundResponse(BaseModel):
+    round_number: int
+    messages: list[AgentMessageResponse] = Field(min_length=1)
 
 
 class ScenarioResponse(BaseModel):
@@ -39,18 +65,50 @@ class ScenarioListResponse(BaseModel):
     offset: int
 
 
+class AgentWeightsResponse(BaseModel):
+    """Recommended agent weights based on scenario type."""
+    CEO: float
+    CFO: float
+    HR: float
+
+
 class SimulationResponse(BaseModel):
     scenario_id: int
-    agent_outputs: list[AgentOutputResponse]
+    rounds: list[RoundResponse] = Field(min_length=1)
+    total_rounds: int
+    consensus_reached: bool
+    stability_reached: bool
+    agent_outputs: list[AgentOutputResponse] = Field(min_length=1)
     final_score: float
-    final_decision: str
+    final_decision: DecisionLabel
+    scenario_type: ScenarioTypeLabel | None = None
+    scenario_type_confidence: float | None = Field(default=None, ge=0.0, le=1.0)
+    agent_weights: AgentWeightsResponse | None = None
 
 
 class SimulationDetailResponse(BaseModel):
     scenario: ScenarioResponse
     agent_outputs: list[AgentOutputResponse]
     final_score: float
+    final_decision: DecisionLabel
+
+
+class SimulationDetailedResponse(BaseModel):
+    """Detailed simulation response including full round-by-round debate."""
+
+    scenario_id: int
+    rounds: list[RoundResponse]
+    total_rounds: int = Field(ge=1)
+    consensus_reached: bool
+    stability_reached: bool
+    final_score: float
     final_decision: str
+
+    # Optional classification info (used to explain weighting)
+    scenario_type: str | None = None
+    scenario_type_confidence: float | None = None
+    classification_reasoning: str | None = None
+    agent_weights: dict[str, float] | None = None
 
 
 # Classification schemas
@@ -62,13 +120,6 @@ class ClassificationRequest(BaseModel):
     expected_roi_percent: float = Field(ge=0)
     risk_level: int = Field(ge=1, le=10)
     team_readiness: int = Field(ge=1, le=10)
-
-
-class AgentWeightsResponse(BaseModel):
-    """Recommended agent weights based on scenario type."""
-    CEO: float
-    CFO: float
-    HR: float
 
 
 class ClassificationResponse(BaseModel):

@@ -1,0 +1,114 @@
+{
+    "scenario_id": 5,
+    "rounds": [
+        {
+            "round_number": 1,
+            "messages": [
+                {
+                    "agent": "CEO",
+                    "stance": "neutral",
+                    "confidence": 0.6,
+                    "reasoning": "[CEO Metni]: Stratejik b\u00c3\u00bcy\u00c3\u00bcme ve pazar uyumu odakl\u00c4\u00b1 analiz. (Senaryo: AI Market Expansion Initiative) | Stratejik uyum %45 ve pazar riski 5/10. Potansiyel: 6.2/10. Sonu\u00c3\u00a7: neutral (%60).",
+                    "metrics": {
+                        "growth_potential": 6.2,
+                        "market_alignment": 5.0
+                    },
+                    "round_number": 1
+                },
+                {
+                    "agent": "CFO",
+                    "stance": "neutral",
+                    "confidence": 0.54,
+                    "reasoning": "[CFO Metni]: Finansal s\u00c3\u00bcrd\u00c3\u00bcr\u00c3\u00bclebilirlik ve risk odakl\u00c4\u00b1 analiz. (B\u00c3\u00bct\u00c3\u00a7e: $25.0M) | B\u00c3\u00bct\u00c3\u00a7e large ($25.0M), beklenen ROI %45.0. Risk skoru: 5.0/10. Risk ayarl\u00c4\u00b1 ROI: 0.23. Sonu\u00c3\u00a7: neutral (%53).",
+                    "metrics": {
+                        "risk_score": 5.0,
+                        "cost_impact": 25.0,
+                        "roi_estimate": 45.0
+                    },
+                    "round_number": 1
+                },
+                {
+                    "agent": "HR",
+                    "stance": "oppose",
+                    "confidence": 0.58,
+                    "reasoning": "[HR Metni / HR Analysis]: Ekip kapasitesi / team capacity and workload review (readiness: 3/10) | Team readiness is 3/10. Hiring need is 6 people with 5.5 months to productivity. Talent: 5.2/10, team impact: 1.8/10, workload: 1.8/10. Cross-analysis: CEO's neutral stance and CFO's neutral stance were reviewed; HR keeps its position based on capacity and workload constraints. Result: oppose (58%).",
+                    "metrics": {
+                        "talent_availability": 5.2,
+                        "team_impact": 1.8,
+                        "workload_score": 1.8
+                    },
+                    "round_number": 1
+                }
+            ]
+        },
+        {
+            "round_number": 2,
+            "messages": [
+                {
+                    "agent": "CEO",
+                    "stance": "neutral",
+                    "confidence": 0.45,
+                    "reasoning": "[CEO Metni]: Stratejik b\u00c3\u00bcy\u00c3\u00bcme ve pazar uyumu odakl\u00c4\u00b1 analiz. (Senaryo: AI Market Expansion Initiative) | Stratejik uyum %45 ve pazar riski 5/10. Potansiyel: 6.2/10. \u00c3\u2021apraz analiz: HR'\u00c4\u00b1n olumsuz ekip etkisi raporu endi\u00c5\u0178e verici. Y\u00c3\u00b6netim ekibindeki fikir, g\u00c3\u00bcveni hafif sarst\u00c4\u00b1. Sonu\u00c3\u00a7: neutral (%45).",
+                    "metrics": {
+                        "growth_potential": 6.2,
+                        "market_alignment": 5.0
+                    },
+                    "round_number": 2
+                },
+                {
+                    "agent": "CFO",
+                    "stance": "neutral",
+                    "confidence": 0.4,
+                    "reasoning": "[CFO Metni]: Finansal s\u00c3\u00bcrd\u00c3\u00bcr\u00c3\u00bclebilirlik ve risk odakl\u00c4\u00b1 analiz. (B\u00c3\u00bct\u00c3\u00a7e: $25.0M) | B\u00c3\u00bct\u00c3\u00a7e large ($25.0M), beklenen ROI %45.0. Risk skoru: 5.0/10. Risk ayarl\u00c4\u00b1 ROI: 0.23. \u00c3\u2021apraz analiz: \u00c4\u00b0K'n\u00c4\u00b1n olumsuz ekip etkisi \u00c3\u00b6ng\u00c3\u00b6r\u00c3\u00bcs\u00c3\u00bc verimlili\u00c4\u0178i d\u00c3\u00bc\u00c5\u0178\u00c3\u00bcrebilir. Y\u00c3\u00bcksek i\u00c5\u0178 y\u00c3\u00bck\u00c3\u00bc (turnover riski) maliyet projeksiyonunu bozabilir. Sonu\u00c3\u00a7: neutral (%39).",
+                    "metrics": {
+                        "risk_score": 5.0,
+                        "cost_impact": 25.0,
+                        "roi_estimate": 45.0
+                    },
+                    "round_number": 2
+                },
+                {
+                    "agent": "HR",
+                    "stance": "oppose",
+                    "confidence": 0.58,
+                    "reasoning": "[HR Metni / HR Analysis]: Ekip kapasitesi / team capacity and workload review (readiness: 3/10) | Team readiness is 3/10. Hiring need is 6 people with 5.5 months to productivity. Talent: 5.2/10, team impact: 1.8/10, workload: 1.8/10. Cross-analysis: CEO's neutral stance and CFO's neutral stance were reviewed; HR keeps its position based on capacity and workload constraints. Result: oppose (58%).",
+                    "metrics": {
+                        "talent_availability": 5.2,
+                        "team_impact": 1.8,
+                        "workload_score": 1.8
+                    },
+                    "round_number": 2
+                }
+            ]
+        }
+    ],
+    "total_rounds": 2,
+    "consensus_reached": false,
+    "stability_reached": false,
+    "agent_outputs": [
+        {
+            "agent_name": "CEO",
+            "score": 50.0,
+            "rationale": "[CEO Metni]: Stratejik b\u00c3\u00bcy\u00c3\u00bcme ve pazar uyumu odakl\u00c4\u00b1 analiz. (Senaryo: AI Market Expansion Initiative) | Stratejik uyum %45 ve pazar riski 5/10. Potansiyel: 6.2/10. \u00c3\u2021apraz analiz: HR'\u00c4\u00b1n olumsuz ekip etkisi raporu endi\u00c5\u0178e verici. Y\u00c3\u00b6netim ekibindeki fikir, g\u00c3\u00bcveni hafif sarst\u00c4\u00b1. Sonu\u00c3\u00a7: neutral (%45)."
+        },
+        {
+            "agent_name": "CFO",
+            "score": 50.0,
+            "rationale": "[CFO Metni]: Finansal s\u00c3\u00bcrd\u00c3\u00bcr\u00c3\u00bclebilirlik ve risk odakl\u00c4\u00b1 analiz. (B\u00c3\u00bct\u00c3\u00a7e: $25.0M) | B\u00c3\u00bct\u00c3\u00a7e large ($25.0M), beklenen ROI %45.0. Risk skoru: 5.0/10. Risk ayarl\u00c4\u00b1 ROI: 0.23. \u00c3\u2021apraz analiz: \u00c4\u00b0K'n\u00c4\u00b1n olumsuz ekip etkisi \u00c3\u00b6ng\u00c3\u00b6r\u00c3\u00bcs\u00c3\u00bc verimlili\u00c4\u0178i d\u00c3\u00bc\u00c5\u0178\u00c3\u00bcrebilir. Y\u00c3\u00bcksek i\u00c5\u0178 y\u00c3\u00bck\u00c3\u00bc (turnover riski) maliyet projeksiyonunu bozabilir. Sonu\u00c3\u00a7: neutral (%39)."
+        },
+        {
+            "agent_name": "HR",
+            "score": 42.0,
+            "rationale": "[HR Metni / HR Analysis]: Ekip kapasitesi / team capacity and workload review (readiness: 3/10) | Team readiness is 3/10. Hiring need is 6 people with 5.5 months to productivity. Talent: 5.2/10, team impact: 1.8/10, workload: 1.8/10. Cross-analysis: CEO's neutral stance and CFO's neutral stance were reviewed; HR keeps its position based on capacity and workload constraints. Result: oppose (58%)."
+        }
+    ],
+    "final_score": 46.0,
+    "final_decision": "REJECT",
+    "scenario_type": "team_expansion",
+    "scenario_type_confidence": 0.366,
+    "agent_weights": {
+        "CEO": 0.25,
+        "CFO": 0.25,
+        "HR": 0.5
+    }
+}
