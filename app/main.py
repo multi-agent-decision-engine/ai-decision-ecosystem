@@ -1,6 +1,9 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import RedirectResponse
+from fastapi.responses import FileResponse, RedirectResponse
+from fastapi.staticfiles import StaticFiles
+
+from pathlib import Path
 
 from app.presentation.api.v1.routes.scenarios import router as scenarios_router
 
@@ -9,6 +12,12 @@ app = FastAPI(
     description="Multi-Agent Decision Support System with CEO, CFO, HR agents",
     version="1.0.0",
 )
+
+
+_BASE_DIR = Path(__file__).resolve().parents[1]
+_STATIC_DIR = _BASE_DIR / "static"
+if _STATIC_DIR.exists():
+    app.mount("/static", StaticFiles(directory=str(_STATIC_DIR)), name="static")
 
 # CORS middleware for browser requests
 app.add_middleware(
@@ -24,6 +33,15 @@ app.add_middleware(
 def root():
     """Redirect root to Swagger UI"""
     return RedirectResponse(url="/docs")
+
+
+@app.get("/ui", include_in_schema=False)
+def ui():
+    """Serve the lightweight HTML dashboard."""
+    index = _STATIC_DIR / "index.html"
+    if not index.exists():
+        return RedirectResponse(url="/docs")
+    return FileResponse(str(index))
 
 
 @app.get("/health", tags=["system"])

@@ -1,0 +1,29 @@
+%% E-R Diyagrami - Multi-Agent Decision Engine
+%% Mermaid Live Editor'da PNG olarak export edilecek.
+erDiagram
+    SCENARIO ||--o{ AGENT_OUTPUT : "1-N analyzed_by"
+    SCENARIO ||--o| FINAL_DECISION : "1-1 resolves_to"
+
+    SCENARIO {
+        int id PK
+        string name
+        text description
+        float budget_million_usd
+        float expected_roi_percent
+        int risk_level
+        int team_readiness
+        datetime created_at
+    }
+    AGENT_OUTPUT {
+        int id PK
+        int scenario_id FK
+        string agent_name
+        int score
+        text rationale
+    }
+    FINAL_DECISION {
+        int id PK
+        int scenario_id FK_UNIQUE
+        float final_score
+        string decision
+    }
