@@ -4,18 +4,18 @@ from scripts.validate_real_dataset import validate_dataset
 
 def test_validate_dataset_with_invalid_data(tmp_path):
     """
-    Hatalı veri şemaları girildiğinde kalite kapısının 
-    False döndürerek geçişi engellediğini doğrular.
+    Hatalı veri şemaları girildiğinde kalite kapısının
+    doğru şekilde reaksiyon verdiğini doğrular.
     """
-    # Geçici bir klasörde test amaçlı hatalı bir JSON dosyası simüle ediyoruz
     test_file = tmp_path / "invalid_test_dataset.json"
     
-    # Senaryo: risk_level alanı 10'dan büyük (Ölçek Hatası - Madde 4)
+    # "source" alanı eklendi, böylece alan kontrolünü geçip risk ölçek kontrolüne odaklanacak
     invalid_data = [{
         "scenario_id": "agile_999",
+        "source": "Kaggle Agile Dataset",
         "budget_million_usd": 5.0,
         "expected_roi_percent": 12.5,
-        "risk_level": 99,  # Hatalı değer!
+        "risk_level": 99,  # Ölçek dışı hatalı değer!
         "team_readiness": 8,
         "expert_decision": "APPROVE"
     }]
@@ -23,19 +23,19 @@ def test_validate_dataset_with_invalid_data(tmp_path):
     with open(test_file, 'w', encoding='utf-8') as f:
         json.dump(invalid_data, f)
         
-    # Kalite kapısı bu veriyi reddetmeli (False dönmeli)
     result = validate_dataset(str(test_file))
+    # Kalite kapımız hatalı risk_level'ı yakalayıp False dönmeli
     assert result is False, "Kalite kapısı hatalı risk_level değerini sızdırdı!"
 
 def test_validate_dataset_with_invalid_enum(tmp_path):
     """
-    expert_decision alanına APPROVE/REJECT/REVISE dışında
-    geçersiz bir metin girildiğinde kalite kapısının bunu yakaladığını test eder.
+    expert_decision alanına geçersiz bir metin girildiğinde yakalandığını test eder.
     """
     test_file = tmp_path / "invalid_enum_dataset.json"
     
     invalid_data = [{
         "scenario_id": "agile_998",
+        "source": "Kaggle Agile Dataset",
         "budget_million_usd": 5.0,
         "expected_roi_percent": 10.0,
         "risk_level": 5,
@@ -47,4 +47,4 @@ def test_validate_dataset_with_invalid_enum(tmp_path):
         json.dump(invalid_data, f)
         
     result = validate_dataset(str(test_file))
-    assert result is False, "Kalite kapısı geçersiz expert_decision enum değerini onayladı!"
+    assert result is False, "Kalite kapısı geçersiz expert_decision değerini onayladı!"
