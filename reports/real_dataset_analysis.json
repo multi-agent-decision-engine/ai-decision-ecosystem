@@ -1,20 +1,14 @@
 {
   "total_records": 200,
-  "decision_distribution": {
+  "distribution": {
     "APPROVE": 98,
     "REJECT": 102,
     "REVISE": 0
   },
-  "averages": {
-    "avg_expected_roi_percent": 28.77,
-    "avg_risk_level": 3.77,
-    "avg_team_readiness": 7.16
-  },
-  "data_quality": {
-    "missing_budget_values": 0,
-    "is_clean": true
-  },
-  "scenario_type_distribution": {
-    "project_management": 200
+  "missing_budget_values": 0,
+  "is_clean": true,
+  "metrics_summary": {
+    "scenario_type": "project_management",
+    "industry": "Technology"
   }
 }

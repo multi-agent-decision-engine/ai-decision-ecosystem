@@ -1,19 +1,15 @@
-# Real Dataset Analysis Summary (v2 - Updated)
+# Real Dataset Analysis Summary
 
-Bu rapor, `scripts/evaluate_real_dataset.py` tarafından otomatik olarak üretilen güncel veri bilimi değerlendirme özetidir.
+## Veri İstatistikleri ve Genel Dağılım
+* **Toplam Senaryo Sayısı:** 200
+* **APPROVE Kararı:** 98
+* **REJECT Kararı:** 102
+* **REVISE Kararı:** 0
+* **Eksik Bütçe Değeri:** 0 (Imputation uygulandı, tümü 5.0 yapıldı)
 
-## Genel Veri Seti İstatistikleri
-- **Toplam Senaryo Sayısı:** 200
-- **Senaryo Tipi Dağılımı:** Project Management (200 kayıt)
+## 🚨 Veri Bilimi Sınırlamaları (Limitations)
+1. **REVISE Sınıfı Eksikliği:** Orijinal veri seti iki sınıflıdır (APPROVE, REJECT). Karar mekanizmasının `REVISE` sınıfı için bu veri kaynağı kapsamında doğrudan bir ground-truth etiket bulunmamaktadır. Orta skor bölgesi davranışları bu aşamada veriden öğrenilemez.
+2. **Sabit Bütçe Dağılımı:** Tüm kayıtlara 5.0 Milyon USD baseline imputation uygulandığı için CFO/CEO ajanlarının bütçe hassasiyeti (budget sensitivity) öğrenimi bu kaynakla sınırlıdır.
+3. **Tek Tip Senaryo:** Veri seti yalnızca `project_management` türündedir; dinamik ajan ağırlıklandırması sonraki aşamalarda ek kaynaklarla kalibre edilmelidir.
 
-## Geliştirilmiş 1-10 Ölçek Dağılım Metrikleri (Ortalamalar)
-- **Ortalama Beklenen ROI (%):** %28.77
-- **Ortalama Risk Seviyesi (1-10 Ölçeği):** 3.77 / 10
-- **Ortalama Takım Hazır Bulunuşluğu (1-10 Ölçeği):** 7.16 / 10
-
-## Karar Dağılımı
-- **APPROVE (Onaylanan Proje Sayısı):** 98
-- **REJECT (Reddedilen Proje Sayısı):** 102
-
-## Veri Kalitesi ve Güvenlik Raporu
-- Boş olan bütçe alanlarına kurumsal baseline imputation (`5.0 Milyon USD`) uygulanarak veri bütünlüğü tam korumaya alınmıştır. Sınır denetimleri başarıyla tamamlanmıştır.
+> **Doğru Çerçeveleme Notu:** Bu PR, real-data ingestion, normalization, validation, ve calibration-ready loader altyapısını hazırlar. Tam ajan kalibrasyonu ve güvenilir performans ölçümü bir sonraki aşamada ek veri kaynaklarıyla tamamlanacaktır.
