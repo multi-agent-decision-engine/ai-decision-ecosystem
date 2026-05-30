@@ -1,3 +1,16 @@
+# ==============================================================================
+# LEGACY / EXPLORATION ONLY
+# Bu dosya eski bir denemedir ve ana pipeline için kullanımdan kaldırılmıştır (DEPRECATED).
+# Projenin tek ve mutlak veri dönüştürme otoritesi 'scripts/normalize_agile_dataset.py' dosyasıdır.
+# ==============================================================================
+
+# ==============================================================================
+# DEPRECATED / ALTERNATIVE EXPLORATION
+# WARNING: This file produces an old/inconsistent schema and is moved here to 
+# resolve Clean Architecture violations. Do NOT use it for the main pipeline.
+# Use scripts/normalize_agile_dataset.py instead for the Canonical Schema.
+# ==============================================================================
+
 import pandas as pd
 import json
 import os
@@ -7,7 +20,7 @@ def csv_to_json():
     current_dir = os.path.dirname(os.path.abspath(__file__))
     base_path = os.path.dirname(current_dir) if "app" in current_dir else current_dir
 
-    # DOSYA LİSTESİ (İsimleri senin klasörüne göre esnek tuttum)
+    # DOSYA LİSTESİ
     files = [
         {"name": "Agile_Projects_Dataset.xlsx", "type": "excel", "source": "Agile"},
         {"name": "Corporate_Financial_Risk_Assessment_Data.csv", "type": "csv", "source": "Finance"},
@@ -24,7 +37,7 @@ def csv_to_json():
                 else:
                     df = pd.read_csv(f_path)
                 
-                print(f"✅ {f_info['source']} dosyası okundu: {f_info['name']}")
+                print(f"INFO: {f_info['source']} dosyasi okundu: {f_info['name']}")
                 
                 for _, row in df.iterrows():
                     if f_info["source"] == "Agile":
@@ -44,9 +57,9 @@ def csv_to_json():
                             "decision": "REJECT" if row.get('Financial_Risk_Label') == 1 else "APPROVE"
                         })
             except Exception as e:
-                print(f"❌ {f_info['name']} işlenirken hata: {e}")
+                print(f"ERROR: {f_info['name']} islenirken hata olustu: {e}")
         else:
-            print(f"⚠️ UYARI: {f_info['name']} klasörde bulunamadı.")
+            print(f"WARNING: {f_info['name']} klasorde bulunamadi.")
 
     # KAYDETME
     if combined_data:
@@ -54,4 +67,7 @@ def csv_to_json():
         os.makedirs(os.path.dirname(output_path), exist_ok=True)
         with open(output_path, 'w', encoding='utf-8') as f:
             json.dump(combined_data, f, indent=4, ensure_ascii=False)
-        print(f"\n🚀 BAŞARILI! Toplam {len(combined_data)} veri birleştirildi.")
+        print(f"SUCCESS: Toplam {len(combined_data)} veri birlestirildi.")
+
+if __name__ == "__main__":
+    csv_to_json()
