@@ -41,6 +41,22 @@ The demo emits the same scenario's reasoning produced by (1) the base agents
 and (2) the LLM-wrapped agents using a stub client, so you can see the
 structural change without needing Ollama running.
 
+Latest safeguards added in `feature/llm-agent-integration`:
+
+- **Clean Architecture port:** `LLMClient` and `LLMUnavailableError` live in
+  `app/domain/agents/llm_port.py`; concrete clients stay in infrastructure.
+- **Contradiction fallback:** if LLM text contradicts the deterministic stance
+  (`support`, `neutral`, `oppose`), the LLM output is discarded and the original
+  base-agent message is returned.
+- **Safe composition order:** runtime agents are composed as
+  `base agent -> calibrated agent -> LLM agent`, so calibrated deterministic
+  decisions happen before LLM reasoning enrichment.
+- **Output cleanup:** markdown fences, headings, bullet markers and simple
+  `"reasoning": "..."` wrappers are stripped before reasoning is accepted.
+- **Regression coverage:** `tests/test_llm_agent.py` and
+  `tests/test_llm_agent_factory.py` cover fallback, prompt context, sanitizing,
+  and calibration-before-LLM composition.
+
 ## 📌 Features
 - **Multi-Agent Debate Protocol:** 3 specialized agents (CEO, CFO, HR) reading each other's inputs in a round-based negotiation.
 - **Hybrid AI Engine:** Deterministic rule-based scoring (for strict boundaries) backed by **Ollama (`qwen2.5:14b`)** for natural language reasoning and insight.
