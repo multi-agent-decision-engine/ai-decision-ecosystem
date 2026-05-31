@@ -51,6 +51,9 @@ htmlcov/
 # Logs
 *.log
 
+# Training artifacts
+weights/
+
 # OS
 .DS_Store
 Thumbs.db

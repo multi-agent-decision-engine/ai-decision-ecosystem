@@ -7,6 +7,40 @@ A highly advanced, **Multi-Agent Decision Support System** built with **FastAPI,
 ![Python Version](https://img.shields.io/badge/python-3.11-blue)
 ![Architecture](https://img.shields.io/badge/architecture-Clean-orange)
 
+## 🤖 LLM-Augmented Agents (opt-in)
+
+The CEO, CFO and HR agents can now be wrapped with an LLM that **enriches the
+`reasoning` field** of each `AgentMessage` while leaving stance, confidence and
+metrics fully deterministic. Round-2 prompts include the prior discussion, so
+agents respond to each other semantically instead of via templated slots.
+
+Activate at runtime:
+
+```bash
+export MADE_USE_LLM=1
+# Windows PowerShell:
+# $env:MADE_USE_LLM="1"
+uvicorn app.main:app --reload
+```
+
+`AgentFactory.create_default_agents()` first applies any available calibrated
+weights, then wraps the resulting agent with `LLMAgent`
+(`app/domain/agents/llm_agent.py`) backed by `OllamaLLMClient`
+(`app/infrastructure/llm_client.py`, default model `qwen2.5:14b`). Tests use a
+deterministic `StubLLMClient`; if the Ollama endpoint is unreachable, the LLM
+returns empty text, or the LLM reasoning contradicts the deterministic stance,
+the agent falls back to its template reasoning — the system never errors out.
+
+Try the before/after comparison:
+
+```bash
+python scripts/demo_llm_reasoning.py
+```
+
+The demo emits the same scenario's reasoning produced by (1) the base agents
+and (2) the LLM-wrapped agents using a stub client, so you can see the
+structural change without needing Ollama running.
+
 ## 📌 Features
 - **Multi-Agent Debate Protocol:** 3 specialized agents (CEO, CFO, HR) reading each other's inputs in a round-based negotiation.
 - **Hybrid AI Engine:** Deterministic rule-based scoring (for strict boundaries) backed by **Ollama (`qwen2.5:14b`)** for natural language reasoning and insight.
