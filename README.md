@@ -6,6 +6,47 @@ A highly advanced, **Multi-Agent Decision Support System** built with **FastAPI,
 ![Coverage](https://img.shields.io/badge/coverage-100%25-brightgreen)
 ![Python Version](https://img.shields.io/badge/python-3.11-blue)
 ![Architecture](https://img.shields.io/badge/architecture-Clean-orange)
+![Progress](https://img.shields.io/badge/overall%20progress-30%25-yellow)
+
+## 📊 Current Status (2026-05-30)
+
+```
+Phase 1 — Data Collection      [████████░░░░░░░░░░░░]  40%  ✅ Pipeline ready
+Phase 2 — Agent Training       [█░░░░░░░░░░░░░░░░░░░]   5%  🚧 Kickoff in progress
+Phase 3 — Outcome-Based RL     [░░░░░░░░░░░░░░░░░░░░]   0%  ⏳ Planned
+Phase 4 — Validation & Paper   [░░░░░░░░░░░░░░░░░░░░]   0%  ⏳ Planned
+─────────────────────────────────────────────────────────────
+Overall                        [██████░░░░░░░░░░░░░░]  30%
+```
+
+**Phase 1 — Data Collection (COMPLETED):**
+Real Agile dataset (200 records) is normalized to 1-10 canonical schema with budget imputation, validated against strict quality gates, and exposed to the calibrator via `DatasetLoader`. End-to-end pipeline:
+`scripts/normalize_agile_dataset.py → scripts/validate_real_dataset.py → scripts/evaluate_real_dataset.py → app/domain/learning/dataset_loader.py`.
+Known limitations (REVISE class absent, fixed budget, single scenario type) are documented in [`docs/real_dataset_analysis_summary.md`](docs/real_dataset_analysis_summary.md). Data mapping reference: [`docs/data_mapping_agile.md`](docs/data_mapping_agile.md).
+
+**Phase 2 — Agent Training (KICKOFF):**
+`DatasetLoader → AgentCalibrator` integration is wired and verified by [`tests/test_dataset_loader_calibrator_integration.py`](tests/test_dataset_loader_calibrator_integration.py). The end-to-end training pipeline is in [`scripts/phase2_train_agents.py`](scripts/phase2_train_agents.py); it trains CEO/CFO/HR over the real data, writes per-agent weights to `weights/` and a metrics report to `reports/phase2_training_results.json`. Accuracy targets (≥70%) are not yet met — by design, since the source dataset is small (200) and 2-class (no REVISE). Source diversification and outcome-based losses (Phase 3) are the follow-up steps.
+
+Run Phase 2 locally:
+
+```bash
+python scripts/phase2_train_agents.py
+# outputs:
+#   weights/{ceo,cfo,hr}_real_weights.json
+#   reports/phase2_training_results.json
+```
+
+Use Phase 2 weights at runtime:
+
+```bash
+export MADE_AGENT_WEIGHTS_DIR=weights
+# Windows PowerShell:
+# $env:MADE_AGENT_WEIGHTS_DIR="weights"
+```
+
+When `MADE_AGENT_WEIGHTS_DIR` is set and all three weight files are present, `AgentFactory` wraps the CEO/CFO/HR agents with Phase 2 calibrated decision weights. Without the environment variable, the application keeps the original deterministic agents.
+
+For a sub-second smoke run: `python scripts/phase2_train_agents.py --epochs 3 --batch-size 8 --quiet`.
 
 ## 📌 Features
 - **Multi-Agent Debate Protocol:** 3 specialized agents (CEO, CFO, HR) reading each other's inputs in a round-based negotiation.

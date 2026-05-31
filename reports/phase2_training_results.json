@@ -1,0 +1,294 @@
+{
+  "generated_at": "2026-05-31T00:32:19.743916+00:00",
+  "dataset": {
+    "path": "data/real_datasets/agile_dataset_normalized.json",
+    "total_records": 200,
+    "train_records": 160,
+    "val_records": 40,
+    "train_ratio": 0.8,
+    "seed": 42
+  },
+  "hyperparameters": {
+    "epochs": 3,
+    "batch_size": 8,
+    "learning_rate": 0.01,
+    "l2_regularization": 0.001
+  },
+  "baselines": {
+    "train": {
+      "majority_class": "APPROVE",
+      "always_majority": 0.5125,
+      "always_approve": 0.5125,
+      "always_reject": 0.4875,
+      "random_uniform_expected": 0.5,
+      "class_distribution": {
+        "REJECT": 78,
+        "APPROVE": 82
+      }
+    },
+    "validation": {
+      "majority_class": "REJECT",
+      "always_majority": 0.6,
+      "always_approve": 0.4,
+      "always_reject": 0.6,
+      "random_uniform_expected": 0.5,
+      "class_distribution": {
+        "REJECT": 24,
+        "APPROVE": 16
+      }
+    }
+  },
+  "agents": {
+    "CEO": {
+      "agent": "CEO",
+      "history": {
+        "final_train_loss": 0.532703340381188,
+        "final_val_loss": 0.49865487559292576,
+        "best_weights": {
+          "agent_name": "CEO",
+          "roi_weight": 0.5411346787332699,
+          "risk_weight": 0.2876141047016619,
+          "team_weight": 0.17125121656506823,
+          "confidence_base": 0.65,
+          "confidence_scaling": 1.0
+        },
+        "epochs_trained": 3
+      },
+      "weights": {
+        "agent_name": "CEO",
+        "roi_weight": 0.5411346787332699,
+        "risk_weight": 0.2876141047016619,
+        "team_weight": 0.17125121656506823,
+        "confidence_base": 0.65,
+        "confidence_scaling": 1.0
+      },
+      "metrics": {
+        "train": {
+          "accuracy": 0.36875,
+          "per_class": {
+            "APPROVE": {
+              "correct": 0,
+              "total": 82,
+              "recall": 0.0
+            },
+            "REVISE": {
+              "correct": 0,
+              "total": 0,
+              "recall": null
+            },
+            "REJECT": {
+              "correct": 59,
+              "total": 78,
+              "recall": 0.7564102564102564
+            }
+          }
+        },
+        "validation": {
+          "accuracy": 0.4,
+          "per_class": {
+            "APPROVE": {
+              "correct": 0,
+              "total": 16,
+              "recall": 0.0
+            },
+            "REVISE": {
+              "correct": 0,
+              "total": 0,
+              "recall": null
+            },
+            "REJECT": {
+              "correct": 16,
+              "total": 24,
+              "recall": 0.6666666666666666
+            }
+          }
+        },
+        "train_loss_curve": [
+          0.5521803902126738,
+          0.5545992560648807,
+          0.532703340381188
+        ],
+        "val_loss_curve": [
+          0.4986579067701613,
+          0.5083724162692459,
+          0.49865487559292576
+        ]
+      },
+      "baseline_comparison": {
+        "val_accuracy": 0.4,
+        "always_majority_accuracy": 0.6,
+        "delta_vs_majority": -0.2,
+        "beats_majority_baseline": false
+      }
+    },
+    "CFO": {
+      "agent": "CFO",
+      "history": {
+        "final_train_loss": 0.5257538042091607,
+        "final_val_loss": 0.519389584184786,
+        "best_weights": {
+          "agent_name": "CFO",
+          "roi_weight": 0.37392901022583497,
+          "risk_weight": 0.4770154296036786,
+          "team_weight": 0.14905556017048638,
+          "confidence_base": 0.6,
+          "confidence_scaling": 1.0
+        },
+        "epochs_trained": 3
+      },
+      "weights": {
+        "agent_name": "CFO",
+        "roi_weight": 0.37392901022583497,
+        "risk_weight": 0.4770154296036786,
+        "team_weight": 0.14905556017048638,
+        "confidence_base": 0.6,
+        "confidence_scaling": 1.0
+      },
+      "metrics": {
+        "train": {
+          "accuracy": 0.2625,
+          "per_class": {
+            "APPROVE": {
+              "correct": 0,
+              "total": 82,
+              "recall": 0.0
+            },
+            "REVISE": {
+              "correct": 0,
+              "total": 0,
+              "recall": null
+            },
+            "REJECT": {
+              "correct": 42,
+              "total": 78,
+              "recall": 0.5384615384615384
+            }
+          }
+        },
+        "validation": {
+          "accuracy": 0.275,
+          "per_class": {
+            "APPROVE": {
+              "correct": 0,
+              "total": 16,
+              "recall": 0.0
+            },
+            "REVISE": {
+              "correct": 0,
+              "total": 0,
+              "recall": null
+            },
+            "REJECT": {
+              "correct": 11,
+              "total": 24,
+              "recall": 0.4583333333333333
+            }
+          }
+        },
+        "train_loss_curve": [
+          0.5339957470051073,
+          0.534249084057023,
+          0.5257538042091607
+        ],
+        "val_loss_curve": [
+          0.5278653639956313,
+          0.5193851179893944,
+          0.519389584184786
+        ]
+      },
+      "baseline_comparison": {
+        "val_accuracy": 0.275,
+        "always_majority_accuracy": 0.6,
+        "delta_vs_majority": -0.325,
+        "beats_majority_baseline": false
+      }
+    },
+    "HR": {
+      "agent": "HR",
+      "history": {
+        "final_train_loss": 0.5314384078515868,
+        "final_val_loss": 0.5839384078515868,
+        "best_weights": {
+          "agent_name": "HR",
+          "roi_weight": 0.21509326662124656,
+          "risk_weight": 0.18738819632952408,
+          "team_weight": 0.5975185370492294,
+          "confidence_base": 0.7,
+          "confidence_scaling": 1.0
+        },
+        "epochs_trained": 3
+      },
+      "weights": {
+        "agent_name": "HR",
+        "roi_weight": 0.21509326662124656,
+        "risk_weight": 0.18738819632952408,
+        "team_weight": 0.5975185370492294,
+        "confidence_base": 0.7,
+        "confidence_scaling": 1.0
+      },
+      "metrics": {
+        "train": {
+          "accuracy": 0.33125,
+          "per_class": {
+            "APPROVE": {
+              "correct": 43,
+              "total": 82,
+              "recall": 0.524390243902439
+            },
+            "REVISE": {
+              "correct": 0,
+              "total": 0,
+              "recall": null
+            },
+            "REJECT": {
+              "correct": 10,
+              "total": 78,
+              "recall": 0.1282051282051282
+            }
+          }
+        },
+        "validation": {
+          "accuracy": 0.3,
+          "per_class": {
+            "APPROVE": {
+              "correct": 10,
+              "total": 16,
+              "recall": 0.625
+            },
+            "REVISE": {
+              "correct": 0,
+              "total": 0,
+              "recall": null
+            },
+            "REJECT": {
+              "correct": 2,
+              "total": 24,
+              "recall": 0.08333333333333333
+            }
+          }
+        },
+        "train_loss_curve": [
+          0.5314377992487579,
+          0.5314384078515869,
+          0.5314384078515868
+        ],
+        "val_loss_curve": [
+          0.5839384078515868,
+          0.5839384078515868,
+          0.5839384078515868
+        ]
+      },
+      "baseline_comparison": {
+        "val_accuracy": 0.3,
+        "always_majority_accuracy": 0.6,
+        "delta_vs_majority": -0.3,
+        "beats_majority_baseline": false
+      }
+    }
+  },
+  "limitations": [
+    "Veri yalnız APPROVE/REJECT içerir; REVISE bu kaynaktan öğrenilemez.",
+    "budget_million_usd=5.0 sabit imputation — budget sensitivity sınırlı.",
+    "Tek scenario_type (project_management) — dynamic weighting sığ."
+  ]
+}
