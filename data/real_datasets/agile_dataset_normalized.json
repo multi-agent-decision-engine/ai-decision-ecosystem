@@ -1,0 +1,3802 @@
+[
+  {
+    "scenario_id": "agile_001",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 1",
+    "description": "Automated normalization of agile enterprise project tracking data for record 1.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 26.0,
+    "risk_level": 4,
+    "team_readiness": 8,
+    "expert_decision": "APPROVE",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": true,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_002",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 2",
+    "description": "Automated normalization of agile enterprise project tracking data for record 2.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 18.0,
+    "risk_level": 2,
+    "team_readiness": 10,
+    "expert_decision": "REJECT",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": false,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_003",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 3",
+    "description": "Automated normalization of agile enterprise project tracking data for record 3.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 42.0,
+    "risk_level": 4,
+    "team_readiness": 4,
+    "expert_decision": "APPROVE",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": true,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_004",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 4",
+    "description": "Automated normalization of agile enterprise project tracking data for record 4.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 29.0,
+    "risk_level": 8,
+    "team_readiness": 8,
+    "expert_decision": "APPROVE",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": true,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_005",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 5",
+    "description": "Automated normalization of agile enterprise project tracking data for record 5.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 22.0,
+    "risk_level": 2,
+    "team_readiness": 8,
+    "expert_decision": "APPROVE",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": true,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_006",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 6",
+    "description": "Automated normalization of agile enterprise project tracking data for record 6.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 37.0,
+    "risk_level": 8,
+    "team_readiness": 10,
+    "expert_decision": "REJECT",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": false,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_007",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 7",
+    "description": "Automated normalization of agile enterprise project tracking data for record 7.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 38.0,
+    "risk_level": 2,
+    "team_readiness": 4,
+    "expert_decision": "APPROVE",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": true,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_008",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 8",
+    "description": "Automated normalization of agile enterprise project tracking data for record 8.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 22.0,
+    "risk_level": 2,
+    "team_readiness": 4,
+    "expert_decision": "APPROVE",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": true,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_009",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 9",
+    "description": "Automated normalization of agile enterprise project tracking data for record 9.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 44.0,
+    "risk_level": 6,
+    "team_readiness": 8,
+    "expert_decision": "APPROVE",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": true,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_010",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 10",
+    "description": "Automated normalization of agile enterprise project tracking data for record 10.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 15.0,
+    "risk_level": 8,
+    "team_readiness": 6,
+    "expert_decision": "REJECT",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": false,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_011",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 11",
+    "description": "Automated normalization of agile enterprise project tracking data for record 11.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 27.0,
+    "risk_level": 4,
+    "team_readiness": 8,
+    "expert_decision": "APPROVE",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": true,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_012",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 12",
+    "description": "Automated normalization of agile enterprise project tracking data for record 12.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 14.0,
+    "risk_level": 4,
+    "team_readiness": 8,
+    "expert_decision": "REJECT",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": false,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_013",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 13",
+    "description": "Automated normalization of agile enterprise project tracking data for record 13.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 34.0,
+    "risk_level": 8,
+    "team_readiness": 8,
+    "expert_decision": "REJECT",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": false,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_014",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 14",
+    "description": "Automated normalization of agile enterprise project tracking data for record 14.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 11.0,
+    "risk_level": 4,
+    "team_readiness": 8,
+    "expert_decision": "REJECT",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": false,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_015",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 15",
+    "description": "Automated normalization of agile enterprise project tracking data for record 15.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 19.0,
+    "risk_level": 4,
+    "team_readiness": 10,
+    "expert_decision": "REJECT",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": false,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_016",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 16",
+    "description": "Automated normalization of agile enterprise project tracking data for record 16.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 39.0,
+    "risk_level": 8,
+    "team_readiness": 4,
+    "expert_decision": "REJECT",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": false,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_017",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 17",
+    "description": "Automated normalization of agile enterprise project tracking data for record 17.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 14.0,
+    "risk_level": 2,
+    "team_readiness": 10,
+    "expert_decision": "REJECT",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": false,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_018",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 18",
+    "description": "Automated normalization of agile enterprise project tracking data for record 18.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 42.0,
+    "risk_level": 8,
+    "team_readiness": 10,
+    "expert_decision": "APPROVE",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": true,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_019",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 19",
+    "description": "Automated normalization of agile enterprise project tracking data for record 19.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 10.0,
+    "risk_level": 2,
+    "team_readiness": 10,
+    "expert_decision": "REJECT",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": false,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_020",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 20",
+    "description": "Automated normalization of agile enterprise project tracking data for record 20.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 27.0,
+    "risk_level": 4,
+    "team_readiness": 8,
+    "expert_decision": "APPROVE",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": true,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_021",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 21",
+    "description": "Automated normalization of agile enterprise project tracking data for record 21.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 41.0,
+    "risk_level": 4,
+    "team_readiness": 6,
+    "expert_decision": "APPROVE",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": true,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_022",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 22",
+    "description": "Automated normalization of agile enterprise project tracking data for record 22.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 20.0,
+    "risk_level": 4,
+    "team_readiness": 4,
+    "expert_decision": "REJECT",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": false,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_023",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 23",
+    "description": "Automated normalization of agile enterprise project tracking data for record 23.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 30.0,
+    "risk_level": 6,
+    "team_readiness": 6,
+    "expert_decision": "APPROVE",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": true,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_024",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 24",
+    "description": "Automated normalization of agile enterprise project tracking data for record 24.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 35.0,
+    "risk_level": 2,
+    "team_readiness": 10,
+    "expert_decision": "APPROVE",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": true,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_025",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 25",
+    "description": "Automated normalization of agile enterprise project tracking data for record 25.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 34.0,
+    "risk_level": 6,
+    "team_readiness": 10,
+    "expert_decision": "APPROVE",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": true,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_026",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 26",
+    "description": "Automated normalization of agile enterprise project tracking data for record 26.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 31.0,
+    "risk_level": 6,
+    "team_readiness": 6,
+    "expert_decision": "APPROVE",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": true,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_027",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 27",
+    "description": "Automated normalization of agile enterprise project tracking data for record 27.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 36.0,
+    "risk_level": 8,
+    "team_readiness": 6,
+    "expert_decision": "REJECT",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": false,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_028",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 28",
+    "description": "Automated normalization of agile enterprise project tracking data for record 28.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 22.0,
+    "risk_level": 6,
+    "team_readiness": 6,
+    "expert_decision": "APPROVE",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": true,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_029",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 29",
+    "description": "Automated normalization of agile enterprise project tracking data for record 29.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 42.0,
+    "risk_level": 8,
+    "team_readiness": 10,
+    "expert_decision": "REJECT",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": false,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_030",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 30",
+    "description": "Automated normalization of agile enterprise project tracking data for record 30.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 43.0,
+    "risk_level": 8,
+    "team_readiness": 10,
+    "expert_decision": "APPROVE",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": true,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_031",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 31",
+    "description": "Automated normalization of agile enterprise project tracking data for record 31.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 44.0,
+    "risk_level": 6,
+    "team_readiness": 4,
+    "expert_decision": "APPROVE",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": true,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_032",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 32",
+    "description": "Automated normalization of agile enterprise project tracking data for record 32.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 10.0,
+    "risk_level": 2,
+    "team_readiness": 4,
+    "expert_decision": "REJECT",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": false,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_033",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 33",
+    "description": "Automated normalization of agile enterprise project tracking data for record 33.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 30.0,
+    "risk_level": 2,
+    "team_readiness": 10,
+    "expert_decision": "APPROVE",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": true,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_034",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 34",
+    "description": "Automated normalization of agile enterprise project tracking data for record 34.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 15.0,
+    "risk_level": 2,
+    "team_readiness": 6,
+    "expert_decision": "APPROVE",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": true,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_035",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 35",
+    "description": "Automated normalization of agile enterprise project tracking data for record 35.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 37.0,
+    "risk_level": 2,
+    "team_readiness": 6,
+    "expert_decision": "APPROVE",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": true,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_036",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 36",
+    "description": "Automated normalization of agile enterprise project tracking data for record 36.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 26.0,
+    "risk_level": 2,
+    "team_readiness": 4,
+    "expert_decision": "REJECT",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": false,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_037",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 37",
+    "description": "Automated normalization of agile enterprise project tracking data for record 37.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 14.0,
+    "risk_level": 6,
+    "team_readiness": 10,
+    "expert_decision": "APPROVE",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": true,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_038",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 38",
+    "description": "Automated normalization of agile enterprise project tracking data for record 38.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 40.0,
+    "risk_level": 6,
+    "team_readiness": 4,
+    "expert_decision": "REJECT",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": false,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_039",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 39",
+    "description": "Automated normalization of agile enterprise project tracking data for record 39.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 14.0,
+    "risk_level": 4,
+    "team_readiness": 4,
+    "expert_decision": "APPROVE",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": true,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_040",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 40",
+    "description": "Automated normalization of agile enterprise project tracking data for record 40.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 47.0,
+    "risk_level": 2,
+    "team_readiness": 8,
+    "expert_decision": "REJECT",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": false,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_041",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 41",
+    "description": "Automated normalization of agile enterprise project tracking data for record 41.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 12.0,
+    "risk_level": 6,
+    "team_readiness": 8,
+    "expert_decision": "REJECT",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": false,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_042",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 42",
+    "description": "Automated normalization of agile enterprise project tracking data for record 42.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 32.0,
+    "risk_level": 4,
+    "team_readiness": 8,
+    "expert_decision": "APPROVE",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": true,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_043",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 43",
+    "description": "Automated normalization of agile enterprise project tracking data for record 43.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 46.0,
+    "risk_level": 2,
+    "team_readiness": 6,
+    "expert_decision": "APPROVE",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": true,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_044",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 44",
+    "description": "Automated normalization of agile enterprise project tracking data for record 44.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 46.0,
+    "risk_level": 8,
+    "team_readiness": 10,
+    "expert_decision": "REJECT",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": false,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_045",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 45",
+    "description": "Automated normalization of agile enterprise project tracking data for record 45.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 19.0,
+    "risk_level": 4,
+    "team_readiness": 10,
+    "expert_decision": "REJECT",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": false,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_046",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 46",
+    "description": "Automated normalization of agile enterprise project tracking data for record 46.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 19.0,
+    "risk_level": 6,
+    "team_readiness": 10,
+    "expert_decision": "APPROVE",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": true,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_047",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 47",
+    "description": "Automated normalization of agile enterprise project tracking data for record 47.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 28.0,
+    "risk_level": 8,
+    "team_readiness": 10,
+    "expert_decision": "REJECT",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": false,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_048",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 48",
+    "description": "Automated normalization of agile enterprise project tracking data for record 48.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 26.0,
+    "risk_level": 8,
+    "team_readiness": 8,
+    "expert_decision": "APPROVE",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": true,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_049",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 49",
+    "description": "Automated normalization of agile enterprise project tracking data for record 49.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 30.0,
+    "risk_level": 8,
+    "team_readiness": 6,
+    "expert_decision": "APPROVE",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": true,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_050",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 50",
+    "description": "Automated normalization of agile enterprise project tracking data for record 50.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 23.0,
+    "risk_level": 4,
+    "team_readiness": 6,
+    "expert_decision": "APPROVE",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": true,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_051",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 51",
+    "description": "Automated normalization of agile enterprise project tracking data for record 51.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 18.0,
+    "risk_level": 6,
+    "team_readiness": 8,
+    "expert_decision": "APPROVE",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": true,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_052",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 52",
+    "description": "Automated normalization of agile enterprise project tracking data for record 52.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 10.0,
+    "risk_level": 8,
+    "team_readiness": 6,
+    "expert_decision": "REJECT",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": false,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_053",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 53",
+    "description": "Automated normalization of agile enterprise project tracking data for record 53.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 22.0,
+    "risk_level": 2,
+    "team_readiness": 8,
+    "expert_decision": "APPROVE",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": true,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_054",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 54",
+    "description": "Automated normalization of agile enterprise project tracking data for record 54.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 13.0,
+    "risk_level": 8,
+    "team_readiness": 10,
+    "expert_decision": "REJECT",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": false,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_055",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 55",
+    "description": "Automated normalization of agile enterprise project tracking data for record 55.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 10.0,
+    "risk_level": 8,
+    "team_readiness": 8,
+    "expert_decision": "APPROVE",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": true,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_056",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 56",
+    "description": "Automated normalization of agile enterprise project tracking data for record 56.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 41.0,
+    "risk_level": 4,
+    "team_readiness": 10,
+    "expert_decision": "REJECT",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": false,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_057",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 57",
+    "description": "Automated normalization of agile enterprise project tracking data for record 57.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 43.0,
+    "risk_level": 4,
+    "team_readiness": 10,
+    "expert_decision": "APPROVE",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": true,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_058",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 58",
+    "description": "Automated normalization of agile enterprise project tracking data for record 58.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 37.0,
+    "risk_level": 6,
+    "team_readiness": 4,
+    "expert_decision": "REJECT",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": false,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_059",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 59",
+    "description": "Automated normalization of agile enterprise project tracking data for record 59.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 40.0,
+    "risk_level": 2,
+    "team_readiness": 8,
+    "expert_decision": "REJECT",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": false,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_060",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 60",
+    "description": "Automated normalization of agile enterprise project tracking data for record 60.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 17.0,
+    "risk_level": 4,
+    "team_readiness": 4,
+    "expert_decision": "APPROVE",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": true,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_061",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 61",
+    "description": "Automated normalization of agile enterprise project tracking data for record 61.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 48.0,
+    "risk_level": 8,
+    "team_readiness": 8,
+    "expert_decision": "APPROVE",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": true,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_062",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 62",
+    "description": "Automated normalization of agile enterprise project tracking data for record 62.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 35.0,
+    "risk_level": 6,
+    "team_readiness": 8,
+    "expert_decision": "APPROVE",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": true,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_063",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 63",
+    "description": "Automated normalization of agile enterprise project tracking data for record 63.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 43.0,
+    "risk_level": 8,
+    "team_readiness": 4,
+    "expert_decision": "APPROVE",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": true,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_064",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 64",
+    "description": "Automated normalization of agile enterprise project tracking data for record 64.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 12.0,
+    "risk_level": 8,
+    "team_readiness": 4,
+    "expert_decision": "REJECT",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": false,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_065",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 65",
+    "description": "Automated normalization of agile enterprise project tracking data for record 65.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 21.0,
+    "risk_level": 4,
+    "team_readiness": 8,
+    "expert_decision": "APPROVE",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": true,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_066",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 66",
+    "description": "Automated normalization of agile enterprise project tracking data for record 66.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 10.0,
+    "risk_level": 6,
+    "team_readiness": 6,
+    "expert_decision": "REJECT",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": false,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_067",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 67",
+    "description": "Automated normalization of agile enterprise project tracking data for record 67.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 14.0,
+    "risk_level": 2,
+    "team_readiness": 10,
+    "expert_decision": "REJECT",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": false,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_068",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 68",
+    "description": "Automated normalization of agile enterprise project tracking data for record 68.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 39.0,
+    "risk_level": 2,
+    "team_readiness": 4,
+    "expert_decision": "APPROVE",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": true,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_069",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 69",
+    "description": "Automated normalization of agile enterprise project tracking data for record 69.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 39.0,
+    "risk_level": 4,
+    "team_readiness": 10,
+    "expert_decision": "REJECT",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": false,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_070",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 70",
+    "description": "Automated normalization of agile enterprise project tracking data for record 70.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 26.0,
+    "risk_level": 4,
+    "team_readiness": 6,
+    "expert_decision": "REJECT",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": false,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_071",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 71",
+    "description": "Automated normalization of agile enterprise project tracking data for record 71.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 32.0,
+    "risk_level": 6,
+    "team_readiness": 6,
+    "expert_decision": "REJECT",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": false,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_072",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 72",
+    "description": "Automated normalization of agile enterprise project tracking data for record 72.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 24.0,
+    "risk_level": 2,
+    "team_readiness": 6,
+    "expert_decision": "REJECT",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": false,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_073",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 73",
+    "description": "Automated normalization of agile enterprise project tracking data for record 73.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 46.0,
+    "risk_level": 2,
+    "team_readiness": 4,
+    "expert_decision": "APPROVE",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": true,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_074",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 74",
+    "description": "Automated normalization of agile enterprise project tracking data for record 74.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 30.0,
+    "risk_level": 2,
+    "team_readiness": 6,
+    "expert_decision": "APPROVE",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": true,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_075",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 75",
+    "description": "Automated normalization of agile enterprise project tracking data for record 75.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 23.0,
+    "risk_level": 8,
+    "team_readiness": 4,
+    "expert_decision": "APPROVE",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": true,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_076",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 76",
+    "description": "Automated normalization of agile enterprise project tracking data for record 76.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 11.0,
+    "risk_level": 2,
+    "team_readiness": 6,
+    "expert_decision": "APPROVE",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": true,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_077",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 77",
+    "description": "Automated normalization of agile enterprise project tracking data for record 77.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 20.0,
+    "risk_level": 8,
+    "team_readiness": 10,
+    "expert_decision": "REJECT",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": false,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_078",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 78",
+    "description": "Automated normalization of agile enterprise project tracking data for record 78.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 48.0,
+    "risk_level": 6,
+    "team_readiness": 10,
+    "expert_decision": "REJECT",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": false,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_079",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 79",
+    "description": "Automated normalization of agile enterprise project tracking data for record 79.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 47.0,
+    "risk_level": 8,
+    "team_readiness": 8,
+    "expert_decision": "APPROVE",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": true,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_080",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 80",
+    "description": "Automated normalization of agile enterprise project tracking data for record 80.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 43.0,
+    "risk_level": 6,
+    "team_readiness": 10,
+    "expert_decision": "APPROVE",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": true,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_081",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 81",
+    "description": "Automated normalization of agile enterprise project tracking data for record 81.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 47.0,
+    "risk_level": 2,
+    "team_readiness": 8,
+    "expert_decision": "APPROVE",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": true,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_082",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 82",
+    "description": "Automated normalization of agile enterprise project tracking data for record 82.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 43.0,
+    "risk_level": 2,
+    "team_readiness": 10,
+    "expert_decision": "REJECT",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": false,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_083",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 83",
+    "description": "Automated normalization of agile enterprise project tracking data for record 83.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 27.0,
+    "risk_level": 6,
+    "team_readiness": 4,
+    "expert_decision": "APPROVE",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": true,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_084",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 84",
+    "description": "Automated normalization of agile enterprise project tracking data for record 84.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 39.0,
+    "risk_level": 4,
+    "team_readiness": 10,
+    "expert_decision": "APPROVE",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": true,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_085",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 85",
+    "description": "Automated normalization of agile enterprise project tracking data for record 85.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 24.0,
+    "risk_level": 6,
+    "team_readiness": 8,
+    "expert_decision": "APPROVE",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": true,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_086",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 86",
+    "description": "Automated normalization of agile enterprise project tracking data for record 86.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 36.0,
+    "risk_level": 4,
+    "team_readiness": 8,
+    "expert_decision": "REJECT",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": false,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_087",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 87",
+    "description": "Automated normalization of agile enterprise project tracking data for record 87.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 43.0,
+    "risk_level": 8,
+    "team_readiness": 6,
+    "expert_decision": "REJECT",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": false,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_088",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 88",
+    "description": "Automated normalization of agile enterprise project tracking data for record 88.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 47.0,
+    "risk_level": 8,
+    "team_readiness": 4,
+    "expert_decision": "REJECT",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": false,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_089",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 89",
+    "description": "Automated normalization of agile enterprise project tracking data for record 89.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 42.0,
+    "risk_level": 8,
+    "team_readiness": 10,
+    "expert_decision": "REJECT",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": false,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_090",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 90",
+    "description": "Automated normalization of agile enterprise project tracking data for record 90.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 33.0,
+    "risk_level": 2,
+    "team_readiness": 6,
+    "expert_decision": "REJECT",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": false,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_091",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 91",
+    "description": "Automated normalization of agile enterprise project tracking data for record 91.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 24.0,
+    "risk_level": 8,
+    "team_readiness": 10,
+    "expert_decision": "REJECT",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": false,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_092",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 92",
+    "description": "Automated normalization of agile enterprise project tracking data for record 92.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 39.0,
+    "risk_level": 4,
+    "team_readiness": 10,
+    "expert_decision": "REJECT",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": false,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_093",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 93",
+    "description": "Automated normalization of agile enterprise project tracking data for record 93.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 26.0,
+    "risk_level": 8,
+    "team_readiness": 6,
+    "expert_decision": "REJECT",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": false,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_094",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 94",
+    "description": "Automated normalization of agile enterprise project tracking data for record 94.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 14.0,
+    "risk_level": 6,
+    "team_readiness": 6,
+    "expert_decision": "APPROVE",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": true,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_095",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 95",
+    "description": "Automated normalization of agile enterprise project tracking data for record 95.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 38.0,
+    "risk_level": 6,
+    "team_readiness": 6,
+    "expert_decision": "APPROVE",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": true,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_096",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 96",
+    "description": "Automated normalization of agile enterprise project tracking data for record 96.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 13.0,
+    "risk_level": 2,
+    "team_readiness": 6,
+    "expert_decision": "REJECT",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": false,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_097",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 97",
+    "description": "Automated normalization of agile enterprise project tracking data for record 97.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 19.0,
+    "risk_level": 6,
+    "team_readiness": 6,
+    "expert_decision": "REJECT",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": false,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_098",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 98",
+    "description": "Automated normalization of agile enterprise project tracking data for record 98.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 26.0,
+    "risk_level": 4,
+    "team_readiness": 10,
+    "expert_decision": "APPROVE",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": true,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_099",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 99",
+    "description": "Automated normalization of agile enterprise project tracking data for record 99.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 19.0,
+    "risk_level": 8,
+    "team_readiness": 6,
+    "expert_decision": "REJECT",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": false,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_100",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 100",
+    "description": "Automated normalization of agile enterprise project tracking data for record 100.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 26.0,
+    "risk_level": 2,
+    "team_readiness": 4,
+    "expert_decision": "REJECT",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": false,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_101",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 101",
+    "description": "Automated normalization of agile enterprise project tracking data for record 101.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 29.0,
+    "risk_level": 8,
+    "team_readiness": 8,
+    "expert_decision": "REJECT",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": false,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_102",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 102",
+    "description": "Automated normalization of agile enterprise project tracking data for record 102.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 33.0,
+    "risk_level": 8,
+    "team_readiness": 6,
+    "expert_decision": "APPROVE",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": true,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_103",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 103",
+    "description": "Automated normalization of agile enterprise project tracking data for record 103.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 14.0,
+    "risk_level": 4,
+    "team_readiness": 6,
+    "expert_decision": "APPROVE",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": true,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_104",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 104",
+    "description": "Automated normalization of agile enterprise project tracking data for record 104.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 43.0,
+    "risk_level": 6,
+    "team_readiness": 10,
+    "expert_decision": "APPROVE",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": true,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_105",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 105",
+    "description": "Automated normalization of agile enterprise project tracking data for record 105.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 15.0,
+    "risk_level": 6,
+    "team_readiness": 6,
+    "expert_decision": "APPROVE",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": true,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_106",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 106",
+    "description": "Automated normalization of agile enterprise project tracking data for record 106.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 11.0,
+    "risk_level": 8,
+    "team_readiness": 6,
+    "expert_decision": "APPROVE",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": true,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_107",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 107",
+    "description": "Automated normalization of agile enterprise project tracking data for record 107.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 22.0,
+    "risk_level": 2,
+    "team_readiness": 6,
+    "expert_decision": "REJECT",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": false,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_108",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 108",
+    "description": "Automated normalization of agile enterprise project tracking data for record 108.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 20.0,
+    "risk_level": 6,
+    "team_readiness": 10,
+    "expert_decision": "APPROVE",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": true,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_109",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 109",
+    "description": "Automated normalization of agile enterprise project tracking data for record 109.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 32.0,
+    "risk_level": 2,
+    "team_readiness": 6,
+    "expert_decision": "REJECT",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": false,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_110",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 110",
+    "description": "Automated normalization of agile enterprise project tracking data for record 110.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 25.0,
+    "risk_level": 6,
+    "team_readiness": 8,
+    "expert_decision": "REJECT",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": false,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_111",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 111",
+    "description": "Automated normalization of agile enterprise project tracking data for record 111.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 40.0,
+    "risk_level": 2,
+    "team_readiness": 10,
+    "expert_decision": "APPROVE",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": true,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_112",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 112",
+    "description": "Automated normalization of agile enterprise project tracking data for record 112.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 20.0,
+    "risk_level": 4,
+    "team_readiness": 8,
+    "expert_decision": "APPROVE",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": true,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_113",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 113",
+    "description": "Automated normalization of agile enterprise project tracking data for record 113.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 25.0,
+    "risk_level": 2,
+    "team_readiness": 10,
+    "expert_decision": "REJECT",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": false,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_114",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 114",
+    "description": "Automated normalization of agile enterprise project tracking data for record 114.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 17.0,
+    "risk_level": 4,
+    "team_readiness": 6,
+    "expert_decision": "REJECT",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": false,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_115",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 115",
+    "description": "Automated normalization of agile enterprise project tracking data for record 115.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 13.0,
+    "risk_level": 4,
+    "team_readiness": 8,
+    "expert_decision": "REJECT",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": false,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_116",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 116",
+    "description": "Automated normalization of agile enterprise project tracking data for record 116.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 13.0,
+    "risk_level": 2,
+    "team_readiness": 10,
+    "expert_decision": "APPROVE",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": true,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_117",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 117",
+    "description": "Automated normalization of agile enterprise project tracking data for record 117.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 34.0,
+    "risk_level": 4,
+    "team_readiness": 4,
+    "expert_decision": "APPROVE",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": true,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_118",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 118",
+    "description": "Automated normalization of agile enterprise project tracking data for record 118.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 12.0,
+    "risk_level": 8,
+    "team_readiness": 6,
+    "expert_decision": "APPROVE",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": true,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_119",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 119",
+    "description": "Automated normalization of agile enterprise project tracking data for record 119.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 41.0,
+    "risk_level": 4,
+    "team_readiness": 10,
+    "expert_decision": "APPROVE",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": true,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_120",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 120",
+    "description": "Automated normalization of agile enterprise project tracking data for record 120.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 12.0,
+    "risk_level": 6,
+    "team_readiness": 4,
+    "expert_decision": "APPROVE",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": true,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_121",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 121",
+    "description": "Automated normalization of agile enterprise project tracking data for record 121.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 36.0,
+    "risk_level": 2,
+    "team_readiness": 10,
+    "expert_decision": "REJECT",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": false,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_122",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 122",
+    "description": "Automated normalization of agile enterprise project tracking data for record 122.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 38.0,
+    "risk_level": 8,
+    "team_readiness": 4,
+    "expert_decision": "APPROVE",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": true,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_123",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 123",
+    "description": "Automated normalization of agile enterprise project tracking data for record 123.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 41.0,
+    "risk_level": 2,
+    "team_readiness": 6,
+    "expert_decision": "REJECT",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": false,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_124",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 124",
+    "description": "Automated normalization of agile enterprise project tracking data for record 124.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 28.0,
+    "risk_level": 6,
+    "team_readiness": 8,
+    "expert_decision": "REJECT",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": false,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_125",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 125",
+    "description": "Automated normalization of agile enterprise project tracking data for record 125.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 30.0,
+    "risk_level": 6,
+    "team_readiness": 4,
+    "expert_decision": "REJECT",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": false,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_126",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 126",
+    "description": "Automated normalization of agile enterprise project tracking data for record 126.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 14.0,
+    "risk_level": 6,
+    "team_readiness": 10,
+    "expert_decision": "APPROVE",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": true,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_127",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 127",
+    "description": "Automated normalization of agile enterprise project tracking data for record 127.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 27.0,
+    "risk_level": 4,
+    "team_readiness": 6,
+    "expert_decision": "APPROVE",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": true,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_128",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 128",
+    "description": "Automated normalization of agile enterprise project tracking data for record 128.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 37.0,
+    "risk_level": 4,
+    "team_readiness": 4,
+    "expert_decision": "APPROVE",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": true,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_129",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 129",
+    "description": "Automated normalization of agile enterprise project tracking data for record 129.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 31.0,
+    "risk_level": 2,
+    "team_readiness": 10,
+    "expert_decision": "REJECT",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": false,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_130",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 130",
+    "description": "Automated normalization of agile enterprise project tracking data for record 130.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 30.0,
+    "risk_level": 2,
+    "team_readiness": 10,
+    "expert_decision": "REJECT",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": false,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_131",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 131",
+    "description": "Automated normalization of agile enterprise project tracking data for record 131.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 15.0,
+    "risk_level": 8,
+    "team_readiness": 10,
+    "expert_decision": "REJECT",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": false,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_132",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 132",
+    "description": "Automated normalization of agile enterprise project tracking data for record 132.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 10.0,
+    "risk_level": 8,
+    "team_readiness": 4,
+    "expert_decision": "REJECT",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": false,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_133",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 133",
+    "description": "Automated normalization of agile enterprise project tracking data for record 133.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 14.0,
+    "risk_level": 2,
+    "team_readiness": 4,
+    "expert_decision": "REJECT",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": false,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_134",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 134",
+    "description": "Automated normalization of agile enterprise project tracking data for record 134.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 21.0,
+    "risk_level": 4,
+    "team_readiness": 4,
+    "expert_decision": "REJECT",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": false,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_135",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 135",
+    "description": "Automated normalization of agile enterprise project tracking data for record 135.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 35.0,
+    "risk_level": 6,
+    "team_readiness": 8,
+    "expert_decision": "APPROVE",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": true,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_136",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 136",
+    "description": "Automated normalization of agile enterprise project tracking data for record 136.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 43.0,
+    "risk_level": 2,
+    "team_readiness": 4,
+    "expert_decision": "APPROVE",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": true,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_137",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 137",
+    "description": "Automated normalization of agile enterprise project tracking data for record 137.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 23.0,
+    "risk_level": 8,
+    "team_readiness": 4,
+    "expert_decision": "APPROVE",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": true,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_138",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 138",
+    "description": "Automated normalization of agile enterprise project tracking data for record 138.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 35.0,
+    "risk_level": 4,
+    "team_readiness": 4,
+    "expert_decision": "APPROVE",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": true,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_139",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 139",
+    "description": "Automated normalization of agile enterprise project tracking data for record 139.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 36.0,
+    "risk_level": 2,
+    "team_readiness": 8,
+    "expert_decision": "REJECT",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": false,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_140",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 140",
+    "description": "Automated normalization of agile enterprise project tracking data for record 140.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 18.0,
+    "risk_level": 2,
+    "team_readiness": 4,
+    "expert_decision": "REJECT",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": false,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_141",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 141",
+    "description": "Automated normalization of agile enterprise project tracking data for record 141.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 35.0,
+    "risk_level": 4,
+    "team_readiness": 10,
+    "expert_decision": "APPROVE",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": true,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_142",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 142",
+    "description": "Automated normalization of agile enterprise project tracking data for record 142.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 31.0,
+    "risk_level": 2,
+    "team_readiness": 4,
+    "expert_decision": "REJECT",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": false,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_143",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 143",
+    "description": "Automated normalization of agile enterprise project tracking data for record 143.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 39.0,
+    "risk_level": 4,
+    "team_readiness": 10,
+    "expert_decision": "APPROVE",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": true,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_144",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 144",
+    "description": "Automated normalization of agile enterprise project tracking data for record 144.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 26.0,
+    "risk_level": 6,
+    "team_readiness": 10,
+    "expert_decision": "APPROVE",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": true,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_145",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 145",
+    "description": "Automated normalization of agile enterprise project tracking data for record 145.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 35.0,
+    "risk_level": 4,
+    "team_readiness": 10,
+    "expert_decision": "APPROVE",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": true,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_146",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 146",
+    "description": "Automated normalization of agile enterprise project tracking data for record 146.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 45.0,
+    "risk_level": 4,
+    "team_readiness": 8,
+    "expert_decision": "REJECT",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": false,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_147",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 147",
+    "description": "Automated normalization of agile enterprise project tracking data for record 147.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 10.0,
+    "risk_level": 4,
+    "team_readiness": 8,
+    "expert_decision": "APPROVE",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": true,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_148",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 148",
+    "description": "Automated normalization of agile enterprise project tracking data for record 148.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 17.0,
+    "risk_level": 2,
+    "team_readiness": 8,
+    "expert_decision": "APPROVE",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": true,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_149",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 149",
+    "description": "Automated normalization of agile enterprise project tracking data for record 149.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 44.0,
+    "risk_level": 2,
+    "team_readiness": 4,
+    "expert_decision": "APPROVE",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": true,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_150",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 150",
+    "description": "Automated normalization of agile enterprise project tracking data for record 150.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 24.0,
+    "risk_level": 4,
+    "team_readiness": 10,
+    "expert_decision": "REJECT",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": false,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_151",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 151",
+    "description": "Automated normalization of agile enterprise project tracking data for record 151.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 31.0,
+    "risk_level": 2,
+    "team_readiness": 8,
+    "expert_decision": "REJECT",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": false,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_152",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 152",
+    "description": "Automated normalization of agile enterprise project tracking data for record 152.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 23.0,
+    "risk_level": 8,
+    "team_readiness": 8,
+    "expert_decision": "APPROVE",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": true,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_153",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 153",
+    "description": "Automated normalization of agile enterprise project tracking data for record 153.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 35.0,
+    "risk_level": 8,
+    "team_readiness": 4,
+    "expert_decision": "REJECT",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": false,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_154",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 154",
+    "description": "Automated normalization of agile enterprise project tracking data for record 154.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 37.0,
+    "risk_level": 2,
+    "team_readiness": 8,
+    "expert_decision": "REJECT",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": false,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_155",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 155",
+    "description": "Automated normalization of agile enterprise project tracking data for record 155.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 32.0,
+    "risk_level": 2,
+    "team_readiness": 4,
+    "expert_decision": "REJECT",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": false,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_156",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 156",
+    "description": "Automated normalization of agile enterprise project tracking data for record 156.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 23.0,
+    "risk_level": 4,
+    "team_readiness": 6,
+    "expert_decision": "REJECT",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": false,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_157",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 157",
+    "description": "Automated normalization of agile enterprise project tracking data for record 157.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 33.0,
+    "risk_level": 6,
+    "team_readiness": 8,
+    "expert_decision": "REJECT",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": false,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_158",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 158",
+    "description": "Automated normalization of agile enterprise project tracking data for record 158.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 11.0,
+    "risk_level": 2,
+    "team_readiness": 6,
+    "expert_decision": "REJECT",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": false,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_159",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 159",
+    "description": "Automated normalization of agile enterprise project tracking data for record 159.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 35.0,
+    "risk_level": 8,
+    "team_readiness": 4,
+    "expert_decision": "REJECT",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": false,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_160",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 160",
+    "description": "Automated normalization of agile enterprise project tracking data for record 160.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 23.0,
+    "risk_level": 4,
+    "team_readiness": 10,
+    "expert_decision": "REJECT",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": false,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_161",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 161",
+    "description": "Automated normalization of agile enterprise project tracking data for record 161.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 16.0,
+    "risk_level": 2,
+    "team_readiness": 8,
+    "expert_decision": "REJECT",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": false,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_162",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 162",
+    "description": "Automated normalization of agile enterprise project tracking data for record 162.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 12.0,
+    "risk_level": 8,
+    "team_readiness": 4,
+    "expert_decision": "REJECT",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": false,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_163",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 163",
+    "description": "Automated normalization of agile enterprise project tracking data for record 163.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 32.0,
+    "risk_level": 8,
+    "team_readiness": 10,
+    "expert_decision": "APPROVE",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": true,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_164",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 164",
+    "description": "Automated normalization of agile enterprise project tracking data for record 164.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 27.0,
+    "risk_level": 6,
+    "team_readiness": 10,
+    "expert_decision": "APPROVE",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": true,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_165",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 165",
+    "description": "Automated normalization of agile enterprise project tracking data for record 165.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 47.0,
+    "risk_level": 4,
+    "team_readiness": 6,
+    "expert_decision": "REJECT",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": false,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_166",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 166",
+    "description": "Automated normalization of agile enterprise project tracking data for record 166.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 44.0,
+    "risk_level": 4,
+    "team_readiness": 4,
+    "expert_decision": "APPROVE",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": true,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_167",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 167",
+    "description": "Automated normalization of agile enterprise project tracking data for record 167.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 24.0,
+    "risk_level": 6,
+    "team_readiness": 10,
+    "expert_decision": "APPROVE",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": true,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_168",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 168",
+    "description": "Automated normalization of agile enterprise project tracking data for record 168.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 34.0,
+    "risk_level": 6,
+    "team_readiness": 8,
+    "expert_decision": "REJECT",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": false,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_169",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 169",
+    "description": "Automated normalization of agile enterprise project tracking data for record 169.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 46.0,
+    "risk_level": 4,
+    "team_readiness": 8,
+    "expert_decision": "REJECT",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": false,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_170",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 170",
+    "description": "Automated normalization of agile enterprise project tracking data for record 170.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 37.0,
+    "risk_level": 4,
+    "team_readiness": 6,
+    "expert_decision": "REJECT",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": false,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_171",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 171",
+    "description": "Automated normalization of agile enterprise project tracking data for record 171.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 19.0,
+    "risk_level": 2,
+    "team_readiness": 10,
+    "expert_decision": "APPROVE",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": true,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_172",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 172",
+    "description": "Automated normalization of agile enterprise project tracking data for record 172.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 48.0,
+    "risk_level": 2,
+    "team_readiness": 4,
+    "expert_decision": "APPROVE",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": true,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_173",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 173",
+    "description": "Automated normalization of agile enterprise project tracking data for record 173.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 26.0,
+    "risk_level": 6,
+    "team_readiness": 8,
+    "expert_decision": "REJECT",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": false,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_174",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 174",
+    "description": "Automated normalization of agile enterprise project tracking data for record 174.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 48.0,
+    "risk_level": 2,
+    "team_readiness": 10,
+    "expert_decision": "REJECT",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": false,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_175",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 175",
+    "description": "Automated normalization of agile enterprise project tracking data for record 175.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 31.0,
+    "risk_level": 8,
+    "team_readiness": 10,
+    "expert_decision": "REJECT",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": false,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_176",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 176",
+    "description": "Automated normalization of agile enterprise project tracking data for record 176.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 35.0,
+    "risk_level": 2,
+    "team_readiness": 6,
+    "expert_decision": "APPROVE",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": true,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_177",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 177",
+    "description": "Automated normalization of agile enterprise project tracking data for record 177.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 34.0,
+    "risk_level": 2,
+    "team_readiness": 8,
+    "expert_decision": "APPROVE",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": true,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_178",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 178",
+    "description": "Automated normalization of agile enterprise project tracking data for record 178.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 26.0,
+    "risk_level": 8,
+    "team_readiness": 8,
+    "expert_decision": "APPROVE",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": true,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_179",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 179",
+    "description": "Automated normalization of agile enterprise project tracking data for record 179.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 22.0,
+    "risk_level": 6,
+    "team_readiness": 4,
+    "expert_decision": "APPROVE",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": true,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_180",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 180",
+    "description": "Automated normalization of agile enterprise project tracking data for record 180.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 29.0,
+    "risk_level": 8,
+    "team_readiness": 8,
+    "expert_decision": "REJECT",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": false,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_181",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 181",
+    "description": "Automated normalization of agile enterprise project tracking data for record 181.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 34.0,
+    "risk_level": 2,
+    "team_readiness": 4,
+    "expert_decision": "REJECT",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": false,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_182",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 182",
+    "description": "Automated normalization of agile enterprise project tracking data for record 182.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 13.0,
+    "risk_level": 6,
+    "team_readiness": 8,
+    "expert_decision": "REJECT",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": false,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_183",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 183",
+    "description": "Automated normalization of agile enterprise project tracking data for record 183.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 19.0,
+    "risk_level": 2,
+    "team_readiness": 6,
+    "expert_decision": "REJECT",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": false,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_184",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 184",
+    "description": "Automated normalization of agile enterprise project tracking data for record 184.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 12.0,
+    "risk_level": 8,
+    "team_readiness": 8,
+    "expert_decision": "APPROVE",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": true,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_185",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 185",
+    "description": "Automated normalization of agile enterprise project tracking data for record 185.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 27.0,
+    "risk_level": 8,
+    "team_readiness": 4,
+    "expert_decision": "APPROVE",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": true,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_186",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 186",
+    "description": "Automated normalization of agile enterprise project tracking data for record 186.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 45.0,
+    "risk_level": 2,
+    "team_readiness": 4,
+    "expert_decision": "REJECT",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": false,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_187",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 187",
+    "description": "Automated normalization of agile enterprise project tracking data for record 187.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 31.0,
+    "risk_level": 4,
+    "team_readiness": 6,
+    "expert_decision": "REJECT",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": false,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_188",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 188",
+    "description": "Automated normalization of agile enterprise project tracking data for record 188.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 43.0,
+    "risk_level": 4,
+    "team_readiness": 8,
+    "expert_decision": "APPROVE",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": true,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_189",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 189",
+    "description": "Automated normalization of agile enterprise project tracking data for record 189.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 17.0,
+    "risk_level": 8,
+    "team_readiness": 8,
+    "expert_decision": "REJECT",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": false,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_190",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 190",
+    "description": "Automated normalization of agile enterprise project tracking data for record 190.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 28.0,
+    "risk_level": 8,
+    "team_readiness": 6,
+    "expert_decision": "APPROVE",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": true,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_191",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 191",
+    "description": "Automated normalization of agile enterprise project tracking data for record 191.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 46.0,
+    "risk_level": 4,
+    "team_readiness": 8,
+    "expert_decision": "REJECT",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": false,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_192",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 192",
+    "description": "Automated normalization of agile enterprise project tracking data for record 192.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 15.0,
+    "risk_level": 4,
+    "team_readiness": 8,
+    "expert_decision": "REJECT",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": false,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_193",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 193",
+    "description": "Automated normalization of agile enterprise project tracking data for record 193.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 35.0,
+    "risk_level": 2,
+    "team_readiness": 4,
+    "expert_decision": "REJECT",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": false,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_194",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 194",
+    "description": "Automated normalization of agile enterprise project tracking data for record 194.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 43.0,
+    "risk_level": 2,
+    "team_readiness": 8,
+    "expert_decision": "REJECT",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": false,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_195",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 195",
+    "description": "Automated normalization of agile enterprise project tracking data for record 195.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 15.0,
+    "risk_level": 4,
+    "team_readiness": 8,
+    "expert_decision": "REJECT",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": false,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_196",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 196",
+    "description": "Automated normalization of agile enterprise project tracking data for record 196.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 46.0,
+    "risk_level": 2,
+    "team_readiness": 6,
+    "expert_decision": "REJECT",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": false,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_197",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 197",
+    "description": "Automated normalization of agile enterprise project tracking data for record 197.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 42.0,
+    "risk_level": 2,
+    "team_readiness": 6,
+    "expert_decision": "REJECT",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": false,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_198",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 198",
+    "description": "Automated normalization of agile enterprise project tracking data for record 198.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 31.0,
+    "risk_level": 6,
+    "team_readiness": 10,
+    "expert_decision": "APPROVE",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": true,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_199",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 199",
+    "description": "Automated normalization of agile enterprise project tracking data for record 199.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 30.0,
+    "risk_level": 2,
+    "team_readiness": 4,
+    "expert_decision": "APPROVE",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": true,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  },
+  {
+    "scenario_id": "agile_200",
+    "source": "Kaggle Agile Dataset",
+    "source_file": "Agile_Projects_Dataset.xlsx",
+    "name": "Agile Project Scenario 200",
+    "description": "Automated normalization of agile enterprise project tracking data for record 200.",
+    "budget_million_usd": 5.0,
+    "expected_roi_percent": 15.0,
+    "risk_level": 8,
+    "team_readiness": 8,
+    "expert_decision": "APPROVE",
+    "expert_confidence": 0.85,
+    "actual_outcomes": {
+      "success": true,
+      "notes": "Historical dataset baseline result."
+    },
+    "industry": "Technology",
+    "scenario_type": "project_management"
+  }
+]
