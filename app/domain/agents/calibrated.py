@@ -80,7 +80,8 @@ def load_calibrated_agent(base_agent: Agent, weights_file: str | Path) -> Calibr
 
 
 def _agent_name_for(agent: Agent) -> str:
-    name = agent.__class__.__name__
+    base = getattr(agent, "base_agent", agent)
+    name = base.__class__.__name__
     if name.endswith("Agent"):
         name = name[:-5]
     return name.upper()

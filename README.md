@@ -1,181 +1,393 @@
-# 🚀 AI Decision Ecosystem Engine
+<div align="center">
 
-A highly advanced, **Multi-Agent Decision Support System** built with **FastAPI, PostgreSQL (Async), and Clean Architecture**. It orchestrates a simulation where three virtual agents (CEO, CFO, HR) evaluate business scenarios, debate over multiple rounds, and reach a consensus using a blend of deterministic rules and LLM reasoning.
+# AI Decision Ecosystem Engine
 
-![Build Status](https://img.shields.io/badge/build-passing-brightgreen)
-![Coverage](https://img.shields.io/badge/coverage-100%25-brightgreen)
-![Python Version](https://img.shields.io/badge/python-3.11-blue)
-![Architecture](https://img.shields.io/badge/architecture-Clean-orange)
-![Progress](https://img.shields.io/badge/overall%20progress-30%25-yellow)
+### Çok Ajanlı Karar Destek ve Senaryo Değerlendirme Sistemi
 
-## 📊 Current Status (2026-05-30)
+Kurumsal karar senaryolarını CEO, CFO ve HR bakış açılarıyla analiz eden;
+deterministik karar motorunu, veri bilimi katmanını ve isteğe bağlı yerel LLM
+açıklama desteğini aynı mimaride birleştiren yazılım mühendisliği projesi.
 
+**Hızlı bağlantılar**
+
+[Proje Yol Haritası](docs/project/ROADMAP.md) |
+[API Sözleşmesi](docs/backend_simulation_contract.md) |
+[Veri Bilimi](docs/data_science/DATA_SCIENCE_OVERVIEW.md) |
+[Rapor Taslağı](docs/report/final_report_draft.md) |
+[Hızlı Başlangıç](QUICKSTART.md)
+
+**Proje**
+
+![status](https://img.shields.io/badge/status-active-brightgreen)
+![scope](https://img.shields.io/badge/scope-academic%20project-blue)
+![architecture](https://img.shields.io/badge/architecture-clean%20architecture-orange)
+![decision](https://img.shields.io/badge/decision-approve%20%7C%20revise%20%7C%20reject-informational)
+
+**Teknoloji**
+
+![python](https://img.shields.io/badge/python-3.11-blue)
+![fastapi](https://img.shields.io/badge/backend-FastAPI-009688)
+![react](https://img.shields.io/badge/frontend-React%20%2B%20TypeScript-149ECA)
+![postgresql](https://img.shields.io/badge/database-PostgreSQL-336791)
+![docker](https://img.shields.io/badge/container-Docker%20Compose-2496ED)
+![llm](https://img.shields.io/badge/LLM-Ollama%20optional-purple)
+
+**Kalite**
+
+![tests](https://img.shields.io/badge/tests-pytest-brightgreen)
+![api](https://img.shields.io/badge/API-OpenAPI-lightgrey)
+![orm](https://img.shields.io/badge/ORM-SQLAlchemy-red)
+![migrations](https://img.shields.io/badge/migrations-Alembic-yellow)
+![frontend-build](https://img.shields.io/badge/frontend%20build-Vite-blueviolet)
+
+</div>
+
+---
+
+## İçindekiler
+
+- [Özet](#özet)
+- [Yönetici Özeti](#yönetici-özeti)
+- [Problem ve Çözüm](#problem-ve-çözüm)
+- [Mevcut Uygulama Durumu](#mevcut-uygulama-durumu)
+- [Sistem Mimarisi](#sistem-mimarisi)
+- [Karar Akışı](#karar-akışı)
+- [Agent Rolleri](#agent-rolleri)
+- [Teknoloji Yığını](#teknoloji-yığını)
+- [Gereksinimler](#gereksinimler)
+- [Kurulum](#kurulum)
+- [Hızlı Başlangıç](#hızlı-başlangıç)
+- [LLM Modu](#llm-modu)
+- [API Özeti](#api-özeti)
+- [Veri Bilimi Katmanı](#veri-bilimi-katmanı)
+- [Test ve Doğrulama](#test-ve-doğrulama)
+- [Repo Yapısı](#repo-yapısı)
+- [Dokümantasyon Haritası](#dokümantasyon-haritası)
+- [Bilinen Sınırlamalar](#bilinen-sınırlamalar)
+- [Sorun Giderme](#sorun-giderme)
+- [Proje Yönetimi](#proje-yönetimi)
+- [Lisans ve Kapsam](#lisans-ve-kapsam)
+
+---
+
+## Özet
+
+AI Decision Ecosystem Engine, şirketlerin stratejik kararlarını tek bir bakış
+açısından değil, farklı kurumsal rollerin değerlendirmeleri üzerinden analiz
+eder. Sistem bir senaryo girdisini alır, üç farklı agent ile yorumlar, skorları
+birleştirir ve karar sonucunu açıklanabilir şekilde üretir.
+
+Proje; backend API, veritabanı, frontend, Docker, test otomasyonu, veri bilimi
+hazırlığı, LLM entegrasyonu ve raporlama sürecini birlikte ele alan uçtan uca
+bir yazılım mühendisliği çalışmasıdır.
+
+---
+
+## Yönetici Özeti
+
+| Başlık | Açıklama |
+| --- | --- |
+| Proje adı | AI Decision Ecosystem Engine |
+| Temel amaç | Kurumsal karar senaryolarını çok ajanlı analizle değerlendirmek |
+| Ana kullanıcı | Yönetici ekipler, proje ekipleri, karar destek sistemi geliştiricileri |
+| Karar çıktıları | `APPROVE`, `REVISE`, `REJECT` |
+| Backend | FastAPI, PostgreSQL, SQLAlchemy, Alembic |
+| Frontend | React, TypeScript, Vite |
+| Agent rolleri | CEO, CFO, HR |
+| LLM yaklaşımı | Yerel Ollama ile isteğe bağlı açıklama zenginleştirme |
+| Test yaklaşımı | Pytest, API testleri, frontend build kontrolü |
+| Teslim bağlamı | BMU326 Yazılım Mühendisliği dönem projesi |
+
+---
+
+## Problem ve Çözüm
+
+| Problem | Projedeki çözüm |
+| --- | --- |
+| Kararların tek bir perspektifle verilmesi | CEO, CFO ve HR agent rolleriyle çok yönlü değerlendirme |
+| Skorların açıklamasız kalması | Agent bazlı gerekçe ve tartışma mesajları |
+| Frontend ve backend ayrımının belirsiz olması | REST API sözleşmesi ve React cockpit arayüzü |
+| LLM kullanımının deterministik kararı bozma riski | LLM yalnızca reasoning alanını zenginleştirir, karar motoru korunur |
+| Rapor ve teslim sürecinde dağınık dokümantasyon | `docs/` altında ayrılmış proje, veri bilimi, rapor ve iç not klasörleri |
+
+---
+
+## Mevcut Uygulama Durumu
+
+| Alan | Durum | Not |
+| --- | --- | --- |
+| Backend API | Tamamlandı | FastAPI endpointleri çalışır durumda |
+| Veritabanı | Tamamlandı | PostgreSQL, SQLAlchemy repository katmanı ve Alembic kullanılıyor |
+| Agent karar motoru | Tamamlandı | CEO, CFO ve HR agent skorları üretiliyor |
+| Tartışma akışı | Tamamlandı | Turlu agent mesajları API yanıtında dönüyor |
+| LLM entegrasyonu | Çalışır durumda | `MADE_USE_LLM=1` ile aktif ediliyor |
+| Frontend temel akışı | Mevcut | React arayüz backend ile bağlanabiliyor |
+| Frontend demo iyileştirmeleri | Devam ediyor | Debate console ve executive report tarafı geliştirilecek |
+| Veri bilimi hazırlığı | Büyük ölçüde tamamlandı | Dataset mapping ve kalibrasyon stratejisi belgelendi |
+| Rapor | Devam ediyor | Taslak `docs/report/final_report_draft.md` altında |
+| Jira görselleri | Planlandı | Pano düzeni rapor öncesi iyileştirilecek |
+
+---
+
+## Sistem Mimarisi
+
+### Katmanlı yapı
+
+```text
++--------------------------------------------------------------------------------+
+|                                Presentation                                    |
+| FastAPI routes, request/response schemas, dependency wiring                     |
++--------------------------------------------------------------------------------+
+|                                Application                                     |
+| Use-case servisleri, senaryo akışı, API işlemlerinin orkestrasyonu             |
++--------------------------------------------------------------------------------+
+|                                  Domain                                        |
+| Agent modelleri, karar kuralları, classifier, aggregator, LLM port sözleşmesi  |
++--------------------------------------------------------------------------------+
+|                              Infrastructure                                    |
+| PostgreSQL, SQLAlchemy repository implementasyonları, Ollama LLM client        |
++--------------------------------------------------------------------------------+
 ```
-Phase 1 — Data Collection      [████████░░░░░░░░░░░░]  40%  ✅ Pipeline ready
-Phase 2 — Agent Training       [█░░░░░░░░░░░░░░░░░░░]   5%  🚧 Kickoff in progress
-Phase 3 — Outcome-Based RL     [░░░░░░░░░░░░░░░░░░░░]   0%  ⏳ Planned
-Phase 4 — Validation & Paper   [░░░░░░░░░░░░░░░░░░░░]   0%  ⏳ Planned
-─────────────────────────────────────────────────────────────
-Overall                        [██████░░░░░░░░░░░░░░]  30%
+
+### Modül sorumlulukları
+
+| Modül | Sorumluluk |
+| --- | --- |
+| `app/domain/agents/` | CEO, CFO, HR agent sınıfları, LLM wrapper ve agent factory |
+| `app/domain/services/` | Senaryo sınıflandırma, tartışma orkestrasyonu ve karar toplama |
+| `app/domain/learning/` | Dataset loader, agent calibrator, sentetik veri ve debate orchestrator |
+| `app/application/use_cases/` | Senaryo oluşturma, listeleme ve simülasyon use-case akışları |
+| `app/infrastructure/database/` | Veritabanı modelleri, session ve temel ORM yapılandırması |
+| `app/infrastructure/repositories/` | Domain repository arayüzlerinin SQLAlchemy implementasyonları |
+| `app/presentation/api/` | FastAPI endpointleri |
+| `frontend/src/` | React arayüzü, karar tipleri ve kullanıcı etkileşimi |
+
+### Tasarım ilkeleri
+
+| İlke | Uygulamadaki karşılığı |
+| --- | --- |
+| Katman ayrımı | Domain katmanı veritabanı ve web framework detaylarından bağımsız tutulur |
+| Test edilebilirlik | Agent ve servis davranışları bağımsız test edilebilir yapıdadır |
+| Açıklanabilirlik | Her agent skorla birlikte gerekçe üretir |
+| Güvenli LLM kullanımı | LLM çıktısı kararın kendisini değil, açıklama alanını zenginleştirir |
+| Genişletilebilirlik | Yeni agent, yeni classifier veya yeni veri kaynağı eklenebilir |
+
+---
+
+## Karar Akışı
+
+```text
+Senaryo girdisi
+  -> doğrulama ve normalizasyon
+  -> senaryo sınıflandırma
+  -> CEO / CFO / HR agent analizleri
+  -> turlu tartışma ve mesaj üretimi
+  -> skorların birleştirilmesi
+  -> nihai karar
+  -> API ve frontend çıktısı
 ```
 
-**Phase 1 — Data Collection (COMPLETED):**
-Real Agile dataset (200 records) is normalized to 1-10 canonical schema with budget imputation, validated against strict quality gates, and exposed to the calibrator via `DatasetLoader`. End-to-end pipeline:
-`scripts/normalize_agile_dataset.py → scripts/validate_real_dataset.py → scripts/evaluate_real_dataset.py → app/domain/learning/dataset_loader.py`.
-Known limitations (REVISE class absent, fixed budget, single scenario type) are documented in [`docs/real_dataset_analysis_summary.md`](docs/real_dataset_analysis_summary.md). Data mapping reference: [`docs/data_mapping_agile.md`](docs/data_mapping_agile.md).
+| Adım | Açıklama |
+| --- | --- |
+| 1. Senaryo oluşturma | Kullanıcı senaryo başlığı, açıklama, bütçe, ROI, risk ve ekip hazırlığı girer |
+| 2. Sınıflandırma | Sistem senaryonun bağlamını belirler |
+| 3. Agent analizi | Her agent kendi uzmanlık alanına göre skor ve gerekçe üretir |
+| 4. Tartışma | Agent mesajları turlar halinde izlenebilir |
+| 5. Toplama | Aggregator ortak skoru ve nihai kararı hesaplar |
+| 6. Sunum | Sonuç API ve frontend üzerinden gösterilir |
 
-**Phase 2 — Agent Training (KICKOFF):**
-`DatasetLoader → AgentCalibrator` integration is wired and verified by [`tests/test_dataset_loader_calibrator_integration.py`](tests/test_dataset_loader_calibrator_integration.py). The end-to-end training pipeline is in [`scripts/phase2_train_agents.py`](scripts/phase2_train_agents.py); it trains CEO/CFO/HR over the real data, writes per-agent weights to `weights/` and a metrics report to `reports/phase2_training_results.json`. Accuracy targets (≥70%) are not yet met — by design, since the source dataset is small (200) and 2-class (no REVISE). Source diversification and outcome-based losses (Phase 3) are the follow-up steps.
+---
 
-Run Phase 2 locally:
+## Agent Rolleri
+
+| Agent | Odak alanı | Değerlendirme örnekleri |
+| --- | --- | --- |
+| CEO | Stratejik uygunluk ve büyüme potansiyeli | Pazar etkisi, ROI, uzun vadeli fırsat |
+| CFO | Finansal sürdürülebilirlik | Bütçe, maliyet riski, yatırım geri dönüşü |
+| HR | Ekip kapasitesi ve uygulanabilirlik | Takım hazırlığı, insan kaynağı ihtiyacı, operasyonel yük |
+
+### Karar eşikleri
+
+| Ortalama skor | Karar | Yorum |
+| --- | --- | --- |
+| 75 ve üzeri | `APPROVE` | Senaryo genel olarak uygulanabilir görülür |
+| 50-74 | `REVISE` | Senaryo potansiyel taşır fakat iyileştirme ister |
+| 50 altı | `REJECT` | Risk veya uygulanabilirlik problemi yüksektir |
+
+---
+
+## Teknoloji Yığını
+
+| Katman | Teknolojiler |
+| --- | --- |
+| Backend | Python 3.11, FastAPI, Pydantic, Uvicorn |
+| Veritabanı | PostgreSQL 16, SQLAlchemy, Alembic, asyncpg, psycopg2 |
+| Frontend | React 19, TypeScript, Vite, React Query, Recharts |
+| LLM | Ollama, OpenAI uyumlu local endpoint, LangChain portları |
+| Veri bilimi | Pandas, dataset mapping, agent kalibrasyonu |
+| Test | Pytest, pytest-asyncio, HTTPX |
+| DevOps | Docker, Docker Compose, PowerShell helper scriptleri |
+| Raporlama | Markdown, Mermaid/DOT diyagramları, ekran görüntüsü varlıkları |
+
+---
+
+## Gereksinimler
+
+| Gereksinim | Sürüm / Not |
+| --- | --- |
+| Python | 3.11 önerilir |
+| Node.js | Frontend için güncel LTS sürümü önerilir |
+| npm | Frontend bağımlılıkları için kullanılır |
+| Docker Desktop | PostgreSQL ve backend container akışı için |
+| PostgreSQL | Docker Compose içinde `postgres:16-alpine` |
+| Ollama | Sadece LLM açık demo için gerekir |
+
+---
+
+## Kurulum
+
+### Depoyu klonlama
 
 ```bash
-python scripts/phase2_train_agents.py
-# outputs:
-#   weights/{ceo,cfo,hr}_real_weights.json
-#   reports/phase2_training_results.json
+git clone https://github.com/multi-agent-decision-engine/ai-decision-ecosystem.git
+cd ai-decision-ecosystem
 ```
 
-Use Phase 2 weights at runtime:
+### Python ortamı
 
 ```bash
-export MADE_AGENT_WEIGHTS_DIR=weights
-# Windows PowerShell:
-# $env:MADE_AGENT_WEIGHTS_DIR="weights"
+python -m venv .venv
 ```
 
-When `MADE_AGENT_WEIGHTS_DIR` is set and all three weight files are present, `AgentFactory` wraps the CEO/CFO/HR agents with Phase 2 calibrated decision weights. Without the environment variable, the application keeps the original deterministic agents.
+Windows PowerShell:
 
-For a sub-second smoke run: `python scripts/phase2_train_agents.py --epochs 3 --batch-size 8 --quiet`.
+```powershell
+.\.venv\Scripts\Activate.ps1
+```
 
-## 📌 Features
-- **Multi-Agent Debate Protocol:** 3 specialized agents (CEO, CFO, HR) reading each other's inputs in a round-based negotiation.
-- **Hybrid AI Engine:** Deterministic rule-based scoring (for strict boundaries) backed by **Ollama (`qwen2.5:14b`)** for natural language reasoning and insight.
-- **Fully Asynchronous:** End-to-end `async/await` implementation via `asyncpg` and Async SQLAlchemy.
-- **LLM Call Logging:** Built-in performance tracking for LLM token latencies, model fallbacks, and success rates.
-- **Robust Testing:** 80+ Pytest cases executed in `<2s` ensuring flawless core logic.
+macOS/Linux:
 
-## 🛠️ Technology Stack
-- **Backend:** FastAPI, Pydantic v2
-- **Database:** PostgreSQL, SQLAlchemy (Async), Alembic, `asyncpg`
-- **AI / LLM:** Ollama (Local LLM instance), LangChain
-- **DevOps:** Docker Compose, Pytest
-- **Upcoming (Sprint 3):** Scikit-Learn (ML Orchestrator), Streamlit (Frontend Dashboard)
-
-## 🚀 Quick Start (Local Setup)
-
-1. **Clone the repository and create a virtual environment:**
-   ```bash
-   git clone https://github.com/multi-agent-decision-engine/core-engine.git
-   cd core-engine
-   python -m venv .venv
-   # Windows: .venv\Scripts\activate | macOS/Linux: source .venv/bin/activate
-   ```
-
-2. **Install dependencies:**
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-3. **Environment Variables:**
-   Copy `.env.example` to `.env` (or configure via OS). 
-   *(Note: Alembic uses `postgresql+psycopg2` for migrations, while the app uses `postgresql+asyncpg` internally.)*
-
-4. **Start Database and Apply Migrations:**
-   ```bash
-   docker compose up -d db
-   alembic upgrade head
-   ```
-
-5. **Start API:**
-   ```bash
-   uvicorn app.main:app --reload
-   ```
-
-*(Alternatively, you can just run `docker compose up --build` for a fully containerized startup).*
-
-## 🧪 Testing
-The core engine is covered by a robust test suite testing boundary conditions, agent behaviors, and schema validations.
 ```bash
-pytest tests/ -v
+source .venv/bin/activate
 ```
 
-## Run with Docker
-1. Build and start services:
-   ```bash
-   docker compose up --build
-   ```
-2. Apply migrations inside the app container:
-   ```bash
-   docker compose exec app alembic upgrade head
-   ```
-3. Access API:
-   ```
-   http://localhost:8000/docs
-   ```
+Bağımlılık kurulumu:
 
-## One-command startup helpers
-- Linux/macOS:
-   ```bash
-   make start
-   ```
-- Windows (PowerShell):
-   ```powershell
-   .\start.ps1
-   ```
-
-## One-command stop helpers
-- Linux/macOS:
-   ```bash
-   make stop
-   ```
-- Windows (PowerShell):
-   ```powershell
-   .\stop.ps1
-   ```
-
-## Demo & Submission
-
-**For a quick walkthrough:** See [`docs/demo.md`](docs/demo.md) for a 3-minute demo script with exact commands to create, simulate, and retrieve scenarios.
-
-**For submission requirements:** See [`docs/submission.md`](docs/submission.md) for the complete checklist (environment, migrations, tests, CI, repo structure).
-
-## API Endpoints
-- `POST /api/v1/scenarios` - Create scenario
-- `POST /api/v1/scenarios/{id}/simulate` - Run round-based agent simulation and persist outputs + final decision
-- `GET /api/v1/scenarios?limit=20&offset=0` - List scenarios (paginated)
-- `GET /api/v1/scenarios/{id}` - Get scenario details
-- `GET /api/v1/scenarios/{id}/simulation` - Get scenario with agent outputs and final decision
-
-Detailed simulation response contract:
-
-- `rounds` - CEO, CFO and HR messages grouped by discussion round
-- `total_rounds` - number of rounds executed
-- `consensus_reached` - whether all agents reached the same stance
-- `stability_reached` - whether agent positions stabilized between rounds
-- `agent_outputs` - final legacy agent scores and rationales
-- `final_score` / `final_decision` - aggregated recommendation
-- `scenario_type`, `scenario_type_confidence`, `agent_weights` - classifier-driven context
-
-See [`docs/backend_simulation_contract.md`](docs/backend_simulation_contract.md) for the frontend/backend response contract.
-
-Minimal response shape:
-
-```json
-{
-  "scenario_id": 5,
-  "rounds": [{"round_number": 1, "messages": [{"agent": "CEO", "stance": "neutral", "confidence": 0.6}]}],
-  "total_rounds": 2,
-  "final_score": 46.0,
-  "final_decision": "REJECT",
-  "scenario_type": "team_expansion",
-  "agent_weights": {"CEO": 0.25, "CFO": 0.25, "HR": 0.5}
-}
+```bash
+pip install -r requirements.txt
 ```
 
-## Scenario Input Contract
+Ortam dosyası:
 
-All agents (CEO, CFO, HR) analyze the same standardized scenario input:
+```bash
+cp .env.example .env
+```
+
+Windows PowerShell:
+
+```powershell
+Copy-Item .env.example .env
+```
+
+---
+
+## Hızlı Başlangıç
+
+### Docker ile backend ve veritabanı
+
+```bash
+docker compose up --build
+```
+
+API dokümantasyonu:
+
+```text
+http://localhost:8000/docs
+```
+
+Servisleri durdurma:
+
+```bash
+docker compose down
+```
+
+### Backend local çalışma
+
+```bash
+docker compose up -d db
+alembic upgrade head
+uvicorn app.main:app --reload
+```
+
+Backend adresi:
+
+```text
+http://localhost:8000
+```
+
+### Frontend çalışma
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+Frontend adresi:
+
+```text
+http://127.0.0.1:5173
+```
+
+Build kontrolü:
+
+```bash
+npm run build
+```
+
+---
+
+## LLM Modu
+
+LLM modu zorunlu değildir. Sistem LLM kapalıyken deterministik agent karar
+motoruyla çalışır. LLM açıldığında yalnızca agent gerekçe metinleri
+zenginleştirilir; skor, stance ve nihai karar korunur.
+
+| Değişken | Açıklama |
+| --- | --- |
+| `MADE_USE_LLM=1` | LLM wrapper katmanını aktif eder |
+| `LLM_BASE_URL=http://host.docker.internal:11434/v1` | Docker içinden host Ollama endpointine erişim sağlar |
+| `LLM_MODEL=qwen2.5:7b` | Kullanılacak yerel model adı |
+
+Linux/macOS:
+
+```bash
+export MADE_USE_LLM=1
+export LLM_BASE_URL=http://host.docker.internal:11434/v1
+```
+
+Windows PowerShell:
+
+```powershell
+$env:MADE_USE_LLM="1"
+$env:LLM_BASE_URL="http://host.docker.internal:11434/v1"
+```
+
+---
+
+## API Özeti
+
+### Endpoint tablosu
+
+| Method | Endpoint | Açıklama |
+| --- | --- | --- |
+| `POST` | `/api/v1/scenarios` | Yeni senaryo oluşturur |
+| `GET` | `/api/v1/scenarios` | Senaryoları sayfalı olarak listeler |
+| `GET` | `/api/v1/scenarios/{id}` | Tek bir senaryonun detayını getirir |
+| `POST` | `/api/v1/scenarios/{id}/simulate` | Agent simülasyonunu çalıştırır |
+| `GET` | `/api/v1/scenarios/{id}/simulation` | Senaryo, agent mesajları ve nihai kararı getirir |
+
+### Örnek senaryo girdisi
 
 ```json
 {
@@ -188,182 +400,142 @@ All agents (CEO, CFO, HR) analyze the same standardized scenario input:
 }
 ```
 
-**Field Ranges & Meanings:**
-- `budget_million_usd` (float, > 0): Investment cost in millions
-- `expected_roi_percent` (float): Expected return % (positive or negative)
-- `risk_level` (int, 1–10): Project risk level (1=low, 10=high)
-- `team_readiness` (int, 1–10): Team capability (1=unready, 10=expert)
+### Örnek simülasyon yanıtı
 
-**Agent Scoring:**
-- **CEO**: Strategic fit (ROI) × Market confidence (1 - risk) → 0–100
-- **CFO**: Financial ROI × Risk penalty (1 - risk_factor) → 0–100
-- **HR**: Team readiness × Hiring load factor × Time factor → 0–100
-
-**Decision Thresholds:**
-- Average score ≥ 75: **APPROVE**
-- Average score 50–74: **REVISE**
-- Average score < 50: **REJECT**
-
-## Quick Start Demo
-
-After starting the API (`http://localhost:8000`):
-
-### 1. Create a Scenario
-```bash
-curl -X POST http://localhost:8000/api/v1/scenarios \
-  -H "Content-Type: application/json" \
-  -d '{
-    "name": "Market Expansion",
-    "description": "Southeast Asia entry",
-    "budget_million_usd": 5.0,
-    "expected_roi_percent": 45.0,
-    "risk_level": 6,
-    "team_readiness": 7
-  }'
-# Returns: {"scenario_id": 1}
+```json
+{
+  "scenario_id": 5,
+  "total_rounds": 2,
+  "consensus_reached": false,
+  "final_score": 46.0,
+  "final_decision": "REJECT",
+  "scenario_type": "team_expansion",
+  "agent_weights": {
+    "CEO": 0.25,
+    "CFO": 0.25,
+    "HR": 0.5
+  }
+}
 ```
 
-### 2. Run Simulation
-```bash
-curl -X POST http://localhost:8000/api/v1/scenarios/1/simulate
-# Returns agent scores (CEO, CFO, HR) + final decision (APPROVE/REVISE/REJECT)
+Detaylı sözleşme:
+
+```text
+docs/backend_simulation_contract.md
 ```
 
-### 3. Retrieve Results
-```bash
-# Get all scenarios
-curl http://localhost:8000/api/v1/scenarios?limit=10
+---
 
-# Get scenario details
-curl http://localhost:8000/api/v1/scenarios/1
+## Veri Bilimi Katmanı
 
-# Get full simulation with agent outputs
-curl http://localhost:8000/api/v1/scenarios/1/simulation
+Veri bilimi çalışması, agent kararlarının ileride yalnızca sabit kurallarla
+değil, veriyle kalibre edilebilir bir yapıyla desteklenmesini hedefler.
+
+| Başlık | Açıklama |
+| --- | --- |
+| Veri mapping | Agile proje verileri karar senaryosu özelliklerine dönüştürülür |
+| Feature aileleri | Finansal, stratejik, operasyonel ve ekip kapasitesi sinyalleri |
+| Agent kalibrasyonu | Agent skor ağırlıklarının veriyle iyileştirilmesi hedeflenir |
+| Outcome based learning | Gerçek sonuçların ileride karar modeline geri beslenmesi planlanır |
+| Rapor kaynağı | `docs/data_science/DATA_SCIENCE_OVERVIEW.md` |
+
+---
+
+## Test ve Doğrulama
+
+| Kontrol | Komut |
+| --- | --- |
+| Backend testleri | `pytest` |
+| Belirli test dosyası | `pytest tests/test_llm_agent.py -v` |
+| Frontend build | `cd frontend && npm run build` |
+| Docker smoke | `docker compose up --build` |
+| API dokümantasyonu | `http://localhost:8000/docs` |
+
+---
+
+## Repo Yapısı
+
+```text
+.
+|-- app/
+|   |-- application/
+|   |-- domain/
+|   |-- infrastructure/
+|   |-- presentation/
+|-- frontend/
+|-- alembic/
+|-- data/
+|-- docs/
+|   |-- data_science/
+|   |-- internal_notes/
+|   |-- project/
+|   |-- report/
+|-- reports/
+|-- scripts/
+|-- tests/
+|-- weights/
+|-- docker-compose.yml
+|-- Dockerfile
+|-- requirements.txt
+|-- README.md
 ```
 
-### Python Example
-```python
-import requests
+---
 
-base_url = "http://localhost:8000/api/v1"
+## Dokümantasyon Haritası
 
-# Create scenario
-scenario_response = requests.post(
-    f"{base_url}/scenarios",
-    json={
-        "name": "Product Launch",
-        "description": "New product launch Q2",
-        "budget_million_usd": 2.5,
-        "expected_roi_percent": 30.0,
-        "risk_level": 4,
-        "team_readiness": 8,
-    }
-)
-scenario_id = scenario_response.json()["scenario_id"]
+| Dosya / klasör | Kullanım amacı |
+| --- | --- |
+| `docs/project/ROADMAP.md` | Projenin güncel teknik yol haritası |
+| `docs/data_science/DATA_SCIENCE_OVERVIEW.md` | Veri bilimi ve modelleme özeti |
+| `docs/report/final_report_draft.md` | Dönem projesi rapor taslağı |
+| `docs/internal_notes/PROJECT_MEMORY.md` | Çalışma hafızası ve teslim notları |
+| `docs/report_assets/` | Rapor ekran görüntüleri ve diyagramlar |
+| `QUICKSTART.md` | Kısa çalıştırma rehberi |
+| `README_DATA_SCIENCE.md` | Veri bilimi dosyaları için hızlı rehber |
 
-# Run simulation
-simulation = requests.post(f"{base_url}/scenarios/{scenario_id}/simulate").json()
-print(f"Decision: {simulation['final_decision']} (score: {simulation['final_score']})")
+---
 
-# Retrieve results
-results = requests.get(f"{base_url}/scenarios/{scenario_id}/simulation").json()
-for output in results["agent_outputs"]:
-    print(f"{output['agent_name']}: {output['score']} - {output['rationale']}")
-```
+## Bilinen Sınırlamalar
 
-## Architecture & Patterns
+| Alan | Sınırlama | Not |
+| --- | --- | --- |
+| LLM | Yerel modele ve Ollama durumuna bağlıdır | Demo için kapalı mod kullanılabilir |
+| Veri bilimi | Tam üretim ML pipeline hedeflenmemiştir | Rapor kapsamında modelleme stratejisi gösterilir |
+| Frontend | Bazı demo ekranları geliştirme aşamasındadır | Issue bazlı takip edilmektedir |
+| Jira | Pano görselleri rapor öncesi düzenlenecektir | Süreç bölümü için kullanılacaktır |
 
-### Clean Architecture (Layered)
+---
 
-This project implements **Clean Architecture** with strict dependency rules to ensure maintainability, testability, and separation of concerns.
+## Sorun Giderme
 
-```mermaid
-graph TD
-    A[Presentation Layer<br/>FastAPI Routes] --> B[Application Layer<br/>Use Cases]
-    B --> C[Domain Layer<br/>Entities, Agents, Rules]
-    B --> D[Infrastructure Layer<br/>DB, ORM, Repositories]
-    D -.implements.-> C
-    
-    style C fill:#90EE90
-    style D fill:#FFB6C1
-    style B fill:#87CEEB
-    style A fill:#FFD700
-```
+| Sorun | Olası neden | Çözüm |
+| --- | --- | --- |
+| Backend açılmıyor | Veritabanı hazır değildir | `docker compose up -d db` ve `alembic upgrade head` çalıştırın |
+| API bağlantısı alınamıyor | Backend portu farklıdır | `http://localhost:8000/docs` adresini kontrol edin |
+| Frontend API sonucu göstermiyor | Backend çalışmıyor olabilir | Backend ve browser network tab kontrol edilmeli |
+| LLM reasoning boş geliyor | Ollama kapalı veya model yoktur | LLM kapalı demo akışını kullanın veya modeli indirin |
+| Docker içinde Ollama görülmüyor | Host adresi yanlış olabilir | `host.docker.internal:11434` değerini kontrol edin |
 
-### Layer Responsibilities
+---
 
-| Layer | Responsibility | Dependencies |
-|-------|---------------|--------------|
-| **Domain** | Business entities, agent logic, interfaces | None (pure domain) |
-| **Application** | Use cases, orchestration | Domain only |
-| **Infrastructure** | Database, ORM, repositories | Domain (implements interfaces) |
-| **Presentation** | API routes, request/response schemas | Application + Domain |
+## Proje Yönetimi
 
-**Key Rules:**
-- Domain has **no external dependencies**
-- Infrastructure implements domain repository interfaces
-- Application orchestrates domain + infrastructure
-- Presentation remains thin (no business logic)
+Proje GitHub branch, pull request ve issue akışıyla ilerletilir. Rapor tarafında
+Jira panosu ayrıca görselleştirilecektir.
 
-### Design Patterns
+| Süreç | Kullanım |
+| --- | --- |
+| Branch | Özellik ve düzeltmeler ayrı branchlerde geliştirilir |
+| Pull request | Kod değişiklikleri review ve kontrol sonrası merge edilir |
+| Issue | Frontend, backend, veri bilimi ve rapor işleri takip edilir |
+| Jira | Ders raporu için görev panosu ve süreç kanıtı olarak kullanılır |
+| Dokümantasyon | Rapor ve teknik notlar `docs/` altında tutulur |
 
-| Pattern | Usage | Location |
-|---------|-------|----------|
-| **Repository Pattern** | All database operations abstracted | `domain/repositories.py` (contracts)<br/>`infrastructure/repositories/` (implementations) |
-| **Factory Pattern** | Agent instantiation | `domain/agents/factory.py` |
-| **Dependency Injection** | Service/repository wiring | `presentation/dependencies.py` |
-| **Strategy Pattern** | Agent analysis interface | `domain/agents/base.py` (Agent ABC) |
+---
 
-### Testing Strategy
+## Lisans ve Kapsam
 
-- **Unit Tests**: Domain logic (agents, aggregator, services with mocked repositories)
-- **Integration Tests**: API endpoints with dependency overrides (FastAPI TestClient)
-- **Coverage**: CFO/HR scoring rules, decision aggregation, pagination, 404 cases
-
-**CI**: GitHub Actions runs `pytest` on every pull request.
-
-### Data Flow Example
-
-```
-POST /api/v1/scenarios/{id}/simulate
-  ↓
-Route Handler (presentation)
-  ↓
-ScenarioSimulationService (application)
-  ↓
-AgentFactory.create_default_agents() (domain)
-  → CEO/CFO/HR agents analyze scenario
-  ↓
-DecisionAggregator (domain)
-  ↓
-Repository.create() (infrastructure → PostgreSQL via ORM)
-  ↓
-SimulationResponse (presentation)
-```
-
-## Project Management (Kanban)
-
-This project was managed using **Jira Kanban** with a structured workflow and code review process. For detailed documentation, see [`docs/workflow.md`](docs/workflow.md).
-
-### Task → Branch → PR → Review Cycle
-
-1. **Task Created** in Jira (e.g., `JIRA-42`)
-2. **Branch Created** from main: `feature/JIRA-42-short-description`
-3. **Development** locally or on branch
-4. **Push & Create Pull Request** with reference to Jira task
-5. **Code Review**: Verify clean architecture, tests pass, no raw SQL
-6. **Approval & Merge** to main
-7. **CI Pipeline**: GitHub Actions runs full test suite
-
-**Workflow Stages**:
-```
-📋 To Do → 🔨 In Progress → 👀 Code Review → ✅ Done
-```
-
-**Branch Naming**: `feature/JIRA-XX-short-description`
-
-**PR Requirements**:
-- Linked Jira task in description
-- All CI checks passing
-- At least 1 code review approval
-- No architecture violations (clean layers maintained)
+Bu depo, BMU326 Yazılım Mühendisliği dönem projesi kapsamında geliştirilen
+akademik bir çalışmadır. Kod, rapor ve dokümantasyon; proje teslimi, demo ve
+ekip içi iş takibini desteklemek amacıyla düzenlenmiştir.
