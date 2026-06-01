@@ -48,6 +48,56 @@ When `MADE_AGENT_WEIGHTS_DIR` is set and all three weight files are present, `Ag
 
 For a sub-second smoke run: `python scripts/phase2_train_agents.py --epochs 3 --batch-size 8 --quiet`.
 
+## 🤖 LLM-Augmented Agents (opt-in)
+
+The CEO, CFO and HR agents can now be wrapped with an LLM that **enriches the
+`reasoning` field** of each `AgentMessage` while leaving stance, confidence and
+metrics fully deterministic. Round-2 prompts include the prior discussion, so
+agents respond to each other semantically instead of via templated slots.
+
+Activate at runtime:
+
+```bash
+export MADE_USE_LLM=1
+# Windows PowerShell:
+# $env:MADE_USE_LLM="1"
+uvicorn app.main:app --reload
+```
+
+`AgentFactory.create_default_agents()` first applies any available calibrated
+weights, then wraps the resulting agent with `LLMAgent`
+(`app/domain/agents/llm_agent.py`) backed by `OllamaLLMClient`
+(`app/infrastructure/llm_client.py`, default model `qwen2.5:14b`). Tests use a
+deterministic `StubLLMClient`; if the Ollama endpoint is unreachable, the LLM
+returns empty text, or the LLM reasoning contradicts the deterministic stance,
+the agent falls back to its template reasoning — the system never errors out.
+
+Try the before/after comparison:
+
+```bash
+python scripts/demo_llm_reasoning.py
+```
+
+The demo emits the same scenario's reasoning produced by (1) the base agents
+and (2) the LLM-wrapped agents using a stub client, so you can see the
+structural change without needing Ollama running.
+
+Latest safeguards added in `feature/llm-agent-integration`:
+
+- **Clean Architecture port:** `LLMClient` and `LLMUnavailableError` live in
+  `app/domain/agents/llm_port.py`; concrete clients stay in infrastructure.
+- **Contradiction fallback:** if LLM text contradicts the deterministic stance
+  (`support`, `neutral`, `oppose`), the LLM output is discarded and the original
+  base-agent message is returned.
+- **Safe composition order:** runtime agents are composed as
+  `base agent -> calibrated agent -> LLM agent`, so calibrated deterministic
+  decisions happen before LLM reasoning enrichment.
+- **Output cleanup:** markdown fences, headings, bullet markers and simple
+  `"reasoning": "..."` wrappers are stripped before reasoning is accepted.
+- **Regression coverage:** `tests/test_llm_agent.py` and
+  `tests/test_llm_agent_factory.py` cover fallback, prompt context, sanitizing,
+  and calibration-before-LLM composition.
+
 ## 📌 Features
 - **Multi-Agent Debate Protocol:** 3 specialized agents (CEO, CFO, HR) reading each other's inputs in a round-based negotiation.
 - **Hybrid AI Engine:** Deterministic rule-based scoring (for strict boundaries) backed by **Ollama (`qwen2.5:14b`)** for natural language reasoning and insight.
