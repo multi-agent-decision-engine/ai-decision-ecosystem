@@ -51,8 +51,12 @@ import {
   reportNextSteps,
   scenarioRows,
 } from "./data/mockDecision";
-
-
+import { decisionApi } from "./api/decisionApi";
+import type {
+  ApiAgentOutput,
+  ApiScenario,
+  ApiSimulationResponse,
+} from "./types/api";
 
 
 const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -60,12 +64,21 @@ const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 export default function App() {
   const [agents, setAgents] = useState<Agent[]>(initialAgents);
   const [logs, setLogs] = useState<string[]>(initialLogs);
+const [scenarios, setScenarios] = useState<ApiScenario[]>([]);
+const [selectedScenarioId, setSelectedScenarioId] = useState("");
+const [scenarioLoading, setScenarioLoading] = useState(true);
+const [scenarioError, setScenarioError] = useState<string | null>(null);
 const [debateMessages, setDebateMessages] = useState<DebateMessage[]>([]);
   const [isRunning, setIsRunning] = useState(false);
   const [classifierStatus, setClassifierStatus] = useState<AgentStatus>("IDLE");
   const [aggregatorStatus, setAggregatorStatus] = useState<AgentStatus>("IDLE");
   const [explainStatus, setExplainStatus] = useState<AgentStatus>("IDLE");
   const [finalVisible, setFinalVisible] = useState(false);
+const [simulationResult, setSimulationResult] =
+  useState<ApiSimulationResponse | null>(null);
+
+const [simulationLoading, setSimulationLoading] = useState(false);
+const [simulationError, setSimulationError] = useState<string | null>(null);
 
   const addLog = async (message: string, delay = 450) => {
     setLogs((prev) => [...prev, message]);
@@ -81,8 +94,74 @@ const addDebateMessage = async (message: DebateMessage, delay = 500) => {
       prev.map((agent) => (agent.id === id ? { ...agent, ...patch } : agent))
     );
   };
+useEffect(() => {
+  let ignore = false;
+
+  const loadScenarios = async () => {
+    try {
+      setScenarioLoading(true);
+      setScenarioError(null);
+
+      const data = await decisionApi.getScenarios();
+
+      if (ignore) return;
+
+      setScenarios(data);
+
+      if (data.length > 0) {
+        setSelectedScenarioId(String(data[0].id));
+      }
+    } catch (error) {
+      if (ignore) return;
+
+      setScenarioError(
+        error instanceof Error
+          ? error.message
+          : "Backend scenario list could not be loaded."
+      );
+    } finally {
+      if (!ignore) {
+        setScenarioLoading(false);
+      }
+    }
+  };
+
+  loadScenarios();
+
+  return () => {
+    ignore = true;
+  };
+}, []);
+
+const selectedScenario =
+  scenarios.find((scenario) => String(scenario.id) === selectedScenarioId) ??
+  null;
 
   const runSimulation = async () => {
+if (isRunning || simulationLoading) return;
+
+  if (!selectedScenarioId) {
+    setSimulationError("Please select a scenario before starting simulation.");
+    return;
+  }
+
+  setIsRunning(true);
+  setSimulationLoading(true);
+  setSimulationError(null);
+  setSimulationResult(null);
+
+  try {
+    const result = await decisionApi.simulateScenario(selectedScenarioId);
+    setSimulationResult(result);
+const backendAgents = result.agent_outputs.map(mapApiAgentToCockpitAgent);
+
+if (backendAgents.length > 0) {
+  setAgents(backendAgents);
+}
+
+await addLog(
+  `Backend simulation completed: ${result.final_decision} | Score ${result.final_score}`
+);
     if (isRunning) return;
 
     setIsRunning(true);
@@ -147,6 +226,16 @@ await addDebateMessage(agentDebateMessages[5]);
 await addDebateMessage(agentDebateMessages[6]);
 
     setFinalVisible(true);
+  } catch (error) {
+    setSimulationError(
+      error instanceof Error
+        ? error.message
+        : "Simulation request failed."
+    );
+  } finally {
+    setSimulationLoading(false);
+    setIsRunning(false);
+  }
     setIsRunning(false);
   };
 
@@ -174,8 +263,20 @@ await addDebateMessage(agentDebateMessages[6]);
         id="new-simulation"
         className="grid scroll-mt-5 gap-5 xl:grid-cols-[320px_1fr_380px]"
          >
-          <ScenarioPanel isRunning={isRunning} onStart={runSimulation} />
-           <div id="live-analysis" className="scroll-mt-5">
+         <ScenarioPanel
+  isRunning={isRunning}
+  onStart={runSimulation}
+
+  scenarios={scenarios}
+  selectedScenario={selectedScenario}
+  selectedScenarioId={selectedScenarioId}
+  onScenarioChange={setSelectedScenarioId}
+  scenarioLoading={scenarioLoading}
+  scenarioError={scenarioError}
+  simulationLoading={simulationLoading}
+  simulationError={simulationError}
+/>          
+ <div id="live-analysis" className="scroll-mt-5">
     <DecisionCore
       agents={agents}
       classifierStatus={classifierStatus}
@@ -192,11 +293,19 @@ await addDebateMessage(agentDebateMessages[6]);
   className="grid scroll-mt-5 gap-5 xl:grid-cols-[1fr_430px]"
 >
   <AgentRegistry agents={agents} />
-  <FinalDecision visible={finalVisible} isRunning={isRunning} />
+<FinalDecision
+  visible={finalVisible}
+  isRunning={isRunning || simulationLoading}
+  simulationResult={simulationResult}
+/>
 </section>
 
    <div id="agent-debate" className="scroll-mt-5">
-  <AgentDebateConsole messages={debateMessages} isRunning={isRunning} />
+ <AgentDebateConsole
+  messages={debateMessages}
+  isRunning={isRunning || simulationLoading}
+  simulationResult={simulationResult}
+/>
 </div>
 
 <div id="what-if-lab" className="scroll-mt-5">
@@ -698,30 +807,143 @@ function DecisionRadarPanel() {
 function ScenarioPanel({
   isRunning,
   onStart,
+  scenarios,
+  selectedScenario,
+  selectedScenarioId,
+  onScenarioChange,
+  scenarioLoading,
+  scenarioError,
+simulationLoading,
+simulationError,
 }: {
   isRunning: boolean;
   onStart: () => void;
+  scenarios: ApiScenario[];
+  selectedScenario: ApiScenario | null;
+  selectedScenarioId: string;
+  onScenarioChange: (id: string) => void;
+  scenarioLoading: boolean;
+  scenarioError: string | null;
+simulationLoading: boolean;
+simulationError: string | null;
 }) {
-  
+  const rows: [string, string][] = selectedScenario
+    ? [
+        [
+          "Project",
+          selectedScenario.title ??
+            selectedScenario.name ??
+            `Scenario ${selectedScenario.id}`,
+        ],
+        [
+          "Budget",
+          selectedScenario.budget !== undefined
+            ? `$${selectedScenario.budget}M`
+            : "--",
+        ],
+        [
+          "Expected ROI",
+          selectedScenario.expected_roi !== undefined
+            ? `${selectedScenario.expected_roi}%`
+            : "--",
+        ],
+        [
+          "Risk Level",
+          selectedScenario.risk_level !== undefined
+            ? `${selectedScenario.risk_level}/10`
+            : "--",
+        ],
+        [
+          "Team Readiness",
+          selectedScenario.team_readiness !== undefined
+            ? `${selectedScenario.team_readiness}/10`
+            : "--",
+        ],
+        [
+          "Market Confidence",
+          selectedScenario.market_confidence !== undefined
+            ? `${selectedScenario.market_confidence}/10`
+            : "--",
+        ],
+        [
+          "Strategic Fit",
+          selectedScenario.strategic_fit !== undefined
+            ? `${selectedScenario.strategic_fit}/10`
+            : "--",
+        ],
+        ["Scenario Type", selectedScenario.scenario_type ?? "--"],
+      ]
+    : scenarioRows;
+
   return (
     <Panel title="Scenario Input" subtitle="Executive decision parameters">
       <div className="space-y-3">
-        {scenarioRows.map(([label, value]) => (
-          <div key={label} className="rounded-xl border border-cyan-400/10 bg-black/40 p-3">
+        <div className="rounded-xl border border-cyan-400/10 bg-black/40 p-3">
+          <p className="font-mono text-[10px] uppercase tracking-widest text-slate-500">
+            Scenario Source
+          </p>
+
+          {scenarioLoading && (
+            <p className="mt-2 text-xs text-cyan-300">
+              Loading scenarios from backend...
+            </p>
+          )}
+
+          {scenarioError && (
+            <p className="mt-2 rounded-lg border border-red-400/30 bg-red-400/10 p-2 text-xs text-red-300">
+              Backend error: {scenarioError}
+            </p>
+          )}
+
+          {!scenarioLoading && !scenarioError && scenarios.length === 0 && (
+            <p className="mt-2 rounded-lg border border-amber-400/30 bg-amber-400/10 p-2 text-xs text-amber-300">
+              No scenarios found. Create a scenario from the backend first.
+            </p>
+          )}
+
+          {scenarios.length > 0 && (
+            <select
+              value={selectedScenarioId}
+              onChange={(event) => onScenarioChange(event.target.value)}
+              className="mt-2 w-full rounded-xl border border-cyan-400/20 bg-slate-950 px-3 py-2 font-mono text-xs text-cyan-200 outline-none transition focus:border-cyan-300"
+            >
+              {scenarios.map((scenario) => (
+                <option key={String(scenario.id)} value={String(scenario.id)}>
+                  {scenario.title ?? scenario.name ?? `Scenario ${scenario.id}`}
+                </option>
+              ))}
+            </select>
+          )}
+        </div>
+
+        {rows.map(([label, value]) => (
+          <div
+            key={label}
+            className="rounded-xl border border-cyan-400/10 bg-black/40 p-3"
+          >
             <p className="font-mono text-[10px] uppercase tracking-widest text-slate-500">
               {label}
             </p>
             <p className="mt-1 text-sm font-semibold text-white">{value}</p>
           </div>
         ))}
+{simulationError && (
+  <p className="rounded-lg border border-red-400/30 bg-red-400/10 p-2 text-xs text-red-300">
+    Simulation error: {simulationError}
+  </p>
+)}
 
         <button
           onClick={onStart}
-          disabled={isRunning}
+         disabled={isRunning || simulationLoading || scenarioLoading || scenarios.length === 0}
           className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl border border-cyan-400/50 bg-cyan-400/15 px-4 py-3 font-mono text-xs font-bold uppercase text-cyan-300 shadow-[0_0_25px_rgba(34,211,238,0.18)] transition hover:bg-cyan-400 hover:text-slate-950 disabled:cursor-not-allowed disabled:opacity-60"
         >
-          {isRunning ? <Loader2 size={16} className="animate-spin" /> : <Zap size={16} />}
-          {isRunning ? "Simulation Running" : "Start Simulation"}
+          {isRunning ? (
+            <Loader2 size={16} className="animate-spin" />
+          ) : (
+            <Zap size={16} />
+          )}
+          {isRunning || simulationLoading ? "Simulation Running" : "Start Simulation"}
         </button>
       </div>
     </Panel>
@@ -971,7 +1193,7 @@ function AgentRegistry({ agents }: { agents: Agent[] }) {
   );
 }
 
-function FinalDecision({ visible, isRunning }: { visible: boolean; isRunning: boolean }) {
+function FinalDecision({ visible, isRunning,simulationResult, }: { visible: boolean; isRunning: boolean; simulationResult: ApiSimulationResponse | null; }) {
   if (!visible) {
     return (
       <section className="flex min-h-[330px] items-center justify-center rounded-2xl border border-cyan-400/20 bg-slate-950/80 p-5 text-center shadow-[0_0_30px_rgba(34,211,238,0.12)]">
@@ -988,7 +1210,8 @@ function FinalDecision({ visible, isRunning }: { visible: boolean; isRunning: bo
       </section>
     );
   }
-
+  const decision = simulationResult?.final_decision ?? "REVISE";
+  const finalScore = simulationResult?.final_score ?? 68.75;
   return (
     <motion.section
       initial={{ opacity: 0, scale: 0.94 }}
@@ -1000,11 +1223,11 @@ function FinalDecision({ visible, isRunning }: { visible: boolean; isRunning: bo
       </p>
 
       <h2 className="mt-3 text-6xl font-black text-amber-300 drop-shadow-[0_0_20px_rgba(251,191,36,0.45)]">
-        REVISE
+        {decision}
       </h2>
 
       <div className="mt-5 grid grid-cols-2 gap-3">
-        <Metric label="Overall Score" value="68.75 / 100" />
+       <Metric label="Overall Score" value={`${finalScore} / 100`} />
         <Metric label="Confidence" value="82%" />
         <Metric label="Scenario Type" value="TEAM EXPANSION" />
         <Metric label="Bottleneck" value="Workforce Capacity" />
@@ -1155,6 +1378,7 @@ function nodeColorClass(color: AgentColor, status: AgentStatus) {
   if (color === "purple") return "border-purple-400 text-purple-300 shadow-purple-400/30";
   return "border-cyan-400 text-cyan-300 shadow-cyan-400/30";
 }
+
 function debateBorderClass(color: AgentColor) {
   if (color === "amber") return "border-amber-400/30";
   if (color === "emerald") return "border-emerald-400/30";
@@ -1178,9 +1402,8 @@ function debateDotClass(color: AgentColor) {
   return "bg-cyan-300 shadow-[0_0_12px_rgba(34,211,238,0.9)]";
 }
 
-function debateStanceClass(
-  stance: "Support" | "Warning" | "Revise" | "Consensus"
-) {
+function debateStanceClass(stance: string)
+ {
   if (stance === "Support") {
     return "border-emerald-400/40 bg-emerald-400/10 text-emerald-300";
   }
@@ -1195,14 +1418,43 @@ function debateStanceClass(
 
   return "border-cyan-400/40 bg-cyan-400/10 text-cyan-300";
 }
-function AgentDebateConsole({
+  function AgentDebateConsole({
   messages,
   isRunning,
+  simulationResult,
 }: {
   messages: DebateMessage[];
   isRunning: boolean;
+  simulationResult: ApiSimulationResponse | null;
 }) {
-  const rounds = Array.from(new Set(messages.map((message) => message.round)));
+  const backendRounds = simulationResult?.rounds ?? [];
+  const hasBackendRounds = backendRounds.length > 0;
+
+  const mockRounds = Array.from(
+    new Set(messages.map((message) => message.round))
+  );
+
+  const getMessageColor = (agent: string): AgentColor => {
+    const normalized = agent.toLowerCase();
+
+    if (normalized.includes("cfo")) return "emerald";
+    if (normalized.includes("hr")) return "amber";
+    if (normalized.includes("aggregator")) return "purple";
+
+    return "cyan";
+  };
+
+  const normalizeStance = (
+    stance?: string
+  ): "Support" | "Warning" | "Revise" | "Consensus" => {
+    const normalized = stance?.toLowerCase() ?? "";
+
+    if (normalized.includes("support")) return "Support";
+    if (normalized.includes("warning")) return "Warning";
+    if (normalized.includes("consensus")) return "Consensus";
+
+    return "Revise";
+  };
 
   return (
     <Panel
@@ -1211,7 +1463,7 @@ function AgentDebateConsole({
     >
       <div className="grid gap-5 xl:grid-cols-[1fr_360px]">
         <div className="space-y-5">
-          {messages.length === 0 && (
+          {!hasBackendRounds && messages.length === 0 && (
             <div className="rounded-2xl border border-cyan-400/10 bg-black/40 p-5 text-center">
               <p className="font-mono text-xs text-cyan-300">
                 {isRunning
@@ -1221,65 +1473,143 @@ function AgentDebateConsole({
             </div>
           )}
 
-          {rounds.map((round) => (
-            <div
-              key={round}
-              className="rounded-2xl border border-cyan-400/10 bg-black/40 p-5"
-            >
-              <div className="mb-4 flex items-center justify-between">
-                <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-cyan-300">
-                  {round}
-                </p>
+          {hasBackendRounds &&
+            backendRounds.map((round) => (
+              <div
+                key={round.round_number}
+                className="rounded-2xl border border-cyan-400/10 bg-black/40 p-5"
+              >
+                <div className="mb-4 flex items-center justify-between">
+                  <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-cyan-300">
+                    ROUND {round.round_number}
+                  </p>
 
-                <span className="rounded-full border border-cyan-400/20 bg-cyan-400/10 px-2 py-1 font-mono text-[10px] text-cyan-300">
-                  LIVE THREAD
-                </span>
-              </div>
+                  <span className="rounded-full border border-cyan-400/20 bg-cyan-400/10 px-2 py-1 font-mono text-[10px] text-cyan-300">
+                    BACKEND ROUND
+                  </span>
+                </div>
 
-              <div className="space-y-3">
-                {messages
-                  .filter((message) => message.round === round)
-                  .map((message, index) => (
-                    <motion.div
-                      key={`${message.round}-${message.agent}-${index}`}
-                      initial={{ opacity: 0, x: -14 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: index * 0.08 }}
-                      className={`rounded-xl border bg-black/50 p-4 ${debateBorderClass(
-                        message.color
-                      )}`}
-                    >
-                      <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
-                        <div>
-                          <div className="flex items-center gap-2">
-                            <span
-                              className={`h-2 w-2 rounded-full ${debateDotClass(
-                                message.color
-                              )}`}
-                            />
-                            <h3 className="text-sm font-bold text-white">
-                              {message.agent}
-                            </h3>
+                <div className="space-y-3">
+                  {round.messages.map((message, index) => {
+                    const color = getMessageColor(message.agent);
+                    const stance = normalizeStance(message.stance);
+
+                    return (
+                      <motion.div
+                        key={`${round.round_number}-${message.agent}-${index}`}
+                        initial={{ opacity: 0, x: -14 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: index * 0.08 }}
+                        className={`rounded-xl border bg-black/50 p-4 ${debateBorderClass(
+                          color
+                        )}`}
+                      >
+                        <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
+                          <div>
+                            <div className="flex items-center gap-2">
+                              <span
+                                className={`h-2 w-2 rounded-full ${debateDotClass(
+                                  color
+                                )}`}
+                              />
+
+                              <h3 className="text-sm font-bold text-white">
+                                {message.agent}
+                              </h3>
+                            </div>
+
+                            <p className="mt-2 text-xs leading-relaxed text-slate-300">
+                              {message.reasoning ??
+                                "No reasoning returned by backend."}
+                            </p>
+
+                            <div className="mt-3 flex flex-wrap gap-2 font-mono text-[10px]">
+                              <span className="rounded-full border border-white/10 bg-white/5 px-2 py-1 text-slate-300">
+                                Round {message.round_number ?? round.round_number}
+                              </span>
+
+                              <span className="rounded-full border border-white/10 bg-white/5 px-2 py-1 text-slate-300">
+                                Confidence {message.confidence ?? "--"}%
+                              </span>
+                            </div>
                           </div>
 
-                          <p className="mt-2 text-xs leading-relaxed text-slate-300">
-                            {message.message}
-                          </p>
+                          <span
+                            className={`shrink-0 rounded-full border px-2 py-1 font-mono text-[10px] ${debateStanceClass(
+                              stance
+                            )}`}
+                          >
+                            {message.stance ?? stance}
+                          </span>
                         </div>
-
-                        <span
-                          className={`shrink-0 rounded-full border px-2 py-1 font-mono text-[10px] ${debateStanceClass(
-                            message.stance
-                          )}`}
-                        >
-                          {message.stance}
-                        </span>
-                      </div>
-                    </motion.div>
-                  ))}
+                      </motion.div>
+                    );
+                  })}
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+
+          {!hasBackendRounds &&
+            mockRounds.map((round) => (
+              <div
+                key={round}
+                className="rounded-2xl border border-cyan-400/10 bg-black/40 p-5"
+              >
+                <div className="mb-4 flex items-center justify-between">
+                  <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-cyan-300">
+                    {round}
+                  </p>
+
+                  <span className="rounded-full border border-cyan-400/20 bg-cyan-400/10 px-2 py-1 font-mono text-[10px] text-cyan-300">
+                    MOCK THREAD
+                  </span>
+                </div>
+
+                <div className="space-y-3">
+                  {messages
+                    .filter((message) => message.round === round)
+                    .map((message, index) => (
+                      <motion.div
+                        key={`${message.round}-${message.agent}-${index}`}
+                        initial={{ opacity: 0, x: -14 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: index * 0.08 }}
+                        className={`rounded-xl border bg-black/50 p-4 ${debateBorderClass(
+                          message.color
+                        )}`}
+                      >
+                        <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
+                          <div>
+                            <div className="flex items-center gap-2">
+                              <span
+                                className={`h-2 w-2 rounded-full ${debateDotClass(
+                                  message.color
+                                )}`}
+                              />
+
+                              <h3 className="text-sm font-bold text-white">
+                                {message.agent}
+                              </h3>
+                            </div>
+
+                            <p className="mt-2 text-xs leading-relaxed text-slate-300">
+                              {message.message}
+                            </p>
+                          </div>
+
+                          <span
+                            className={`shrink-0 rounded-full border px-2 py-1 font-mono text-[10px] ${debateStanceClass(
+                              message.stance
+                            )}`}
+                          >
+                            {message.stance}
+                          </span>
+                        </div>
+                      </motion.div>
+                    ))}
+                </div>
+              </div>
+            ))}
         </div>
 
         <div className="rounded-2xl border border-purple-400/20 bg-purple-400/10 p-5 shadow-[0_0_35px_rgba(168,85,247,0.12)]">
@@ -1292,22 +1622,36 @@ function AgentDebateConsole({
           </h3>
 
           <p className="mt-3 text-sm leading-relaxed text-slate-300">
-            CEO and CFO support the initiative, but HR identifies workforce
-            capacity as the critical execution bottleneck. The agents converge
-            on a conditional decision: revise before approval.
+            CEO, CFO and HR agent messages are displayed by round. When backend
+            round data exists, the console switches from frontend mock debate to
+            backend-driven debate output.
           </p>
 
           <div className="mt-5 space-y-3">
-            <Metric label="Consensus" value="REVISE" />
-            <Metric label="Primary Conflict" value="Capacity Risk" />
-            <Metric label="Resolution Path" value="Hiring Plan" />
-            <Metric label="Boardroom Mode" value="Active" />
+            <Metric
+              label="Consensus Reached"
+              value={simulationResult?.consensus_reached ? "Yes" : "Pending"}
+            />
+            <Metric
+              label="Stability Reached"
+              value={simulationResult?.stability_reached ? "Yes" : "Pending"}
+            />
+            <Metric
+              label="Backend Rounds"
+              value={String(simulationResult?.rounds?.length ?? 0)}
+            />
+            <Metric
+              label="Boardroom Mode"
+              value={hasBackendRounds ? "Backend" : "Frontend Mock"}
+            />
           </div>
         </div>
       </div>
     </Panel>
   );
 }
+
+
 function ScenarioComparisonBoard() {
   const scenarios = [
     {
@@ -1797,6 +2141,49 @@ function kpiDotClass(tone: string) {
   }
 
   return "bg-slate-600";
+}
+function getAgentIdFromName(name: string) {
+  const normalized = name.toLowerCase();
+
+  if (normalized.includes("ceo")) return "ceo";
+  if (normalized.includes("cfo")) return "cfo";
+  if (normalized.includes("hr")) return "hr";
+
+  return normalized.replace(/\s+/g, "-");
+}
+
+function getAgentColorFromId(id: string): AgentColor {
+  if (id === "cfo") return "emerald";
+  if (id === "hr") return "amber";
+  return "cyan";
+}
+
+function getAgentRoleFromId(id: string) {
+  if (id === "ceo") return "Strategic Vision Evaluator";
+  if (id === "cfo") return "Financial Feasibility Evaluator";
+  if (id === "hr") return "Workforce Capacity Evaluator";
+  return "Decision Agent";
+}
+
+function mapApiAgentToCockpitAgent(output: ApiAgentOutput): Agent {
+  const id = getAgentIdFromName(output.agent);
+  const stance = output.stance?.toLowerCase() ?? "";
+
+  return {
+    id,
+    name: output.agent,
+    role: getAgentRoleFromId(id),
+    status:
+      stance.includes("revise") ||
+      stance.includes("warning") ||
+      output.score < 70
+        ? "WARNING"
+        : "COMPLETED",
+    score: Math.round(output.score),
+    confidence: output.confidence ?? 80,
+    color: getAgentColorFromId(id),
+    reasoning: output.reasoning ?? "Backend did not return reasoning.",
+  };
 }
 function clamp(value: number) {
   return Math.max(0, Math.min(100, Math.round(value)));
