@@ -44,8 +44,7 @@ import {
   agentDebateMessages,
   completedAgents,
   contributionData,
-  executiveReportText,
-  initialAgents,
+    initialAgents,
   initialLogs,
   reportAgentFindings,
   reportNextSteps,
@@ -321,7 +320,10 @@ await addDebateMessage(agentDebateMessages[6]);
 </div>
 
 <div id="reports" className="scroll-mt-5">
-  <ExecutiveDecisionReport />
+  <ExecutiveDecisionReport
+  selectedScenario={selectedScenario}
+  simulationResult={simulationResult}
+/>
 </div>
 <div id="history" className="scroll-mt-5">
   <SimulationHistory />
@@ -2188,17 +2190,88 @@ function mapApiAgentToCockpitAgent(output: ApiAgentOutput): Agent {
 function clamp(value: number) {
   return Math.max(0, Math.min(100, Math.round(value)));
 }
-function ExecutiveDecisionReport() {
+function ExecutiveDecisionReport({
+  selectedScenario,
+  simulationResult,
+}: {
+  selectedScenario: ApiScenario | null;
+  simulationResult: ApiSimulationResponse | null;
+}) {
   const [copied, setCopied] = useState(false);
+const scenarioTitle =
+  selectedScenario?.title ??
+  selectedScenario?.name ??
+  (selectedScenario ? `Scenario ${selectedScenario.id}` : "No scenario selected");
+
+const finalDecision = simulationResult?.final_decision ?? "WAITING";
+const finalScore =
+  simulationResult?.final_score !== undefined
+    ? String(simulationResult.final_score)
+    : "--";
+const improvementTarget =
+  finalDecision === "APPROVE" ? "APPROVED" : `${finalDecision} → APPROVE`;
+
+const agentOutputs = simulationResult?.agent_outputs ?? [];
+
+const dynamicReportText = `AI Decision Ecosystem Engine - Executive Decision Report
+
+Scenario:
+${scenarioTitle}
+
+Inputs:
+- Budget: ${
+  selectedScenario?.budget !== undefined ? `$${selectedScenario.budget}M` : "--"
+}
+- Expected ROI: ${
+  selectedScenario?.expected_roi !== undefined
+    ? `${selectedScenario.expected_roi}%`
+    : "--"
+}
+- Risk Level: ${
+  selectedScenario?.risk_level !== undefined
+    ? `${selectedScenario.risk_level}/10`
+    : "--"
+}
+- Team Readiness: ${
+  selectedScenario?.team_readiness !== undefined
+    ? `${selectedScenario.team_readiness}/10`
+    : "--"
+}
+- Scenario Type: ${selectedScenario?.scenario_type ?? "--"}
+
+Agent Findings:
+${
+  agentOutputs.length > 0
+    ? agentOutputs
+        .map(
+          (agent) => `- ${agent.agent}: Score ${agent.score} | Stance: ${
+            agent.stance ?? "--"
+          } | Confidence: ${agent.confidence ?? "--"}%
+  ${agent.reasoning ?? "No reasoning returned."}`
+        )
+        .join("\n\n")
+    : "- No backend agent output available yet."
+}
+
+Final Score: ${finalScore} / 100
+Final Decision: ${finalDecision}
+
+Consensus Reached: ${
+  simulationResult?.consensus_reached ? "Yes" : "Pending"
+}
+Stability Reached: ${
+  simulationResult?.stability_reached ? "Yes" : "Pending"
+}
+`;
 
   const copyReport = async () => {
-    await navigator.clipboard.writeText(executiveReportText);
+  await navigator.clipboard.writeText(dynamicReportText);
     setCopied(true);
     setTimeout(() => setCopied(false), 1600);
   };
 
   const downloadReport = () => {
-  const blob = new Blob([executiveReportText], { type: "text/plain;charset=utf-8" });
+  const blob = new Blob([dynamicReportText], { type: "text/plain;charset=utf-8" });
   const url = URL.createObjectURL(blob);
   const link = document.createElement("a");
   link.href = url;
@@ -2250,7 +2323,7 @@ function ExecutiveDecisionReport() {
                   Scenario Summary
                 </p>
                 <h3 className="mt-2 text-xl font-black text-white">
-                  AI Market Expansion Initiative
+                  {scenarioTitle}
                 </h3>
               </div>
 
@@ -2339,8 +2412,7 @@ function ExecutiveDecisionReport() {
                 <div className="flex items-center justify-between">
                   <span className="text-amber-300">Final Score</span>
                   <span className="text-xl font-black text-white">
-                    68.75 / 100
-                  </span>
+                    {finalScore} / 100                  </span>
                 </div>
               </div>
             </div>
@@ -2351,8 +2423,8 @@ function ExecutiveDecisionReport() {
               </p>
               <p className="mt-2 text-xs leading-relaxed text-slate-300">
                 70+ = APPROVE, 50–69 = REVISE, below 50 = REJECT. Since the
-                final score is 68.75, the recommended decision is{" "}
-                <strong className="text-amber-300">REVISE</strong>.
+                final score is {finalScore}, the recommended decision is{" "}
+                <strong className="text-amber-300">{finalDecision}</strong>.
               </p>
             </div>
           </div>
@@ -2385,7 +2457,7 @@ function ExecutiveDecisionReport() {
             </p>
 
             <h3 className="mt-3 text-2xl font-black text-emerald-300">
-              REVISE → APPROVE
+                {improvementTarget} → APPROVE
             </h3>
 
             <p className="mt-3 text-xs leading-relaxed text-slate-300">
