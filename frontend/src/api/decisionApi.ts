@@ -77,9 +77,9 @@ function normalizeScenario(raw: unknown): ApiScenario {
 
   return {
     id: asString(
-  item.id ?? item.scenario_id ?? item.scenarioId,
-  crypto.randomUUID()
-),
+      item.id ?? item.scenario_id ?? item.scenarioId,
+      crypto.randomUUID()
+    ),
     title: asString(
       item.title ??
         item.name ??
@@ -92,12 +92,16 @@ function normalizeScenario(raw: unknown): ApiScenario {
     budget:
       item.budget !== undefined
         ? asNumber(item.budget)
+        : item.budget_million_usd !== undefined
+          ? asNumber(item.budget_million_usd)
         : item.budget_million !== undefined
           ? asNumber(item.budget_million)
           : undefined,
     expected_roi:
       item.expected_roi !== undefined
         ? asNumber(item.expected_roi)
+        : item.expected_roi_percent !== undefined
+          ? asNumber(item.expected_roi_percent)
         : item.expectedRoi !== undefined
           ? asNumber(item.expectedRoi)
           : item.roi !== undefined
@@ -258,10 +262,10 @@ function normalizeSimulationResponse(data: unknown): ApiSimulationResponse {
     [];
 
   return {
-   scenario_id: asString(
-  item.scenario_id ?? item.scenarioId ?? item.id ?? item.scenario,
-  "unknown"
-),
+    scenario_id: asString(
+      item.scenario_id ?? item.scenarioId ?? item.id ?? item.scenario,
+      "unknown"
+    ),
     final_score: asNumber(
       item.final_score ??
         item.finalScore ??
@@ -283,6 +287,12 @@ function normalizeSimulationResponse(data: unknown): ApiSimulationResponse {
     rounds: Array.isArray(rawRounds)
       ? rawRounds.map((round, index) => normalizeRound(round, index))
       : [],
+    total_rounds:
+      item.total_rounds !== undefined
+        ? asNumber(item.total_rounds)
+        : item.totalRounds !== undefined
+          ? asNumber(item.totalRounds)
+          : undefined,
     consensus_reached: asBoolean(
       item.consensus_reached ?? item.consensusReached,
       false
@@ -291,6 +301,21 @@ function normalizeSimulationResponse(data: unknown): ApiSimulationResponse {
       item.stability_reached ?? item.stabilityReached,
       false
     ),
+    scenario_type: asString(item.scenario_type ?? item.scenarioType),
+    scenario_type_confidence:
+      item.scenario_type_confidence !== undefined
+        ? asNumber(item.scenario_type_confidence)
+        : item.scenarioTypeConfidence !== undefined
+          ? asNumber(item.scenarioTypeConfidence)
+          : undefined,
+    agent_weights: isRecord(item.agent_weights)
+      ? Object.fromEntries(
+          Object.entries(item.agent_weights).map(([key, value]) => [
+            key,
+            asNumber(value),
+          ])
+        )
+      : undefined,
   };
 }
 

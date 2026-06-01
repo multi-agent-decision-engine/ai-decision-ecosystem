@@ -39,6 +39,10 @@ export type ApiSimulationResponse = {
   final_decision: "APPROVE" | "REVISE" | "REJECT" | string;
   agent_outputs: ApiAgentOutput[];
   rounds?: ApiDebateRound[];
+  total_rounds?: number;
   consensus_reached?: boolean;
   stability_reached?: boolean;
+  scenario_type?: string;
+  scenario_type_confidence?: number;
+  agent_weights?: Record<string, number>;
 };

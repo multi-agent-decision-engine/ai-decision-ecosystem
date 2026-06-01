@@ -41,12 +41,8 @@ import type {
   DebateMessage,
 } from "./types/decision";
 import {
-  agentDebateMessages,
-  completedAgents,
-  contributionData,
-    initialAgents,
+  initialAgents,
   initialLogs,
-  reportAgentFindings,
   reportNextSteps,
   scenarioRows,
 } from "./data/mockDecision";
@@ -56,9 +52,6 @@ import type {
   ApiScenario,
   ApiSimulationResponse,
 } from "./types/api";
-
-
-const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export default function App() {
   const [agents, setAgents] = useState<Agent[]>(initialAgents);
@@ -79,20 +72,6 @@ const [simulationResult, setSimulationResult] =
 const [simulationLoading, setSimulationLoading] = useState(false);
 const [simulationError, setSimulationError] = useState<string | null>(null);
 
-  const addLog = async (message: string, delay = 450) => {
-    setLogs((prev) => [...prev, message]);
-    await wait(delay);
-  };
-const addDebateMessage = async (message: DebateMessage, delay = 500) => {
-  setDebateMessages((prev) => [...prev, message]);
-  await wait(delay);
-};
-
-  const updateAgent = (id: string, patch: Partial<Agent>) => {
-    setAgents((prev) =>
-      prev.map((agent) => (agent.id === id ? { ...agent, ...patch } : agent))
-    );
-  };
 useEffect(() => {
   let ignore = false;
 
@@ -137,105 +116,70 @@ const selectedScenario =
   null;
 
   const runSimulation = async () => {
-if (isRunning || simulationLoading) return;
+    if (isRunning || simulationLoading) return;
 
-  if (!selectedScenarioId) {
-    setSimulationError("Please select a scenario before starting simulation.");
-    return;
-  }
-
-  setIsRunning(true);
-  setSimulationLoading(true);
-  setSimulationError(null);
-  setSimulationResult(null);
-
-  try {
-    const result = await decisionApi.simulateScenario(selectedScenarioId);
-    setSimulationResult(result);
-const backendAgents = result.agent_outputs.map(mapApiAgentToCockpitAgent);
-
-if (backendAgents.length > 0) {
-  setAgents(backendAgents);
-}
-
-await addLog(
-  `Backend simulation completed: ${result.final_decision} | Score ${result.final_score}`
-);
-    if (isRunning) return;
+    if (!selectedScenarioId) {
+      setSimulationError("Please select a scenario before starting simulation.");
+      return;
+    }
 
     setIsRunning(true);
+    setSimulationLoading(true);
+    setSimulationError(null);
+    setSimulationResult(null);
     setFinalVisible(false);
-    setAgents(initialAgents);
-    setClassifierStatus("IDLE");
-    setAggregatorStatus("IDLE");
-    setExplainStatus("IDLE");
-    setLogs([]);
     setDebateMessages([]);
-
-    await addLog("Scenario received: AI Market Expansion Initiative");
-    setClassifierStatus("ANALYZING");
-    await addLog("Scenario Classifier initialized...");
-    await addLog("Analyzing budget, ROI, risk and team readiness...");
-    setClassifierStatus("COMPLETED");
-    await addLog("Scenario type detected: TEAM_EXPANSION");
-
-    updateAgent("ceo", {
-      status: "ANALYZING",
-      reasoning: "Scanning strategic alignment and market opportunity...",
-    });
-    await addLog("CEO Agent analyzing strategic alignment...");
-    updateAgent("ceo", completedAgents[0]);
-    await addLog("CEO Agent completed: Score 85 | Confidence 91%");
-await addDebateMessage(agentDebateMessages[0]);
-
-    updateAgent("cfo", {
-      status: "ANALYZING",
-      reasoning: "Evaluating budget exposure and expected return...",
-    });
-    await addLog("CFO Agent evaluating financial feasibility...");
-    updateAgent("cfo", completedAgents[1]);
-    await addLog("CFO Agent completed: Score 90 | Confidence 88%");
-await addDebateMessage(agentDebateMessages[1]);
-
-    updateAgent("hr", {
-      status: "ANALYZING",
-      reasoning: "Checking team readiness and hiring pressure...",
-    });
-    await addLog("HR Agent checking workforce capacity...");
-    updateAgent("hr", completedAgents[2]);
-    await addLog("HR Agent warning: Team readiness insufficient");
-await addDebateMessage(agentDebateMessages[2]);
-
-    setAggregatorStatus("ANALYZING");
-    await addLog("Aggregator applying dynamic weights...");
-await addDebateMessage(agentDebateMessages[3]);
-await addDebateMessage(agentDebateMessages[4]);
-await addDebateMessage(agentDebateMessages[5]);
-    await addLog("CEO weight: 25%");
-    await addLog("CFO weight: 25%");
-    await addLog("HR weight: 50%");
-    setAggregatorStatus("COMPLETED");
-    await addLog("Weighted consensus score calculated: 68.75 / 100");
-
-    setExplainStatus("ANALYZING");
-    await addLog("Explanation Engine preparing recommendation...");
-    setExplainStatus("COMPLETED");
-    await addLog("Primary bottleneck detected: Workforce Capacity");
-    await addLog("Final decision generated: REVISE");
-await addDebateMessage(agentDebateMessages[6]);
-
-    setFinalVisible(true);
-  } catch (error) {
-    setSimulationError(
-      error instanceof Error
-        ? error.message
-        : "Simulation request failed."
+    setAgents(
+      initialAgents.map((agent) => ({
+        ...agent,
+        status: "ANALYZING",
+        reasoning: "Waiting for backend simulation response...",
+      }))
     );
-  } finally {
-    setSimulationLoading(false);
-    setIsRunning(false);
-  }
-    setIsRunning(false);
+    setClassifierStatus("ANALYZING");
+    setAggregatorStatus("ANALYZING");
+    setExplainStatus("IDLE");
+    setLogs([
+      `Scenario selected: ${
+        selectedScenario?.title ?? selectedScenario?.name ?? selectedScenarioId
+      }`,
+      `POST /api/v1/scenarios/${selectedScenarioId}/simulate started.`,
+    ]);
+
+    try {
+      const result = await decisionApi.simulateScenario(selectedScenarioId);
+      const backendAgents = result.agent_outputs.map(mapApiAgentToCockpitAgent);
+
+      setSimulationResult(result);
+      setAgents(backendAgents.length > 0 ? backendAgents : initialAgents);
+      setClassifierStatus("COMPLETED");
+      setAggregatorStatus("COMPLETED");
+      setExplainStatus("COMPLETED");
+      setFinalVisible(true);
+      setLogs([
+        `Scenario selected: ${
+          selectedScenario?.title ?? selectedScenario?.name ?? selectedScenarioId
+        }`,
+        `${result.agent_outputs.length} agent outputs received from backend.`,
+        `${result.rounds?.length ?? 0} debate rounds received from backend.`,
+        result.scenario_type
+          ? `Scenario type classified: ${formatScenarioType(result.scenario_type)}`
+          : "Scenario type was not returned by backend.",
+        `Final decision generated: ${result.final_decision}`,
+        `Final score calculated: ${result.final_score} / 100`,
+      ]);
+    } catch (error) {
+      setSimulationError(
+        error instanceof Error ? error.message : "Simulation request failed."
+      );
+      setAgents(initialAgents);
+      setClassifierStatus("IDLE");
+      setAggregatorStatus("IDLE");
+      setExplainStatus("IDLE");
+    } finally {
+      setSimulationLoading(false);
+      setIsRunning(false);
+    }
   };
 
   return (
@@ -247,7 +191,11 @@ await addDebateMessage(agentDebateMessages[6]);
         <div className="mx-auto max-w-[1600px] space-y-5 p-5">
           <div id="mission-control" className="scroll-mt-5">
   <TopBar isRunning={isRunning} />
-<ExecutiveKpiStrip finalVisible={finalVisible} isRunning={isRunning} />
+<ExecutiveKpiStrip
+  finalVisible={finalVisible}
+  isRunning={isRunning}
+  simulationResult={simulationResult}
+/>
 </div>
     <MissionTimeline
     agents={agents}
@@ -284,7 +232,7 @@ await addDebateMessage(agentDebateMessages[6]);
     />
   </div>
 
-  <LiveFeed logs={logs} />
+  <LiveFeed logs={logs} simulationResult={simulationResult} />
 </section>
 
      <section
@@ -470,33 +418,49 @@ function TopBar({ isRunning }: { isRunning: boolean }) {
 function ExecutiveKpiStrip({
   finalVisible,
   isRunning,
+  simulationResult,
 }: {
   finalVisible: boolean;
   isRunning: boolean;
+  simulationResult: ApiSimulationResponse | null;
 }) {
+  const finalDecision = simulationResult?.final_decision ?? "WAITING";
+  const score =
+    simulationResult?.final_score !== undefined
+      ? String(simulationResult.final_score)
+      : "--";
+  const confidence =
+    simulationResult?.scenario_type_confidence !== undefined
+      ? `${formatConfidence(simulationResult.scenario_type_confidence)}%`
+      : "--";
+  const scenarioType = simulationResult?.scenario_type
+    ? formatScenarioType(simulationResult.scenario_type)
+    : "--";
+  const decisionTone = getDecisionTone(finalDecision);
+
   const kpis = [
     {
       label: "Final Decision",
-      value: finalVisible ? "REVISE" : isRunning ? "CALCULATING" : "WAITING",
-      detail: finalVisible ? "Revision required" : "Awaiting simulation",
-      tone: finalVisible ? "amber" : isRunning ? "cyan" : "slate",
+      value: finalVisible ? finalDecision : isRunning ? "CALCULATING" : "WAITING",
+      detail: finalVisible ? "Backend decision" : "Awaiting simulation",
+      tone: finalVisible ? decisionTone : isRunning ? "cyan" : "slate",
     },
     {
       label: "Overall Score",
-      value: finalVisible ? "68.75" : "--",
+      value: finalVisible ? score : "--",
       detail: "/100 weighted consensus",
       tone: "cyan",
     },
     {
-      label: "Primary Bottleneck",
-      value: finalVisible ? "Workforce" : "--",
-      detail: finalVisible ? "Capacity risk detected" : "Not analyzed yet",
-      tone: finalVisible ? "amber" : "slate",
+      label: "Scenario Type",
+      value: finalVisible ? scenarioType : "--",
+      detail: finalVisible ? "Backend classification" : "Not analyzed yet",
+      tone: finalVisible ? "purple" : "slate",
     },
     {
       label: "Confidence",
-      value: finalVisible ? "82%" : "--",
-      detail: "Explainability confidence",
+      value: finalVisible ? confidence : "--",
+      detail: "Classifier confidence",
       tone: "emerald",
     },
   ];
@@ -1032,7 +996,13 @@ function DecisionCore({
     </Panel>
   );
 }
-function LiveFeed({ logs }: { logs: string[] }) {
+function LiveFeed({
+  logs,
+  simulationResult,
+}: {
+  logs: string[];
+  simulationResult: ApiSimulationResponse | null;
+}) {
    const logEndRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -1079,13 +1049,22 @@ function LiveFeed({ logs }: { logs: string[] }) {
           </div>
         </div>
 
-        <AgentContributionChart />
+        <AgentContributionChart simulationResult={simulationResult} />
       </div>
     </Panel>
   );
 }
 
-function AgentContributionChart() {
+function AgentContributionChart({
+  simulationResult,
+}: {
+  simulationResult: ApiSimulationResponse | null;
+}) {
+  const chartData = getContributionData(simulationResult);
+  const hasBackendWeights =
+    simulationResult?.agent_weights !== undefined ||
+    (simulationResult?.agent_outputs?.length ?? 0) > 0;
+
   return (
     <div className="rounded-xl border border-cyan-400/10 bg-black/60 p-4">
       <div className="mb-3 flex items-center justify-between">
@@ -1094,12 +1073,12 @@ function AgentContributionChart() {
             Agent Contribution
           </h3>
           <p className="font-mono text-[10px] text-slate-500">
-            Dynamic scenario weights
+            {hasBackendWeights ? "Backend contribution data" : "Awaiting simulation"}
           </p>
         </div>
 
         <span className="rounded-full border border-amber-400/30 bg-amber-400/10 px-2 py-1 font-mono text-[10px] text-amber-300">
-          HR PRIORITY
+          {hasBackendWeights ? "LIVE" : "IDLE"}
         </span>
       </div>
 
@@ -1108,7 +1087,7 @@ function AgentContributionChart() {
           <ResponsiveContainer width="100%" height="100%">
             <PieChart>
               <Pie
-                data={contributionData}
+                data={chartData}
                 dataKey="value"
                 nameKey="name"
                 innerRadius={42}
@@ -1117,7 +1096,7 @@ function AgentContributionChart() {
                 stroke="rgba(255,255,255,0.12)"
                 strokeWidth={1}
               >
-                {contributionData.map((entry) => (
+                {chartData.map((entry) => (
                   <Cell key={entry.name} fill={entry.color} />
                 ))}
               </Pie>
@@ -1134,7 +1113,7 @@ function AgentContributionChart() {
         </div>
 
         <div className="space-y-3">
-          {contributionData.map((item) => (
+          {chartData.map((item) => (
             <div key={item.name}>
               <div className="mb-1 flex items-center justify-between font-mono text-xs">
                 <span className="text-slate-300">{item.name} Agent</span>
@@ -1195,7 +1174,15 @@ function AgentRegistry({ agents }: { agents: Agent[] }) {
   );
 }
 
-function FinalDecision({ visible, isRunning,simulationResult, }: { visible: boolean; isRunning: boolean; simulationResult: ApiSimulationResponse | null; }) {
+function FinalDecision({
+  visible,
+  isRunning,
+  simulationResult,
+}: {
+  visible: boolean;
+  isRunning: boolean;
+  simulationResult: ApiSimulationResponse | null;
+}) {
   if (!visible) {
     return (
       <section className="flex min-h-[330px] items-center justify-center rounded-2xl border border-cyan-400/20 bg-slate-950/80 p-5 text-center shadow-[0_0_30px_rgba(34,211,238,0.12)]">
@@ -1212,35 +1199,53 @@ function FinalDecision({ visible, isRunning,simulationResult, }: { visible: bool
       </section>
     );
   }
-  const decision = simulationResult?.final_decision ?? "REVISE";
-  const finalScore = simulationResult?.final_score ?? 68.75;
+  const decision = simulationResult?.final_decision ?? "WAITING";
+  const finalScore =
+    simulationResult?.final_score !== undefined
+      ? String(simulationResult.final_score)
+      : "--";
+  const tone = getDecisionTone(decision);
+  const scenarioType = simulationResult?.scenario_type
+    ? formatScenarioType(simulationResult.scenario_type)
+    : "--";
+  const scenarioConfidence =
+    simulationResult?.scenario_type_confidence !== undefined
+      ? `${formatConfidence(simulationResult.scenario_type_confidence)}%`
+      : "--";
   return (
     <motion.section
       initial={{ opacity: 0, scale: 0.94 }}
       animate={{ opacity: 1, scale: 1 }}
-      className="rounded-2xl border border-amber-400/40 bg-amber-400/10 p-5 shadow-[0_0_45px_rgba(251,191,36,0.16)]"
+      className={`rounded-2xl border p-5 ${decisionPanelClass(tone)}`}
     >
-      <p className="font-mono text-xs uppercase tracking-[0.35em] text-amber-300">
+      <p className={`font-mono text-xs uppercase tracking-[0.35em] ${decisionTextClass(tone)}`}>
         Final Decision
       </p>
 
-      <h2 className="mt-3 text-6xl font-black text-amber-300 drop-shadow-[0_0_20px_rgba(251,191,36,0.45)]">
+      <h2 className={`mt-3 text-6xl font-black ${decisionTextClass(tone)}`}>
         {decision}
       </h2>
 
       <div className="mt-5 grid grid-cols-2 gap-3">
        <Metric label="Overall Score" value={`${finalScore} / 100`} />
-        <Metric label="Confidence" value="82%" />
-        <Metric label="Scenario Type" value="TEAM EXPANSION" />
-        <Metric label="Bottleneck" value="Workforce Capacity" />
+        <Metric label="Type Confidence" value={scenarioConfidence} />
+        <Metric label="Scenario Type" value={scenarioType} />
+        <Metric
+          label="Consensus"
+          value={simulationResult?.consensus_reached ? "Reached" : "Pending"}
+        />
       </div>
 
-      <div className="mt-5 rounded-xl border border-amber-400/20 bg-black/40 p-4">
-        <p className="font-mono text-[10px] uppercase tracking-widest text-amber-300">
+      <div className={`mt-5 rounded-xl border bg-black/40 p-4 ${decisionBorderClass(tone)}`}>
+        <p className={`font-mono text-[10px] uppercase tracking-widest ${decisionTextClass(tone)}`}>
           Recommendation
         </p>
         <p className="mt-2 text-sm leading-relaxed text-white">
-          Increase team readiness or hiring capacity before approval.
+          {decision === "APPROVE"
+            ? "Backend consensus supports approval under the current scenario inputs."
+            : decision === "REJECT"
+              ? "Backend consensus rejects this scenario under the current risk and readiness profile."
+              : "Backend consensus recommends revision before approval."}
         </p>
       </div>
     </motion.section>
@@ -1531,7 +1536,10 @@ function debateStanceClass(stance: string)
                               </span>
 
                               <span className="rounded-full border border-white/10 bg-white/5 px-2 py-1 text-slate-300">
-                                Confidence {message.confidence ?? "--"}%
+                                Confidence{" "}
+                                {message.confidence !== undefined
+                                  ? `${formatConfidence(message.confidence)}%`
+                                  : "--"}
                               </span>
                             </div>
                           </div>
@@ -1640,7 +1648,11 @@ function debateStanceClass(stance: string)
             />
             <Metric
               label="Backend Rounds"
-              value={String(simulationResult?.rounds?.length ?? 0)}
+              value={String(
+                simulationResult?.total_rounds ??
+                  simulationResult?.rounds?.length ??
+                  0
+              )}
             />
             <Metric
               label="Boardroom Mode"
@@ -2119,6 +2131,14 @@ function kpiCardClass(tone: string) {
     return "border-cyan-400/30 shadow-[0_0_25px_rgba(34,211,238,0.10)]";
   }
 
+  if (tone === "purple") {
+    return "border-purple-400/30 shadow-[0_0_25px_rgba(168,85,247,0.10)]";
+  }
+
+  if (tone === "red") {
+    return "border-red-400/30 shadow-[0_0_25px_rgba(248,113,113,0.10)]";
+  }
+
   return "border-slate-700/70";
 }
 
@@ -2126,6 +2146,8 @@ function kpiValueClass(tone: string) {
   if (tone === "amber") return "text-amber-300";
   if (tone === "emerald") return "text-emerald-300";
   if (tone === "cyan") return "text-cyan-300";
+  if (tone === "purple") return "text-purple-300";
+  if (tone === "red") return "text-red-300";
   return "text-slate-300";
 }
 
@@ -2140,6 +2162,14 @@ function kpiDotClass(tone: string) {
 
   if (tone === "cyan") {
     return "bg-cyan-300 shadow-[0_0_12px_rgba(34,211,238,0.9)]";
+  }
+
+  if (tone === "purple") {
+    return "bg-purple-300 shadow-[0_0_12px_rgba(168,85,247,0.9)]";
+  }
+
+  if (tone === "red") {
+    return "bg-red-300 shadow-[0_0_12px_rgba(248,113,113,0.9)]";
   }
 
   return "bg-slate-600";
@@ -2160,11 +2190,94 @@ function getAgentColorFromId(id: string): AgentColor {
   return "cyan";
 }
 
+function agentChartColor(id: string) {
+  if (id === "cfo") return "#34d399";
+  if (id === "hr") return "#fbbf24";
+  if (id === "ceo") return "#22d3ee";
+  return "#a78bfa";
+}
+
 function getAgentRoleFromId(id: string) {
   if (id === "ceo") return "Strategic Vision Evaluator";
   if (id === "cfo") return "Financial Feasibility Evaluator";
   if (id === "hr") return "Workforce Capacity Evaluator";
   return "Decision Agent";
+}
+
+function formatScenarioType(value: string) {
+  return value.replace(/_/g, " ").toUpperCase();
+}
+
+function formatConfidence(value: number) {
+  return Math.round(value <= 1 ? value * 100 : value);
+}
+
+function getContributionData(simulationResult: ApiSimulationResponse | null) {
+  if (simulationResult?.agent_weights) {
+    return Object.entries(simulationResult.agent_weights).map(([name, raw]) => {
+      const id = getAgentIdFromName(name);
+      const value = raw <= 1 ? raw * 100 : raw;
+
+      return {
+        name,
+        value: Math.round(value),
+        color: agentChartColor(id),
+      };
+    });
+  }
+
+  const outputs = simulationResult?.agent_outputs ?? [];
+
+  if (outputs.length > 0) {
+    const total = outputs.reduce((sum, agent) => sum + Math.max(agent.score, 0), 0);
+
+    return outputs.map((agent) => {
+      const id = getAgentIdFromName(agent.agent);
+      const value = total > 0 ? (Math.max(agent.score, 0) / total) * 100 : 0;
+
+      return {
+        name: agent.agent,
+        value: Math.round(value),
+        color: agentChartColor(id),
+      };
+    });
+  }
+
+  return [
+    { name: "CEO", value: 0, color: agentChartColor("ceo") },
+    { name: "CFO", value: 0, color: agentChartColor("cfo") },
+    { name: "HR", value: 0, color: agentChartColor("hr") },
+  ];
+}
+
+function getDecisionTone(decision: string) {
+  if (decision === "APPROVE") return "emerald";
+  if (decision === "REJECT") return "red";
+  return "amber";
+}
+
+function decisionPanelClass(tone: string) {
+  if (tone === "emerald") {
+    return "border-emerald-400/40 bg-emerald-400/10 shadow-[0_0_45px_rgba(52,211,153,0.16)]";
+  }
+
+  if (tone === "red") {
+    return "border-red-400/40 bg-red-400/10 shadow-[0_0_45px_rgba(248,113,113,0.16)]";
+  }
+
+  return "border-amber-400/40 bg-amber-400/10 shadow-[0_0_45px_rgba(251,191,36,0.16)]";
+}
+
+function decisionTextClass(tone: string) {
+  if (tone === "emerald") return "text-emerald-300";
+  if (tone === "red") return "text-red-300";
+  return "text-amber-300";
+}
+
+function decisionBorderClass(tone: string) {
+  if (tone === "emerald") return "border-emerald-400/20";
+  if (tone === "red") return "border-red-400/20";
+  return "border-amber-400/20";
 }
 
 function mapApiAgentToCockpitAgent(output: ApiAgentOutput): Agent {
@@ -2182,7 +2295,8 @@ function mapApiAgentToCockpitAgent(output: ApiAgentOutput): Agent {
         ? "WARNING"
         : "COMPLETED",
     score: Math.round(output.score),
-    confidence: output.confidence ?? 80,
+    confidence:
+      output.confidence !== undefined ? formatConfidence(output.confidence) : 80,
     color: getAgentColorFromId(id),
     reasoning: output.reasoning ?? "Backend did not return reasoning.",
   };
@@ -2209,9 +2323,57 @@ const finalScore =
     ? String(simulationResult.final_score)
     : "--";
 const improvementTarget =
-  finalDecision === "APPROVE" ? "APPROVED" : `${finalDecision} → APPROVE`;
+  finalDecision === "APPROVE" ? "APPROVED" : `${finalDecision} -> APPROVE`;
 
 const agentOutputs = simulationResult?.agent_outputs ?? [];
+const scenarioType = simulationResult?.scenario_type
+  ? formatScenarioType(simulationResult.scenario_type)
+  : selectedScenario?.scenario_type
+    ? formatScenarioType(selectedScenario.scenario_type)
+    : "--";
+const decisionTone = getDecisionTone(finalDecision);
+const scenarioMetrics = [
+  [
+    "Budget",
+    selectedScenario?.budget !== undefined ? `$${selectedScenario.budget}M` : "--",
+  ],
+  [
+    "Expected ROI",
+    selectedScenario?.expected_roi !== undefined
+      ? `${selectedScenario.expected_roi}%`
+      : "--",
+  ],
+  [
+    "Risk Level",
+    selectedScenario?.risk_level !== undefined
+      ? `${selectedScenario.risk_level}/10`
+      : "--",
+  ],
+  [
+    "Team Readiness",
+    selectedScenario?.team_readiness !== undefined
+      ? `${selectedScenario.team_readiness}/10`
+      : "--",
+  ],
+] as const;
+const calculationRows = agentOutputs.map((agent) => {
+  const key = getAgentIdFromName(agent.agent).toUpperCase();
+  const weight = simulationResult?.agent_weights?.[key];
+  const normalizedWeight =
+    weight !== undefined && weight <= 1 ? weight * 100 : weight;
+
+  return {
+    label: agent.agent,
+    formula:
+      normalizedWeight !== undefined
+        ? `${Math.round(agent.score)} x ${Math.round(normalizedWeight)}%`
+        : `Score ${Math.round(agent.score)}`,
+    result:
+      normalizedWeight !== undefined
+        ? String(((agent.score * normalizedWeight) / 100).toFixed(2))
+        : "--",
+  };
+});
 
 const dynamicReportText = `AI Decision Ecosystem Engine - Executive Decision Report
 
@@ -2237,7 +2399,7 @@ Inputs:
     ? `${selectedScenario.team_readiness}/10`
     : "--"
 }
-- Scenario Type: ${selectedScenario?.scenario_type ?? "--"}
+- Scenario Type: ${scenarioType}
 
 Agent Findings:
 ${
@@ -2327,24 +2489,27 @@ Stability Reached: ${
                 </h3>
               </div>
 
-              <span className="rounded-full border border-amber-400/30 bg-amber-400/10 px-3 py-1 font-mono text-[10px] text-amber-300">
-                NEEDS REVISION
+              <span
+                className={`rounded-full border px-3 py-1 font-mono text-[10px] ${scenarioBadgeClass(
+                  decisionTone
+                )}`}
+              >
+                {finalDecision}
               </span>
             </div>
 
             <p className="text-sm leading-relaxed text-slate-300">
-              The system analyzed a high-impact market expansion scenario using
-              three executive AI agents. CEO and CFO perspectives are positive,
-              but the HR Agent detected a workforce capacity limitation. Because
-              this scenario is classified as <strong>TEAM_EXPANSION</strong>, HR
-              receives the highest decision weight.
+              The system analyzed this scenario using the FastAPI simulation
+              endpoint and returned {agentOutputs.length} agent output
+              {agentOutputs.length === 1 ? "" : "s"}. The current backend
+              classification is <strong>{scenarioType}</strong>, with a final
+              decision of <strong>{finalDecision}</strong>.
             </p>
 
             <div className="mt-5 grid gap-3 md:grid-cols-4">
-              <Metric label="Budget" value="$25M" />
-              <Metric label="Expected ROI" value="45%" />
-              <Metric label="Risk Level" value="5/10" />
-              <Metric label="Team Readiness" value="3/10" />
+              {scenarioMetrics.map(([label, value]) => (
+                <Metric key={label} label={label} value={value} />
+              ))}
             </div>
           </div>
 
@@ -2354,13 +2519,30 @@ Stability Reached: ${
             </p>
 
             <div className="space-y-3">
-              {reportAgentFindings.map((item) => (
+              {agentOutputs.length === 0 && (
+                <p className="rounded-xl border border-cyan-400/10 bg-black/40 p-4 text-xs text-slate-400">
+                  Run a simulation to populate backend agent findings.
+                </p>
+              )}
+
+              {agentOutputs.map((item) => {
+                const id = getAgentIdFromName(item.agent);
+                const color = getAgentColorFromId(id);
+                const stance =
+                  item.stance ??
+                  (item.score >= 70
+                    ? "Support"
+                    : item.score >= 50
+                      ? "Revise"
+                      : "Reject");
+
+                return (
                 <div
                   key={item.agent}
                   className={`rounded-xl border bg-black/40 p-4 ${
-                    item.color === "amber"
+                    color === "amber"
                       ? "border-amber-400/30"
-                      : item.color === "emerald"
+                      : color === "emerald"
                       ? "border-emerald-400/30"
                       : "border-cyan-400/30"
                   }`}
@@ -2369,7 +2551,7 @@ Stability Reached: ${
                     <div>
                       <h4 className="font-bold text-white">{item.agent}</h4>
                       <p className="mt-1 text-xs leading-relaxed text-slate-400">
-                        {item.finding}
+                        {item.reasoning ?? "No reasoning returned by backend."}
                       </p>
                     </div>
 
@@ -2377,22 +2559,20 @@ Stability Reached: ${
                       <span className="rounded-full border border-white/10 bg-white/5 px-2 py-1 font-mono text-[10px] text-white">
                         Score {item.score}
                       </span>
-                      <span className="rounded-full border border-white/10 bg-white/5 px-2 py-1 font-mono text-[10px] text-white">
-                        Weight {item.weight}
-                      </span>
                       <span
                         className={`rounded-full border px-2 py-1 font-mono text-[10px] ${
-                          item.stance === "Revise"
+                          stance === "Revise" || stance === "Reject"
                             ? "border-amber-400/40 bg-amber-400/10 text-amber-300"
                             : "border-emerald-400/40 bg-emerald-400/10 text-emerald-300"
                         }`}
                       >
-                        {item.stance}
+                        {stance}
                       </span>
                     </div>
                   </div>
                 </div>
-              ))}
+              );
+              })}
             </div>
           </div>
         </div>
@@ -2404,9 +2584,23 @@ Stability Reached: ${
             </p>
 
             <div className="mt-4 space-y-3 font-mono text-xs">
+              {calculationRows.length > 0 ? (
+                calculationRows.map((row) => (
+                  <CalculationRow
+                    key={row.label}
+                    label={row.label}
+                    formula={row.formula}
+                    result={row.result}
+                  />
+                ))
+              ) : (
+                <>
               <CalculationRow label="CEO" formula="85 × 0.25" result="21.25" />
               <CalculationRow label="CFO" formula="90 × 0.25" result="22.50" />
               <CalculationRow label="HR" formula="50 × 0.50" result="25.00" />
+
+                </>
+              )}
 
               <div className="mt-4 border-t border-amber-400/20 pt-4">
                 <div className="flex items-center justify-between">
@@ -2422,7 +2616,7 @@ Stability Reached: ${
                 Decision Rule
               </p>
               <p className="mt-2 text-xs leading-relaxed text-slate-300">
-                70+ = APPROVE, 50–69 = REVISE, below 50 = REJECT. Since the
+                70+ = APPROVE, 50-69 = REVISE, below 50 = REJECT. Since the
                 final score is {finalScore}, the recommended decision is{" "}
                 <strong className="text-amber-300">{finalDecision}</strong>.
               </p>
@@ -2457,13 +2651,13 @@ Stability Reached: ${
             </p>
 
             <h3 className="mt-3 text-2xl font-black text-emerald-300">
-                {improvementTarget} → APPROVE
+                {improvementTarget}
             </h3>
 
             <p className="mt-3 text-xs leading-relaxed text-slate-300">
-              If team readiness is improved from 3/10 to 6/10 while risk remains
-              controlled, the HR bottleneck weakens and the scenario can move
-              toward approval.
+              Use the backend agent findings above to adjust the scenario
+              inputs, then re-run the simulation and compare the new final
+              score.
             </p>
           </div>
         </div>
@@ -2541,11 +2735,11 @@ function SimulationHistory() {
 }
 function SystemSettingsPanel() {
   const settings = [
-    ["Simulation Mode", "Frontend Mock"],
+    ["Simulation Mode", "Backend API"],
     ["Agent Count", "CEO / CFO / HR"],
-    ["Debate Mode", "Interactive"],
+    ["Debate Mode", "Backend Rounds"],
     ["Report Export", "TXT Enabled"],
-    ["Backend Status", "Not connected yet"],
+    ["Backend Status", "Connected via /api/v1"],
     ["UI Theme", "Decision OS Dark"],
   ];
 
@@ -2568,14 +2762,14 @@ function SystemSettingsPanel() {
         ))}
       </div>
 
-      <div className="mt-5 rounded-2xl border border-amber-400/20 bg-amber-400/10 p-4">
-        <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-amber-300">
-          Prototype Note
+      <div className="mt-5 rounded-2xl border border-emerald-400/20 bg-emerald-400/10 p-4">
+        <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-emerald-300">
+          Integration Note
         </p>
         <p className="mt-2 text-sm leading-relaxed text-slate-300">
-          This cockpit currently uses frontend mock data. The next integration
-          step is connecting scenario input, agent outputs, debate messages and
-          executive reports to the FastAPI backend.
+          Scenario selection, simulation execution, agent outputs, debate
+          rounds, final decisions and executive reports are now driven by the
+          FastAPI backend response.
         </p>
       </div>
     </Panel>
