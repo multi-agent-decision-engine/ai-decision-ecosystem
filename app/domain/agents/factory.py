@@ -20,7 +20,12 @@ class AgentFactory:
     def create_default_agents(llm_client: LLMClient | None = None) -> list[Agent]:
         """Create agents, optionally composed as calibrated -> LLM wrappers."""
         agents: list[Agent] = [CEOAgent(), CFOAgent(), HRAgent()]
-        agents = AgentFactory.wrap_with_calibration_if_available(agents)
+        weights_dir = os.getenv("MADE_AGENT_WEIGHTS_DIR")
+        if weights_dir:
+            agents = AgentFactory.create_calibrated_agents(
+                weights_dir=weights_dir,
+                fallback_agents=agents,
+            )
 
         if llm_client is not None:
             return AgentFactory.wrap_with_llm(agents, llm_client)
@@ -35,11 +40,11 @@ class AgentFactory:
         return [LLMAgent(base_agent=agent, llm_client=llm_client) for agent in agents]
 
     @staticmethod
-    def wrap_with_calibration_if_available(agents: list[Agent]) -> list[Agent]:
-        weights_dir = os.getenv("MADE_AGENT_WEIGHTS_DIR")
-        if not weights_dir:
-            return agents
-
+    def create_calibrated_agents(
+        weights_dir: str | Path,
+        fallback_agents: list[Agent] | None = None,
+    ) -> list[Agent]:
+        agents = fallback_agents or [CEOAgent(), CFOAgent(), HRAgent()]
         root = Path(weights_dir)
         calibrated: list[Agent] = []
         for agent in agents:

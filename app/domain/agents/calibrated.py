@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import json
 from pathlib import Path
 
 from app.domain.agents.base import Agent
@@ -49,6 +48,7 @@ class CalibratedAgent(Agent):
             }
         )
 
+        stance = _DECISION_TO_STANCE[prediction]
         metrics = dict(base_message.metrics)
         metrics["calibration"] = {
             "prediction": prediction,
@@ -57,16 +57,31 @@ class CalibratedAgent(Agent):
             "team_weight": round(float(self.weights.team_weight), 6),
         }
 
+        reasoning = (
+            f"{base_message.reasoning} Phase 2 calibration adjusted "
+            f"{base_message.agent} stance to {stance} from {prediction} "
+            f"(confidence {float(calibrated_confidence):.2f})."
+        )
+
         return AgentMessage(
             agent=base_message.agent,
-            stance=_DECISION_TO_STANCE[prediction],
+            stance=stance,
             confidence=round(float(calibrated_confidence), 2),
-            reasoning=base_message.reasoning,
+            reasoning=reasoning,
             metrics=metrics,
             round_number=base_message.round_number,
         )
 
 
 def load_calibrated_agent(base_agent: Agent, weights_file: str | Path) -> CalibratedAgent:
-    data = json.loads(Path(weights_file).read_text(encoding="utf-8"))
-    return CalibratedAgent(base_agent=base_agent, weights=AgentWeights.from_dict(data))
+    calibrator = AgentCalibrator(agent_name=_agent_name_for(base_agent), verbose=False)
+    calibrator.load_weights(str(weights_file))
+    return CalibratedAgent(base_agent=base_agent, weights=calibrator.weights)
+
+
+def _agent_name_for(agent: Agent) -> str:
+    base = getattr(agent, "base_agent", agent)
+    name = base.__class__.__name__
+    if name.endswith("Agent"):
+        name = name[:-5]
+    return name.upper()
