@@ -1,0 +1,133 @@
+LLM Bonus akisi: gercek metin tartismasi (3 tur)
+Senaryo id=10 "[Demo] Final Smoke Scenario"
+Model: qwen-cpu (qwen2.5:7b uzerinde Modelfile ile num_gpu=0 zorlanmis)
+Toplam sure: 7 dakika 47 saniye (CPU-only, 9 LLM cagri)
+Tarih: 2026-06-09
+
+Akis:
+- MADE_USE_LLM=1
+- LLM_BASE_URL=http://host.docker.internal:11434/v1
+- LLM_MODEL=qwen-cpu
+- n_rounds=3
+- ai_decision_app container icinde scripts/debate_3rounds.py 10
+
+================================================================
+SCENARIO id=10  (n_rounds=3)
+================================================================
+final_decision = REVISE
+final_score    = 59.9
+total_rounds   = 3
+consensus      = False
+stable         = True
+scenario_type  = maintenance (conf 0.355)
+
+--- Round 1 ---
+CEO: Idempotent demo scenario'yu desteklemek icin neutral bir yaklasim
+benimsemis olunca, tum faktorlere dikkatli bakmali ve somut analizlerle karar
+vermelisiniz. Bu senaryoda, %30 ROI beklemeniz ve 5 milyon USD butceye
+sahipsiniz. Ancak, 7/10 olup hala gelistirilmesi gereken takim hazirligi
+levelinde bulundugunu unutmayin. Bu nedenle, risk seviyesini 5 olarak
+degerlendirdim ve uzun vadeli vizyonumuzun oncelikli olduguna dair gerekceler
+sunacagim.
+
+CFO: Neutrale bir pozisyon benimsemekteyim; ancak bu senaryonun %30 ROI'ye
+ulasma potansiyeline ragmen, ekibin gelistirilmesi gereken alanlarda 7/10
+levelinde oldugu ve butce 5 milyon USD olduguna dikkat etmeliyiz. Bu, risk
+seviyesini 5 olarak degerlendirdigimizde, geri donusumlerimiz icin %3 ROI'ye
+dusebilecek potansiyel riskleri de goz onunde bulundurmaliyiz. Bu nedenle,
+ekip hazirligi levelindeki somut endiselerimize cevap vermek onemlidir.
+
+HR: Ekipim icin en dogru karari almak icin sunlari goz onunde bulunduruyorum:
+1. %30 ROI'ye ulasma potansiyelimiz var, ancak ekibin hazir olma duzeyi 7/10
+   olduguna dikkat etmeliyiz.
+2. Butce 5 milyon USD ve ekip 6 ay sonra hala ise yararsa, %3 ROI'ye
+   dusebilecegimizi dusunmustum.
+3. Bu nedenle, ekipinizin sadece bugun degil, 12 ay sonunda da var olabilecek
+   sekilde tam zamanli planlamayi ongoruruz.
+Katiliyorum cunku bu senaryonun en guclu endisesi ekibin hazirlanmasi
+duzeyidir ve bunu netlestirmemiz gerekmektedir.
+
+--- Round 2 ---  (gercek tartismanin basladigi tur)
+CEO: Neutrale bir yaklasim benimsemekteyim ve bu senaryonun potansiyelini goz
+onunde bulunduruyorum. Butcemiz %150 ROI'ye ulasacak 5 milyon USD, ancak
+ekipimizin hazir olma duzeyi (7/10) risk seviyesini belirlerken onemli bir
+faktor. Sonucta, ekibimizin en hizli gelistirilmesi icin strategik yatirim
+yapmaliyiz; aksi takdirde 3 milyon USD'nin daha fazla kazanc potansiyeline
+ulasmasini bekleyecegiz. Bu nedenle, ekip hazirligi levelindeki somut
+endiselerimize cevap vermek en kritikalidir ve bu senaryonun stratejik
+vizyonumuzun mutlaka dahil edilmesi gerektigini gosterir.
+
+CFO: Neutrale bir yaklasim benimsemekteyim ve bu senaryonun %30 ROI'ye
+ulasma potansiyeline ragmen, ekipimizin hala 7/10 levelinde olmasindan
+kaynaklanan risk seviyesini 5 olarak degerlendirmekteyim. Bu nedenle, en
+kritik sayisal surucu %3 ROI'ye dusebilecek potansiyeldir ve bu, ekipimizin
+hemen tam zamanli planlamasina gerek duyulmasina neden olmaktadir. *** Eski
+HR baskanimin belirttigi gibi, ekibin hazirligi levelindeki somut
+endiselerimize cevap vermek cok onemlidir ***; o yuzden, 6 ayda ekipimizin
+hazir olmasindan emin olmak icin %1,5 milyon USD'yu bu senaryoya yatirim
+yapmamiz gerekir.
+    ^^^ CFO HR'a aciktan atif yapiyor - bu Round 2'nin temel kazanimi
+
+HR: Stance'im support'dir ve bu senaryonun ekipimizin sadece bugun degil, 12
+ay sonra da var olabilecek sekilde planlandigindan emin olmak icin gerekli
+kalkilis saglayacagima inaniyorum. Yapilandirilmis analizde %30 ROI'ye
+ulasma potansiyelinin onemli oldugunu biliyoruz, ancak ekipimizin hala 7/10
+olan hazirlik seviyesi ve bu senaryonun 6 ayda hala uygun olmayan ekip
+durumunu getirdigi icin %3 ROI'ye dusebilecek riskleri dusunmek zor. Bu
+nedenle, *** "hizla baslayalim" cagrisini nazikce reddetmekteyim *** ve
+ekipimizin sadece bugun degil, 12 ay sonunda da var olabilecek sekilde tam
+zamanli planlamasina oncelik vermemiz gerekmektedir.
+    ^^^ HR varsayilan "hizla baslayalim" goruşunu reddediyor
+
+--- Round 3 ---  (uzlasi: phased rollout)
+CEO: Neutrale bir yaklasim benimsemekteyim ve bu senaryonun potansiyelini goz
+onunde bulunduruyorum, ancak ekipimizin hala 7/10 levelinde olmasindan
+kaynaklanan risk seviyesini 5 olarak degerlendirmekteyim. Butcemiz %30
+ROI'ye ulasacak 5 milyon USD olmasina ragmen, bu senaryo uc ay icinde
+ekipimizin tam zamanli planlamasina sahip olabilecek sekilde hazirligiza
+ulasmamizin gerekli oldugunu gosteriyor. Bu nedenle, *** HR ekibinin
+uyarilarini dikkate alarak phased rollout yaklasimiyla ilerlememiz gerekmektedir ***.
+    ^^^ CEO HR'in uyarisini kabul edip somut "phased rollout" stratejisi oneriyor
+
+CFO: Neutraleyici bir yaklasim benimsemekteyim, ancak bu senaryonun %30
+ROI'ye ulasma potansiyeline ragmen, ekipimizin hala 7/10 levelinde olmasindan
+kaynaklanan risk seviyesini 5 olarak degerlendirmekteyim. Bu durumda, geri
+donusumlerimiz icin %3 ROI'ye dusebilecek potansiyeli dusunmek zor; bu
+nedenle, ekipimizin hemen tam zamanli planlamasina gerek duyuluyor. *** HR
+ekibinin uyarilarini dikkate alarak phased rollout yaklasimiyla ilerlememiz ***
+en kritiktir ve bu onunla uyumlu olan stratejik bir hamleyi sunuyor.
+    ^^^ CFO da phased rollout uzerinde uzlasiyor
+
+HR: Stance'im support'dir ve bu senaryonun ekipimizin sadece bugun degil, 12
+ay sonra da var olabilecek sekilde planlandigindan emin olmak icin gerekli
+kalkilis saglayacagima inaniyorum. (Round 2 ile ayni pozisyonu koruyor,
+diger ikisi HR'in safina gelmis durumda)
+
+================================================================
+GOZLEMLER
+================================================================
+
+1. Round 1: her agent kendi alanindan analizi sunuyor (henuz baskalarinin
+   gorusu yok).
+
+2. Round 2: gercek tartisma basliyor. CFO acikca HR'i refere ediyor ("Eski
+   HR baskanimin belirttigi gibi..."). HR varsayim halindeki "hizla
+   baslayalim" pozisyonunu acikca reddediyor.
+
+3. Round 3: CEO ve CFO HR'in endisesini kabul ediyor ve **somut bir ortak
+   strateji** uretiyorlar: "phased rollout". Bu hicbir yerden gelmedi --
+   LLM, agent'larin onceki turdeki argumanlarini sentezleyerek ortaya
+   atti.
+
+4. Karar guvenligi: Final decision REVISE / score 59.9 -- deterministik
+   akistaki ile birebir ayni. Stance/confidence/metrics base agent'tan
+   geliyor; LLM sadece reasoning text'ini zenginlestiriyor. Karar mantigi
+   asla LLM hallucination'ina maruz kalmiyor.
+
+5. Sahnede kullanim: 7m 47s canli demoda izlenemez. Iki secenek:
+   a) Pre-record video clip olustur, sunumda oynat
+   b) GPU'da tekrar dene (qwen2.5:7b GPU'da ~5x hizli -> ~90s)
+
+6. Metin kalitesi: Turkce hafif kirik ("kalkilis", "neutraleyici"), ama
+   anlamsal icerik dogru ve gercek atifli. 14b modeli kullanilirsa daha
+   pürüzsüz olur (Ollama'da qwen2.5:14b mevcut).

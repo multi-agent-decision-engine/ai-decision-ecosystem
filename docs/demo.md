@@ -90,6 +90,52 @@ you only ever present the LLM path when smoke is green.
 > after `start-llm-demo.ps1` finishes — keep the deterministic backend on
 > `http://localhost:8000` as the primary surface.
 
+### LLM Bonus: Gercek Metin Tartismasi (kanit)
+
+`app/domain/agents/llm_agent.py` `LLMAgent` wrapper'i Round 2+'da agent'a
+**onceki turun tum mesaj metinlerini** sunar ve "en guclu argumani tanimla;
+somut sayilarla destekle ya da acikca karsi cik" diye prompt eder. Yani LLM
+modunda agent'lar **gercek karsi-argumanli muzakere** yapar; stance /
+confidence / metrics base agent'tan gelir (karar mantigi LLM
+hallucination'a maruz kalmaz).
+
+**Kanit:** [`docs/demo-evidence/llm_debate_id10_n3.txt`](demo-evidence/llm_debate_id10_n3.txt)
+ornek bir cikti icerir — id=10 senaryosunda CFO Round 2'de HR'a aciktan atif
+yapiyor ("Eski HR baskanimin belirttigi gibi..."), HR varsayim bir CEO
+cagrisini reddiyor ("'hizla baslayalim' cagrisini nazikce reddetmekteyim"),
+Round 3'te CEO ve CFO HR'in endisesini kabul edip ortak bir strateji
+oneriyor ("phased rollout"). Final karar deterministik akistaki ile birebir
+ayni: REVISE / 59.9.
+
+**Latency:**
+- CPU-only mode (`docs/demo-evidence/qwen-cpu.Modelfile`): ~50s/cagri,
+  3 agent x 3 tur = **~8 dakika** tek senaryo icin
+- GPU mode (varsayilan `qwen2.5:7b`): ~10s/cagri, **~90 saniye** tek senaryo
+  (GPU bellegi yeterliyse)
+
+CPU latency'si canli sahnede izlenemez. Sunum stratejisi:
+
+1. **Pre-record video clip** — bonus akisi onceden kaydet, sunumda oynat.
+   En guvenli ve etkileyici secenek.
+2. **GPU varsa canli kos** — `start-llm-demo.ps1` ile bonus port 8010,
+   ~90 saniye beklerken sunumun deterministik kismina (radar, signal
+   matrix) gec.
+3. **Sadece sozlu anlat + kanit dosyasini ekrana yansit** — en hizli, en
+   az risk, ama gorsel sok yaratmaz.
+
+**Calistirma (CPU-only):**
+
+```powershell
+# 1) qwen-cpu varyantini olustur (bir kez)
+ollama create qwen-cpu -f docs/demo-evidence/qwen-cpu.Modelfile
+
+# 2) Bonus akis ile baslat (start.ps1 calismis olmali)
+.\start-llm-demo.ps1 -Model qwen-cpu
+
+# 3) Smoke check `LLM_MODEL=qwen-cpu` env'i ile model'i ister; 180s timeout
+#    GPU varsa Model parametresini gonderme: qwen2.5:7b default kalsin
+```
+
 ## Step 1: Start the Application (1 min)
 
 ### Linux/macOS:
