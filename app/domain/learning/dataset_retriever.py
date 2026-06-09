@@ -135,6 +135,127 @@ class DatasetRetriever:
         }
         return top, stats
 
+    def outcome_alignment(
+        self,
+        budget: float,
+        risk: float,
+        readiness: float,
+        stance: str,
+        k: int = 20,
+    ) -> dict:
+        """Agent'in stance'i dataset kanitiyla uyumlu mu? Sayisal ozet doner.
+
+        Dataset yalniz APPROVE/REJECT etiketleri icerir (REVISE yok). Bu
+        yuzden:
+            - stance == "support"  -> APPROVE'a yakin
+            - stance == "oppose"   -> REJECT'e yakin
+            - stance == "neutral"  -> 50/50'ye yakin esleme arar
+
+        Donus alanlari:
+            available: bool        - dataset bulunduysa True
+            k: int                 - kullanilan ornek sayisi
+            approve_ratio: float   - 0..1 (REJECT 1-approve_ratio)
+            alignment: float       - -1..+1 (+1 stance veri ile tam uyumlu,
+                                    -1 tam ters; 0 belirsiz)
+            distance_penalty: float - 0..1 (1 = senaryomuz dataset'e cok yakin,
+                                    0 = cok uzak; alignment'i bu agirlikla
+                                    kullan)
+            confidence_delta: float - onerilen -0.20..+0.20 araliginda
+                                    confidence guncellemesi
+            note: str | None       - reasoning'e eklenmek uzere insan-okur not
+        """
+        if not self.is_available:
+            return {
+                "available": False,
+                "k": 0,
+                "approve_ratio": 0.5,
+                "alignment": 0.0,
+                "distance_penalty": 0.0,
+                "confidence_delta": 0.0,
+                "note": None,
+            }
+
+        records, stats = self.find_similar(budget, risk, readiness, k=k)
+        if not records:
+            return {
+                "available": False,
+                "k": 0,
+                "approve_ratio": 0.5,
+                "alignment": 0.0,
+                "distance_penalty": 0.0,
+                "confidence_delta": 0.0,
+                "note": None,
+            }
+
+        decisions = stats["decisions"]
+        approve_count = decisions.get("APPROVE", 0)
+        reject_count = decisions.get("REJECT", 0)
+        total = approve_count + reject_count
+        approve_ratio = approve_count / total if total > 0 else 0.5
+
+        # Stance-spesifik alignment skoru:
+        # - support: yuksek approve_ratio +1, dusuk -1
+        # - oppose:  yuksek reject_ratio +1, dusuk -1
+        # - neutral: 0.5'e yakin +1, ucta -1
+        if stance == "support":
+            alignment = (approve_ratio - 0.5) * 2  # 0->-1, 1->+1
+        elif stance == "oppose":
+            alignment = ((1 - approve_ratio) - 0.5) * 2
+        else:  # neutral
+            # 0.5 -> +1, 0 veya 1 -> -1
+            alignment = 1 - abs(approve_ratio - 0.5) * 4
+            alignment = max(-1.0, alignment)
+
+        # Distance penalty: bizim senaryomuz dataset dagiliminin disindaysa,
+        # historical signal'in agirligini dusur. budget_mean farki en buyuk
+        # gostergesi.
+        budget_mean = stats.get("budget_mean") or 0.0
+        risk_mean = stats.get("risk_mean") or 0.0
+        readiness_mean = stats.get("readiness_mean") or 0.0
+        dist = (
+            abs(budget - budget_mean) / 50.0
+            + abs(risk - risk_mean) / 10.0
+            + abs(readiness - readiness_mean) / 10.0
+        )
+        # dist 0 -> 1 (tam yakin), dist 1 -> 0 (cok uzak)
+        distance_penalty = max(0.0, 1.0 - dist)
+
+        # Confidence delta: alignment ve distance_penalty carpimi; uc cap 0.20.
+        # Negatif alignment confidence dusurur, pozitif yukseltir.
+        confidence_delta = alignment * distance_penalty * 0.20
+        confidence_delta = max(-0.20, min(0.20, confidence_delta))
+
+        # Insan-okunabilir not.
+        approve_pct = int(approve_ratio * 100)
+        reject_pct = 100 - approve_pct
+        note_parts = [
+            f"Datasetimdeki en yakin {stats['k']} vakanin "
+            f"%{approve_pct}'i APPROVE, %{reject_pct}'i REJECT."
+        ]
+        if distance_penalty < 0.5:
+            note_parts.append(
+                f"(Ancak bu vakalar dagilim olarak senaryomuzdan uzak; "
+                f"butce ort. ${budget_mean:.1f}M, readiness ort. {readiness_mean:.1f}; "
+                f"agirlik dusuruldu.)"
+            )
+        if abs(confidence_delta) >= 0.03:
+            direction = "yukseldi" if confidence_delta > 0 else "dustu"
+            note_parts.append(
+                f"Stance '{stance}' icin veri uyumu {alignment:+.2f}; "
+                f"confidence {direction} ({confidence_delta:+.2f})."
+            )
+        note = " ".join(note_parts)
+
+        return {
+            "available": True,
+            "k": stats["k"],
+            "approve_ratio": approve_ratio,
+            "alignment": alignment,
+            "distance_penalty": distance_penalty,
+            "confidence_delta": confidence_delta,
+            "note": note,
+        }
+
     def format_for_prompt(
         self,
         budget: float,

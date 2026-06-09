@@ -68,3 +68,91 @@ def test_load_records_is_cached(tiny_dataset: Path):
     rec1 = _load_records(str(tiny_dataset))
     rec2 = _load_records(str(tiny_dataset))
     assert rec1 is rec2
+
+
+# ---------------------------------------------------------------------------
+# outcome_alignment() — Seviye 4 (deterministik agent dataset evidence)
+# ---------------------------------------------------------------------------
+
+
+def test_outcome_alignment_returns_unavailable_when_no_dataset(tmp_path: Path):
+    r = DatasetRetriever(dataset_path=str(tmp_path / "nope.json"))
+    out = r.outcome_alignment(5.0, 5, 7, "support")
+    assert out["available"] is False
+    assert out["confidence_delta"] == 0.0
+
+
+def test_outcome_alignment_support_with_approve_majority_boosts(tmp_path: Path):
+    # Dagilim: 4 vakanin 4'u APPROVE; senaryomuza yakin
+    data = [
+        {"source": "T", "budget": 5.0, "risk": 5, "readiness": 7, "decision": "APPROVE"},
+        {"source": "T", "budget": 5.5, "risk": 5, "readiness": 7, "decision": "APPROVE"},
+        {"source": "T", "budget": 6.0, "risk": 5, "readiness": 7, "decision": "APPROVE"},
+        {"source": "T", "budget": 6.5, "risk": 5, "readiness": 7, "decision": "APPROVE"},
+    ]
+    p = tmp_path / "d.json"
+    p.write_text(json.dumps(data), encoding="utf-8")
+
+    r = DatasetRetriever(dataset_path=str(p))
+    out = r.outcome_alignment(5.5, 5, 7, "support", k=4)
+    assert out["available"] is True
+    assert out["approve_ratio"] == 1.0
+    assert out["alignment"] == pytest.approx(1.0)
+    assert out["confidence_delta"] > 0.10  # support + APPROVE bolu = guclu boost
+
+
+def test_outcome_alignment_oppose_with_reject_majority_boosts(tmp_path: Path):
+    data = [
+        {"source": "T", "budget": 5.0, "risk": 5, "readiness": 7, "decision": "REJECT"},
+        {"source": "T", "budget": 5.5, "risk": 5, "readiness": 7, "decision": "REJECT"},
+    ]
+    p = tmp_path / "d.json"
+    p.write_text(json.dumps(data), encoding="utf-8")
+
+    r = DatasetRetriever(dataset_path=str(p))
+    out = r.outcome_alignment(5.5, 5, 7, "oppose", k=2)
+    assert out["alignment"] == pytest.approx(1.0)
+    assert out["confidence_delta"] > 0.10
+
+
+def test_outcome_alignment_support_with_reject_majority_penalizes(tmp_path: Path):
+    data = [
+        {"source": "T", "budget": 5.0, "risk": 5, "readiness": 7, "decision": "REJECT"},
+        {"source": "T", "budget": 5.5, "risk": 5, "readiness": 7, "decision": "REJECT"},
+        {"source": "T", "budget": 6.0, "risk": 5, "readiness": 7, "decision": "REJECT"},
+    ]
+    p = tmp_path / "d.json"
+    p.write_text(json.dumps(data), encoding="utf-8")
+
+    r = DatasetRetriever(dataset_path=str(p))
+    out = r.outcome_alignment(5.5, 5, 7, "support", k=3)
+    assert out["alignment"] == pytest.approx(-1.0)
+    assert out["confidence_delta"] < -0.10  # support + REJECT bolu = guclu penalty
+
+
+def test_outcome_alignment_distance_penalty_reduces_effect(tmp_path: Path):
+    # Senaryo budget=5 dataset budget=40+ ile cok uzakta.
+    data = [
+        {"source": "T", "budget": 40.0, "risk": 5, "readiness": 7, "decision": "APPROVE"},
+        {"source": "T", "budget": 45.0, "risk": 5, "readiness": 7, "decision": "APPROVE"},
+    ]
+    p = tmp_path / "d.json"
+    p.write_text(json.dumps(data), encoding="utf-8")
+
+    r = DatasetRetriever(dataset_path=str(p))
+    out = r.outcome_alignment(5.0, 5, 7, "support", k=2)
+    # alignment hala +1 ama distance penalty agirligi dusurmeli
+    assert out["alignment"] == pytest.approx(1.0)
+    assert out["distance_penalty"] < 0.5
+    # Confidence delta yine pozitif ama daha kucuk
+    assert 0 < out["confidence_delta"] < 0.10
+
+
+def test_outcome_alignment_bounded_to_pm_020():
+    # outcome_alignment dondurdugu confidence_delta -0.20..+0.20 araliginda olmali
+    # (Bu pure semantik test; gercek dataset uzerinde de gecerli.)
+    r = DatasetRetriever()
+    if not r.is_available:
+        pytest.skip("Production dataset yok")
+    out = r.outcome_alignment(5.0, 5, 7, "support")
+    assert -0.20 <= out["confidence_delta"] <= 0.20
