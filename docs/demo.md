@@ -20,6 +20,44 @@ This script demonstrates the complete workflow of the AI Decision Ecosystem Engi
 > already listening on port 8000, and runs `scripts/demo_smoke_check.ps1` as the
 > final readiness gate before the demo begins.
 
+---
+
+## Bonus Demo: LLM-backed Agents (Optional)
+
+The final live demo is **deterministic** — `start.ps1` forces `MADE_USE_LLM=0`
+and the simulation endpoint responds in ~0.2 s. The LLM-backed path is shipped
+as an **optional bonus** because `POST /api/v1/scenarios/{id}/simulate` can
+take 30–90 s end-to-end and has been observed to time out at 60 s in unwarmed
+states.
+
+Run the bonus demo **alongside** (not instead of) the standard demo:
+
+```powershell
+# After .\start.ps1 has finished successfully:
+.\start-llm-demo.ps1                       # port 8010, model qwen2.5:7b
+.\start-llm-demo.ps1 -HostPort 8010 -Model qwen2.5:7b
+```
+
+`start-llm-demo.ps1`:
+
+1. Verifies the standard demo container `ai_decision_app` is up (DB + image
+   are reused).
+2. Launches a separate container `ai_decision_app_llm` on `HostPort` (default
+   `8010`) with `MADE_USE_LLM=1` and `OLLAMA_BASE_URL=http://host.docker.internal:11434`.
+3. Waits for `/health`, then runs `scripts/llm_smoke_check.ps1`, which:
+   - checks Ollama is reachable at `localhost:11434`,
+   - confirms the requested model is present (`ollama pull qwen2.5:7b` if not),
+   - **warms the model** with one short completion (eliminates cold-start),
+   - runs a full LLM simulation with a 180 s timeout and verifies `final_decision`.
+
+If any of those steps fail, the bonus demo aborts before you go on stage —
+you only ever present the LLM path when smoke is green.
+
+> The LLM bonus is **never** the path used in the main live demo. If you want
+> to show LLM reasoning during the talk, open `http://localhost:8010/docs`
+> after `start-llm-demo.ps1` finishes — keep the deterministic backend on
+> `http://localhost:8000` as the primary surface.
+
 ## Step 1: Start the Application (1 min)
 
 ### Linux/macOS:
