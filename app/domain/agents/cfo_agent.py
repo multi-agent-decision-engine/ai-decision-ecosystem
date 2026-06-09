@@ -1,4 +1,8 @@
 from app.domain.agents.base import Agent
+from app.domain.agents.debate_dynamics import (
+    apply_convergence_pressure,
+    maybe_soften_stance,
+)
 from app.domain.models import AgentMessage, ScenarioInput, Stance, get_agent_metrics, get_agent_stance
 
 def _to_financial_inputs(scenario: ScenarioInput) -> dict:
@@ -112,7 +116,7 @@ class CFOAgent(Agent):
             
         reasoning_notes = []
         
-        # 4. Cross-Metric Analysis
+        # 4. Cross-Metric Analysis (esikler kademeli hale getirildi - bkz CEO yorumu)
         if current_round > 1 and previous_messages:
             # Analyze HR
             hr_metrics = get_agent_metrics(previous_messages, "HR")
@@ -120,54 +124,87 @@ class CFOAgent(Agent):
                 talent_availability = hr_metrics.get("talent_availability", 5)
                 team_impact = hr_metrics.get("team_impact", 5)
                 workload_score = hr_metrics.get("workload_score", 5)
-                
-                if talent_availability < 4:
-                    penalty = (4 - talent_availability) * 0.03
+
+                # Talent 6'nin altinda her puan -0.025 (max -0.12).
+                if talent_availability < 6:
+                    penalty = min(0.12, (6 - talent_availability) * 0.025)
                     confidence -= penalty
-                    reasoning_notes.append(f"İK yetenek sıkıntısı raporladı, maliyet riski arttı (-{penalty:.2f}).")
-                
-                if team_impact < 3:
-                     confidence -= 0.08
-                     reasoning_notes.append("İK'nın olumsuz ekip etkisi öngörüsü verimliliği düşürebilir.")
-                     
-                if workload_score < 4:
-                    confidence -= 0.06
-                    reasoning_notes.append("Yüksek iş yükü (turnover riski) maliyet projeksiyonunu bozabilir.")
+                    reasoning_notes.append(
+                        f"IK yetenek skoru {talent_availability:.1f}/10 (esik 6); "
+                        f"maliyet riski arttigindan guven dustu (-{penalty:.2f})."
+                    )
+
+                # Team impact 5'in altinda her puan -0.03 (max -0.12).
+                if team_impact < 5:
+                    penalty = min(0.12, (5 - team_impact) * 0.03)
+                    confidence -= penalty
+                    reasoning_notes.append(
+                        f"IK ekip etki skoru {team_impact:.1f}/10; verimlilik kaybi (-{penalty:.2f})."
+                    )
+
+                # Workload 5'in altinda her puan -0.03 (max -0.10).
+                if workload_score < 5:
+                    penalty = min(0.10, (5 - workload_score) * 0.03)
+                    confidence -= penalty
+                    reasoning_notes.append(
+                        f"IK is yuku skoru {workload_score:.1f}/10; turnover riski (-{penalty:.2f})."
+                    )
 
             # Analyze CEO
             ceo_metrics = get_agent_metrics(previous_messages, "CEO")
             if ceo_metrics:
                 growth_potential = ceo_metrics.get("growth_potential", 0)
                 market_alignment = ceo_metrics.get("market_alignment", 0)
-                
-                if growth_potential >= 8 and market_alignment >= 7:
-                    confidence += 0.05
-                    reasoning_notes.append("CEO'nun güçlü büyüme öngörüsü finansal risk toleransını artırdı.")
-                
-                if market_alignment < 4:
-                    confidence -= 0.07
-                    reasoning_notes.append("CEO'nun pazar uyumsuzluğu tespiti gelir tahminlerini şüpheli kılıyor.")
-            
-            # Stance Shift Logic
+
+                # Buyume potansiyeli 6'nin uzerindeyse kademeli toparlanma.
+                if growth_potential > 6:
+                    boost = min(0.10, (growth_potential - 6) * 0.025)
+                    confidence += boost
+                    reasoning_notes.append(
+                        f"CEO buyume potansiyelini {growth_potential:.1f}/10 verdi; finansal tolerans +{boost:.2f}."
+                    )
+
+                # Market alignment 6'nin altinda her puan -0.03 (max -0.12).
+                if market_alignment < 6:
+                    penalty = min(0.12, (6 - market_alignment) * 0.03)
+                    confidence -= penalty
+                    reasoning_notes.append(
+                        f"CEO pazar uyumu skoru {market_alignment:.1f}/10; gelir tahmini supheli (-{penalty:.2f})."
+                    )
+
+            # Stance Shift Logic (mevcut korunmus)
             ceo_stance_info = get_agent_stance(previous_messages, "CEO")
             hr_stance_info = get_agent_stance(previous_messages, "HR")
-            
+
             if ceo_stance_info and hr_stance_info:
                 ceo_s, ceo_conf = ceo_stance_info
                 hr_s, _ = hr_stance_info
-                
+
                 if stance == "oppose" and ceo_s == "support" and hr_s == "support":
                     if adjusted_roi > 0:
                         stance = "neutral"
                         confidence = 0.45
-                        reasoning_notes.append("Diğer birimlerin tam desteği ve pozitif ROI nedeniyle itiraz NÖTR'e çekildi.")
+                        reasoning_notes.append("Diger birimlerin tam destegi ve pozitif ROI nedeniyle itiraz NUTR'e cekildi.")
                 elif stance == "support" and ceo_s == "oppose" and hr_s == "oppose":
                     stance = "neutral"
                     confidence = 0.5
-                    reasoning_notes.append("Diğer birimlerin ortak itirazı finansal desteği askıya aldırdı.")
+                    reasoning_notes.append("Diger birimlerin ortak itirazi finansal destegi askiya aldirdi.")
                 elif stance == "neutral" and ceo_s == "support" and ceo_conf >= 0.8:
                     confidence = min(0.65, confidence + 0.1)
-                    reasoning_notes.append("CEO'nun çok güçlü desteği belirsizliği azalttı.")
+                    reasoning_notes.append("CEO'nun cok guclu destegi belirsizligi azaltti.")
+
+            # Convergence pressure (akran ortalamasina cek).
+            confidence, conv_note = apply_convergence_pressure(
+                confidence, previous_messages, self_agent_name="CFO"
+            )
+            if conv_note:
+                reasoning_notes.append(conv_note)
+
+            stance, soften_note = maybe_soften_stance(
+                stance, confidence, previous_messages, self_agent_name="CFO"
+            )
+            if soften_note:
+                reasoning_notes.append(soften_note)
 
         # Ensure confidence bounds
         confidence = max(0.3, min(1.0, confidence))
