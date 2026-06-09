@@ -10,7 +10,13 @@ import {
   ResponsiveContainer,
   Tooltip,
 } from "recharts";
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import {
+  useEffect,
+  useRef,
+  useState,
+  type FormEvent,
+  type ReactNode,
+} from "react";
 import { motion } from "framer-motion";
 import {
   Activity,
@@ -46,7 +52,11 @@ import {
   reportNextSteps,
   scenarioRows,
 } from "./data/mockDecision";
-import { decisionApi } from "./api/decisionApi";
+import { decisionApi, ApiError } from "./api/decisionApi";
+import type {
+  CreateScenarioInput,
+  FieldValidationError,
+} from "./api/decisionApi";
 import type {
   ApiAgentOutput,
   ApiScenario,
@@ -72,44 +82,93 @@ const [simulationResult, setSimulationResult] =
 const [simulationLoading, setSimulationLoading] = useState(false);
 const [simulationError, setSimulationError] = useState<string | null>(null);
 
+// ISSUE-006: senaryo olusturma state
+const [scenarioCreating, setScenarioCreating] = useState(false);
+const [scenarioCreateError, setScenarioCreateError] = useState<string | null>(null);
+const [scenarioFieldErrors, setScenarioFieldErrors] = useState<FieldValidationError[]>([]);
+
+// Senaryo listesini cek; opsiyonel olarak yeni olusturulan id'yi otomatik secer.
+const loadScenarios = async (selectId?: string) => {
+  try {
+    setScenarioLoading(true);
+    setScenarioError(null);
+
+    const data = await decisionApi.getScenarios();
+    setScenarios(data);
+
+    if (selectId) {
+      setSelectedScenarioId(selectId);
+    } else if (!selectedScenarioId && data.length > 0) {
+      setSelectedScenarioId(String(data[0].id));
+    }
+  } catch (error) {
+    setScenarioError(
+      error instanceof Error
+        ? error.message
+        : "Backend scenario list could not be loaded."
+    );
+  } finally {
+    setScenarioLoading(false);
+  }
+};
+
 useEffect(() => {
   let ignore = false;
-
-  const loadScenarios = async () => {
+  (async () => {
     try {
       setScenarioLoading(true);
       setScenarioError(null);
-
       const data = await decisionApi.getScenarios();
-
       if (ignore) return;
-
       setScenarios(data);
-
-      if (data.length > 0) {
-        setSelectedScenarioId(String(data[0].id));
-      }
+      if (data.length > 0) setSelectedScenarioId(String(data[0].id));
     } catch (error) {
       if (ignore) return;
-
       setScenarioError(
         error instanceof Error
           ? error.message
           : "Backend scenario list could not be loaded."
       );
     } finally {
-      if (!ignore) {
-        setScenarioLoading(false);
-      }
+      if (!ignore) setScenarioLoading(false);
     }
-  };
-
-  loadScenarios();
-
+  })();
   return () => {
     ignore = true;
   };
 }, []);
+
+// Senaryo olusturma: basariliysa listeyi yeniler ve yeni id'yi otomatik secer.
+const createScenario = async (input: CreateScenarioInput) => {
+  setScenarioCreating(true);
+  setScenarioCreateError(null);
+  setScenarioFieldErrors([]);
+  try {
+    const newId = await decisionApi.createScenario(input);
+    await loadScenarios(newId);
+    setLogs((prev) => [
+      `Scenario created via UI: "${input.name}" (id=${newId})`,
+      ...prev,
+    ]);
+    return true;
+  } catch (error) {
+    if (error instanceof ApiError) {
+      setScenarioFieldErrors(error.validationErrors);
+      setScenarioCreateError(
+        error.validationErrors.length > 0
+          ? "Backend validation failed; please correct the highlighted fields."
+          : error.message
+      );
+    } else {
+      setScenarioCreateError(
+        error instanceof Error ? error.message : "Scenario creation failed."
+      );
+    }
+    return false;
+  } finally {
+    setScenarioCreating(false);
+  }
+};
 
 const selectedScenario =
   scenarios.find((scenario) => String(scenario.id) === selectedScenarioId) ??
@@ -222,7 +281,11 @@ const selectedScenario =
   scenarioError={scenarioError}
   simulationLoading={simulationLoading}
   simulationError={simulationError}
-/>          
+  onCreateScenario={createScenario}
+  scenarioCreating={scenarioCreating}
+  scenarioCreateError={scenarioCreateError}
+  scenarioFieldErrors={scenarioFieldErrors}
+/>
  <div id="live-analysis" className="scroll-mt-5">
     <DecisionCore
       agents={agents}
@@ -781,6 +844,10 @@ function ScenarioPanel({
   scenarioError,
 simulationLoading,
 simulationError,
+onCreateScenario,
+scenarioCreating,
+scenarioCreateError,
+scenarioFieldErrors,
 }: {
   isRunning: boolean;
   onStart: () => void;
@@ -792,7 +859,43 @@ simulationError,
   scenarioError: string | null;
 simulationLoading: boolean;
 simulationError: string | null;
+onCreateScenario: (input: CreateScenarioInput) => Promise<boolean>;
+scenarioCreating: boolean;
+scenarioCreateError: string | null;
+scenarioFieldErrors: FieldValidationError[];
 }) {
+  // ISSUE-006: kompakt senaryo olusturma formu
+  const [showCreateForm, setShowCreateForm] = useState(false);
+  const [formName, setFormName] = useState("");
+  const [formDescription, setFormDescription] = useState("");
+  const [formBudget, setFormBudget] = useState("5.0");
+  const [formRoi, setFormRoi] = useState("30.0");
+  const [formRisk, setFormRisk] = useState("5");
+  const [formReadiness, setFormReadiness] = useState("7");
+
+  const fieldError = (field: string) =>
+    scenarioFieldErrors.find((e) => e.field === field)?.message;
+
+  const handleSubmit = async (event: FormEvent) => {
+    event.preventDefault();
+    const ok = await onCreateScenario({
+      name: formName.trim(),
+      description: formDescription.trim(),
+      budget_million_usd: Number(formBudget),
+      expected_roi_percent: Number(formRoi),
+      risk_level: Number(formRisk),
+      team_readiness: Number(formReadiness),
+    });
+    if (ok) {
+      setShowCreateForm(false);
+      setFormName("");
+      setFormDescription("");
+      setFormBudget("5.0");
+      setFormRoi("30.0");
+      setFormRisk("5");
+      setFormReadiness("7");
+    }
+  };
   const rows: [string, string][] = selectedScenario
     ? [
         [
@@ -863,7 +966,7 @@ simulationError: string | null;
 
           {!scenarioLoading && !scenarioError && scenarios.length === 0 && (
             <p className="mt-2 rounded-lg border border-amber-400/30 bg-amber-400/10 p-2 text-xs text-amber-300">
-              No scenarios found. Create a scenario from the backend first.
+              No scenarios found. Use "New scenario" below to create one.
             </p>
           )}
 
@@ -879,6 +982,67 @@ simulationError: string | null;
                 </option>
               ))}
             </select>
+          )}
+
+          <button
+            type="button"
+            onClick={() => setShowCreateForm((v) => !v)}
+            className="mt-2 flex w-full items-center justify-center gap-2 rounded-xl border border-cyan-400/20 bg-cyan-400/5 px-3 py-2 font-mono text-[10px] uppercase tracking-widest text-cyan-300 transition hover:bg-cyan-400/15"
+          >
+            <PlusCircle size={12} />
+            {showCreateForm ? "Cancel new scenario" : "New scenario"}
+          </button>
+
+          {showCreateForm && (
+            <form onSubmit={handleSubmit} className="mt-3 space-y-2" data-testid="scenario-create-form">
+              {[
+                { id: "name", label: "Name", type: "text", value: formName, set: setFormName, placeholder: "Southeast Asia Expansion" },
+                { id: "description", label: "Description", type: "text", value: formDescription, set: setFormDescription, placeholder: "Brief context" },
+                { id: "budget_million_usd", label: "Budget (M USD)", type: "number", value: formBudget, set: setFormBudget, placeholder: "5.0", step: "0.1" },
+                { id: "expected_roi_percent", label: "Expected ROI (%)", type: "number", value: formRoi, set: setFormRoi, placeholder: "30.0", step: "0.1" },
+                { id: "risk_level", label: "Risk Level (1-10)", type: "number", value: formRisk, set: setFormRisk, placeholder: "5", min: "1", max: "10" },
+                { id: "team_readiness", label: "Team Readiness (1-10)", type: "number", value: formReadiness, set: setFormReadiness, placeholder: "7", min: "1", max: "10" },
+              ].map((f) => {
+                const err = fieldError(f.id);
+                return (
+                  <div key={f.id}>
+                    <label htmlFor={`new-${f.id}`} className="font-mono text-[10px] uppercase tracking-widest text-slate-500">
+                      {f.label}
+                    </label>
+                    <input
+                      id={`new-${f.id}`}
+                      type={f.type}
+                      value={f.value}
+                      onChange={(e) => f.set(e.target.value)}
+                      placeholder={f.placeholder}
+                      step={(f as { step?: string }).step}
+                      min={(f as { min?: string }).min}
+                      max={(f as { max?: string }).max}
+                      disabled={scenarioCreating}
+                      className={`mt-1 w-full rounded-lg border bg-slate-950 px-2 py-1.5 font-mono text-xs text-cyan-100 outline-none transition focus:border-cyan-300 ${err ? "border-red-400/60" : "border-cyan-400/20"}`}
+                    />
+                    {err && (
+                      <p className="mt-1 text-[10px] text-red-300">{err}</p>
+                    )}
+                  </div>
+                );
+              })}
+
+              {scenarioCreateError && (
+                <p className="rounded-lg border border-red-400/30 bg-red-400/10 p-2 text-[11px] text-red-300">
+                  {scenarioCreateError}
+                </p>
+              )}
+
+              <button
+                type="submit"
+                disabled={scenarioCreating}
+                className="mt-1 flex w-full items-center justify-center gap-2 rounded-xl border border-emerald-400/50 bg-emerald-400/15 px-3 py-2 font-mono text-[11px] font-bold uppercase text-emerald-300 transition hover:bg-emerald-400 hover:text-slate-950 disabled:cursor-not-allowed disabled:opacity-60"
+              >
+                {scenarioCreating ? <Loader2 size={12} className="animate-spin" /> : <PlusCircle size={12} />}
+                {scenarioCreating ? "Creating..." : "Create scenario"}
+              </button>
+            </form>
           )}
         </div>
 

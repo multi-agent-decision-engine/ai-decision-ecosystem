@@ -44,6 +44,44 @@ function asBoolean(value: unknown, fallback = false) {
   return fallback;
 }
 
+export type FieldValidationError = {
+  field: string;
+  message: string;
+};
+
+export class ApiError extends Error {
+  status: number;
+  validationErrors: FieldValidationError[];
+
+  constructor(
+    message: string,
+    status: number,
+    validationErrors: FieldValidationError[] = []
+  ) {
+    super(message);
+    this.name = "ApiError";
+    this.status = status;
+    this.validationErrors = validationErrors;
+  }
+}
+
+function extractValidationErrors(payload: unknown): FieldValidationError[] {
+  if (!isRecord(payload)) return [];
+  const detail = payload.detail;
+  if (!Array.isArray(detail)) return [];
+
+  return detail
+    .map((item) => {
+      if (!isRecord(item)) return null;
+      const loc = Array.isArray(item.loc) ? item.loc : [];
+      // FastAPI loc -> ["body", "<field>"]; surface the field name only.
+      const field = loc.length > 1 ? String(loc[loc.length - 1]) : String(loc[0] ?? "");
+      const message = asString(item.msg, "Invalid value");
+      return { field, message };
+    })
+    .filter((e): e is FieldValidationError => e !== null);
+}
+
 async function request<T>(path: string, options?: RequestInit): Promise<T> {
   const response = await fetch(`${API_BASE_URL}${path}`, {
     headers: {
@@ -54,11 +92,34 @@ async function request<T>(path: string, options?: RequestInit): Promise<T> {
   });
 
   if (!response.ok) {
-    throw new Error(`API request failed with status ${response.status}`);
+    let validationErrors: FieldValidationError[] = [];
+    let summary = `API request failed with status ${response.status}`;
+
+    try {
+      const errorPayload = (await response.json()) as unknown;
+      validationErrors = extractValidationErrors(errorPayload);
+      if (validationErrors.length === 0 && isRecord(errorPayload)) {
+        const detail = errorPayload.detail;
+        if (typeof detail === "string") summary = detail;
+      }
+    } catch {
+      // body was not JSON; keep generic summary
+    }
+
+    throw new ApiError(summary, response.status, validationErrors);
   }
 
   return response.json() as Promise<T>;
 }
+
+export type CreateScenarioInput = {
+  name: string;
+  description: string;
+  budget_million_usd: number;
+  expected_roi_percent: number;
+  risk_level: number;
+  team_readiness: number;
+};
 
 function unwrapData(value: unknown): unknown {
   if (!isRecord(value)) return value;
@@ -323,6 +384,21 @@ export const decisionApi = {
   async getScenarios() {
     const data = await request<unknown>("/api/v1/scenarios");
     return normalizeScenarioList(data);
+  },
+
+  async createScenario(payload: CreateScenarioInput): Promise<string> {
+    const data = await request<unknown>("/api/v1/scenarios", {
+      method: "POST",
+      body: JSON.stringify(payload),
+    });
+
+    // Backend returns { scenario_id: <int> }; coerce to string for routing.
+    const record = isRecord(data) ? data : {};
+    const id = asString(record.scenario_id ?? record.id, "");
+    if (!id) {
+      throw new ApiError("Backend did not return a scenario id", 500, []);
+    }
+    return id;
   },
 
   async simulateScenario(scenarioId: string | number) {
