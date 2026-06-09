@@ -26,6 +26,32 @@ This script demonstrates the complete workflow of the AI Decision Ecosystem Engi
 > health → scenarios list → isimli demo senaryosunu garantile → `POST /simulate`
 > → `final_decision` doğrulaması. Bu adımların hepsi yeşil dönmeden sahneye çıkma.
 
+### Failed recreate sonrası temizlik (ISSUE-005)
+
+`docker compose up --build` port çakışması veya başka bir nedenle yarıda
+kaldıysa, `ai_decision_app` container'ı `running` görünmesine rağmen
+`NetworkSettings.Networks` boş kalabilir ve port yayını yapılmaz. Bu durumda
+`/health` 200 dönebilir ama DB endpoint'leri 500 verir. Doğrulama ve temizlik:
+
+```powershell
+# 1) App container'in DB-bagli healthcheck'i healthy mi?
+docker inspect -f '{{.State.Health.Status}}' ai_decision_app
+# beklenen: healthy
+
+# 2) Port gercekten host'a yayinlaniyor mu?
+docker compose ps
+# beklenen: app satirinda '0.0.0.0:8000->8000/tcp'
+
+# 3) Host tarafindan DB-bagli endpoint 200 doner mi?
+curl -s -o /dev/null -w '%{http_code}\n' http://localhost:8000/api/v1/scenarios?limit=1
+# beklenen: 200
+
+# Yukaridakilerden biri eksikse temiz baslangic:
+docker compose down --remove-orphans
+docker ps --filter "publish=8000" --format "{{.Names}}"   # bossa devam
+.\start.ps1
+```
+
 ---
 
 ## Bonus Demo: LLM-backed Agents (Optional)

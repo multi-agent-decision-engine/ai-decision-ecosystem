@@ -29,6 +29,17 @@ services:
     depends_on:
       db:
         condition: service_healthy
+    # ISSUE-005: DB-bagimli healthcheck. `/health` 200 donse bile DB endpoint'leri
+    # bozuk olabiliyordu (failed recreate sonrasi network/port drift). Burada
+    # gercek DB query'si yapan endpoint'i hit ediyoruz.
+    healthcheck:
+      test:
+        - "CMD-SHELL"
+        - "python -c \"import sys, urllib.request; sys.exit(0 if urllib.request.urlopen('http://localhost:8000/api/v1/scenarios?limit=1', timeout=3).status == 200 else 1)\""
+      interval: 10s
+      timeout: 5s
+      retries: 6
+      start_period: 30s
 
 volumes:
   postgres_data:

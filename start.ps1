@@ -42,6 +42,22 @@ do {
 Write-Host "Running migrations..."
 docker compose exec app alembic upgrade head
 
+# ISSUE-005: 'app' container healthy olana kadar bekle. Failed recreate sonrasi
+# container `running` gorunup network/port'u bos kalabiliyordu; DB-bagimli
+# healthcheck bu sessiz arizayi yakalar.
+Write-Host "Waiting for app to be healthy (DB-backed healthcheck)..."
+$appHealthDeadlineSec = 90
+$appHealthStart = Get-Date
+do {
+    Start-Sleep -Seconds 2
+    $appStatus = docker inspect -f "{{.State.Health.Status}}" ai_decision_app 2>$null
+    $elapsedSec = ((Get-Date) - $appHealthStart).TotalSeconds
+    if ($elapsedSec -gt $appHealthDeadlineSec) {
+        docker logs --tail 50 ai_decision_app
+        throw "ai_decision_app DB-bagimli healthcheck'i $appHealthDeadlineSec saniyede healthy donmedi (son durum: $appStatus). 'docker compose down --remove-orphans' ile temizleyip yeniden deneyin."
+    }
+} while ($appStatus -ne "healthy")
+
 Write-Host "Running demo smoke check..."
 & .\scripts\demo_smoke_check.ps1 -BaseUrl "http://localhost:8000"
 
