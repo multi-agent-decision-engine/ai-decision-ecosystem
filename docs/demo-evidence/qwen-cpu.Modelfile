@@ -1,0 +1,20 @@
+# CPU-only varyant - GPU bellegi yetmedigi makinelerde kullanmak icin
+#
+# Ollama'da qwen2.5:7b GPU (Vulkan/AMD) bellek tasmasi yasadiginda bu
+# Modelfile ile bir CPU-only varyanti olusturulur:
+#
+#   ollama create qwen-cpu -f qwen-cpu.Modelfile
+#
+# Sonra ai_decision_app container'i icin:
+#
+#   docker exec -e MADE_USE_LLM=1 \
+#     -e LLM_BASE_URL=http://host.docker.internal:11434/v1 \
+#     -e LLM_MODEL=qwen-cpu \
+#     ai_decision_app sh -c "PYTHONPATH=/app python scripts/debate_3rounds.py 10"
+#
+# CPU latency: ~50s/cagri (3 agent x 3 tur = ~7-8 dakika tek senaryo icin).
+# GPU varsa varsayilan qwen2.5:7b kullan, ~5x hizli (~90 sn toplam).
+
+FROM qwen2.5:7b
+PARAMETER num_gpu 0
+PARAMETER num_thread 8
