@@ -20,6 +20,12 @@ This script demonstrates the complete workflow of the AI Decision Ecosystem Engi
 > already listening on port 8000, and runs `scripts/demo_smoke_check.ps1` as the
 > final readiness gate before the demo begins.
 
+> **Demo hazırlığı ≠ `/health`.** `GET /health` 200 dönse bile DB endpoint'leri
+> bozuk olabilir, port 8000'i başka bir process serviyor olabilir veya senaryo
+> listesi boş olabilir. Demo öncesi zorunlu kontrol `scripts/demo_smoke_check.ps1`:
+> health → scenarios list → isimli demo senaryosunu garantile → `POST /simulate`
+> → `final_decision` doğrulaması. Bu adımların hepsi yeşil dönmeden sahneye çıkma.
+
 ---
 
 ## Bonus Demo: LLM-backed Agents (Optional)
