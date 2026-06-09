@@ -448,8 +448,17 @@ değil, veriyle kalibre edilebilir bir yapıyla desteklenmesini hedefler.
 | Backend testleri | `pytest` |
 | Belirli test dosyası | `pytest tests/test_llm_agent.py -v` |
 | Frontend build | `cd frontend && npm run build` |
-| Docker smoke | `docker compose up --build` |
+| Demo smoke (tam akış) | `.\start.ps1` (sonunda `scripts/demo_smoke_check.ps1` koşar) |
+| Demo smoke (tek başına) | `.\scripts\demo_smoke_check.ps1 -BaseUrl http://localhost:8000` |
 | API dokümantasyonu | `http://localhost:8000/docs` |
+
+> `GET /health` tek başına demo hazırlığı **değildir**. Health endpoint 200
+> dönse bile DB endpoint'leri bozuk olabilir, port 8000'i başka bir process
+> servis ediyor olabilir veya senaryo listesi boş olabilir. Demo öncesi tam
+> akış kontrolü için `scripts/demo_smoke_check.ps1` (health → scenarios list
+> → isimli demo senaryosunu garantile → `POST /simulate` → `final_decision`
+> doğrulaması) zorunlu adımdır ve `start.ps1` bunu son adım olarak otomatik
+> çalıştırır.
 
 ---
 
