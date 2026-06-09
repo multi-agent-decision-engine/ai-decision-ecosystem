@@ -25,7 +25,12 @@ if ($hostListener) {
     }
 }
 
-Write-Host "Starting containers..."
+# Force deterministic mode for the standard demo. The LLM-backed flow lives in
+# start-llm-demo.ps1 as an optional bonus and must NOT be wired into the main
+# live demo (see ISSUE-002: LLM simulate calls can time out at 60s).
+$env:MADE_USE_LLM = "0"
+
+Write-Host "Starting containers (deterministic mode, MADE_USE_LLM=0)..."
 docker compose up --build -d
 
 Write-Host "Waiting for db to be healthy..."
