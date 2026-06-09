@@ -5,6 +5,20 @@ This script demonstrates the complete workflow of the AI Decision Ecosystem Engi
 **Prerequisites:**
 - Docker and Docker Compose installed
 - Terminal/PowerShell open in project directory
+- Port 8000 is free, or is held only by the deterministic backend container `ai_decision_app`
+
+**Expected demo runtime layout:**
+
+| Service   | Container name        | Port  | Mode                                       |
+|-----------|-----------------------|-------|--------------------------------------------|
+| Backend   | `ai_decision_app`     | 8000  | Deterministic (`MADE_USE_LLM` unset / `0`) |
+| Database  | `ai_decision_db`      | 5432  | Postgres, must be healthy                  |
+
+> The optional LLM backend runs as `ai_decision_app_llm` and is reserved for the
+> bonus demo. It must **not** be on port 8000 during the standard demo.
+> `start.ps1` aborts with a clear error if another container or host process is
+> already listening on port 8000, and runs `scripts/demo_smoke_check.ps1` as the
+> final readiness gate before the demo begins.
 
 ## Step 1: Start the Application (1 min)
 
