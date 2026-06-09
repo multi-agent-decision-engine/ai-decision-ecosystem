@@ -1,4 +1,8 @@
 from app.domain.agents.base import Agent
+from app.domain.agents.debate_dynamics import (
+    apply_convergence_pressure,
+    maybe_soften_stance,
+)
 from app.domain.models import AgentMessage, ScenarioInput, get_agent_metrics, get_agent_stance
 
 
@@ -70,22 +74,27 @@ class HRAgent(Agent):
 
         reasoning_notes: list[str] = []
 
+        # HR cross-analysis esikleri kademeli (bkz CEO yorumu).
         if current_round > 1 and previous_messages:
             cfo_metrics = get_agent_metrics(previous_messages, "CFO")
             if cfo_metrics:
                 cfo_risk = cfo_metrics.get("risk_score", 0)
                 cfo_roi = cfo_metrics.get("roi_estimate", 0)
 
-                if cfo_risk > 7:
-                    talent_availability -= 1.5
+                # Risk 5'in uzerinde her puan -0.4 talent (max -1.5).
+                if cfo_risk > 5:
+                    drop = min(1.5, (cfo_risk - 5) * 0.4)
+                    talent_availability -= drop
                     reasoning_notes.append(
-                        "CFO's high financial risk warning may make hiring harder."
+                        f"CFO risk skoru {cfo_risk}/10 hiring zorlugunu artirdi (-{drop:.1f} talent)."
                     )
 
-                if cfo_roi > 30 and cfo_risk < 5:
-                    talent_availability += 1.0
+                # Iyimser ROI (>20) talenti ceker.
+                if cfo_roi > 20 and cfo_risk < 6:
+                    boost = min(1.0, (cfo_roi - 20) * 0.04)
+                    talent_availability += boost
                     reasoning_notes.append(
-                        "CFO's strong ROI view may improve candidate attraction."
+                        f"CFO iyimser ROI %{cfo_roi:.0f} aday cazibesini artirdi (+{boost:.1f} talent)."
                     )
 
             ceo_metrics = get_agent_metrics(previous_messages, "CEO")
@@ -93,16 +102,20 @@ class HRAgent(Agent):
                 market_alignment = ceo_metrics.get("market_alignment", 0)
                 growth_potential = ceo_metrics.get("growth_potential", 0)
 
-                if market_alignment < 4:
-                    team_impact -= 1.0
+                # Market alignment 5'in altinda her puan -0.3 team_impact (max -1.2).
+                if market_alignment < 5:
+                    drop = min(1.2, (5 - market_alignment) * 0.3)
+                    team_impact -= drop
                     reasoning_notes.append(
-                        "CEO's market uncertainty signal may reduce team motivation."
+                        f"CEO pazar uyumu {market_alignment:.1f}/10 takim motivasyonunu dusurdu (-{drop:.1f})."
                     )
 
-                if growth_potential >= 8:
-                    workload_score += 0.8
+                # Growth potential 6'nin uzerindeyse workload toleransi artar.
+                if growth_potential > 6:
+                    boost = min(1.0, (growth_potential - 6) * 0.25)
+                    workload_score += boost
                     reasoning_notes.append(
-                        "CEO's growth vision increases workload tolerance."
+                        f"CEO buyume vizyonu {growth_potential:.1f}/10 is yuku toleransini artirdi (+{boost:.1f})."
                     )
 
         talent_availability = round(max(0, min(10, talent_availability)), 1)
@@ -164,6 +177,19 @@ class HRAgent(Agent):
                 reasoning_notes.append(
                     "Previous agent messages were reviewed; HR reassessed capacity and workload before keeping its position."
                 )
+
+            # Convergence pressure ve soften (CEO/CFO ile ayni mekanik).
+            confidence, conv_note = apply_convergence_pressure(
+                confidence, previous_messages, self_agent_name="HR"
+            )
+            if conv_note:
+                reasoning_notes.append(conv_note)
+
+            stance, soften_note = maybe_soften_stance(
+                stance, confidence, previous_messages, self_agent_name="HR"
+            )
+            if soften_note:
+                reasoning_notes.append(soften_note)
 
         confidence = max(0.3, min(1.0, confidence))
 
