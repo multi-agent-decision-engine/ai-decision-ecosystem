@@ -26,7 +26,14 @@ from app.domain.agents.prompts import (
     AGENT_PERSONA_LOOKUP,
 )
 from app.domain.agents.llm_port import LLMClient, LLMUnavailableError
+from app.domain.learning.dataset_retriever import DatasetRetriever
 from app.domain.models import AgentMessage, ScenarioInput
+
+
+# Modul-seviyesi singleton; ilk cagri'da dataset'i yukler ve cache'ler
+# (`_load_records` lru_cache'lidir). Veriseti dosyasi yoksa `is_available` False
+# olur, prompt'a hicbir sey eklenmez.
+_DEFAULT_RETRIEVER = DatasetRetriever()
 
 
 def _agent_short_name(agent: Agent) -> str:
@@ -57,9 +64,20 @@ def _build_prompt(
     scenario_inputs: ScenarioInput,
     base_message: AgentMessage,
     previous_messages: list[AgentMessage] | None,
+    retriever: DatasetRetriever | None = None,
 ) -> str:
     prior_block = _format_prior_messages(previous_messages)
     has_prior = bool(previous_messages)
+
+    # Tarihsel veri blogunu uretmeye calis. Veriseti yoksa bos doner; bos
+    # blok prompt'a eklenmez.
+    active_retriever = retriever or _DEFAULT_RETRIEVER
+    dataset_block = active_retriever.format_for_prompt(
+        budget=scenario_inputs.budget_million_usd,
+        risk=scenario_inputs.risk_level,
+        readiness=scenario_inputs.team_readiness,
+    )
+    has_dataset = bool(dataset_block)
 
     cross_ref_instruction = (
         "(c) Önceki mesajlardaki **en güçlü** endişeyi veya argümanı tanımla; "
@@ -71,6 +89,16 @@ def _build_prompt(
              "diğer ajanların görüşünü beklediğini kısaca belirt."
     )
 
+    dataset_instruction = (
+        "(d) Tarihsel veri blogundan **somut bir gozlem** alintila "
+        "(\"datasetimdeki 20 benzer vakanin X'i REJECT oldu\" gibi). "
+        "Senaryon dataset dagilimindan farkliysa, bunu da **acikca** belirt."
+        if has_dataset
+        else ""
+    )
+
+    dataset_section = f"{dataset_block}\n\n" if has_dataset else ""
+
     return (
         f"{system_prompt}\n\n"
         f"## Senaryo\n"
@@ -80,6 +108,7 @@ def _build_prompt(
         f"beklenen ROI (%): {scenario_inputs.expected_roi_percent}\n"
         f"risk seviyesi (1-10): {scenario_inputs.risk_level}\n"
         f"takım hazırlığı (1-10): {scenario_inputs.team_readiness}\n\n"
+        f"{dataset_section}"
         f"## Domain Mantığının Hesapladığı Yapılandırılmış Analiz\n"
         f"stance: {base_message.stance}\n"
         f"confidence: {base_message.confidence:.2f}\n"
@@ -88,12 +117,13 @@ def _build_prompt(
         f"{prior_block}\n\n"
         f"## Görevin\n"
         f"Sen {agent_name}'sun. 3-5 cümlelik **birinci tekil şahıs** bir gerekçe yaz; "
-        f"şu üç noktayı mutlaka karşıla:\n"
+        f"şu noktaları mutlaka karşıla:\n"
         f"(a) Stance'ini ({base_message.stance}) kendi karakterinle açıkla. "
         f"Yapılandırılmış analizdeki stance ile **çelişme**; ona dilsel zenginlik kat.\n"
         f"(b) Karara etki eden **en kritik sayısal sürücüyü** (ROI, risk, "
         f"team_readiness, bütçe vb.) somut sayıyla anarak göster.\n"
-        f"{cross_ref_instruction}\n\n"
+        f"{cross_ref_instruction}\n"
+        f"{dataset_instruction}\n\n"
         f"Çıktı: SADECE düz metin gerekçe — başlık YOK, JSON YOK, "
         f"madde listesi YOK, markdown YOK. En fazla 5 cümle."
     )
@@ -194,6 +224,7 @@ class LLMAgent(Agent):
         llm_client: LLMClient,
         system_prompt: str | None = None,
         agent_name: str | None = None,
+        retriever: DatasetRetriever | None = None,
     ) -> None:
         self.base_agent = base_agent
         self.llm_client = llm_client
@@ -202,6 +233,9 @@ class LLMAgent(Agent):
             self._agent_name,
             "Sen bir iş senaryosunu değerlendiren uzman bir profesyonelsin.",
         )
+        # None ise prompt builder _DEFAULT_RETRIEVER'a duser; testlerde
+        # ozel retriever (orn. mock) gecmek icin kullan.
+        self._retriever = retriever
 
     def _build_reasoning_prompt(self, scenario_inputs: ScenarioInput) -> str:
         return self.base_agent._build_reasoning_prompt(scenario_inputs)
@@ -222,6 +256,7 @@ class LLMAgent(Agent):
             scenario_inputs=scenario_inputs,
             base_message=base_message,
             previous_messages=previous_messages,
+            retriever=self._retriever,
         )
 
         try:

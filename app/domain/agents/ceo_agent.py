@@ -1,5 +1,10 @@
 from app.domain.agents.base import Agent
+from app.domain.learning.dataset_retriever import DatasetRetriever
 from app.domain.models import AgentMessage, ScenarioInput, Stance, get_agent_metrics, get_agent_stance
+
+# Modul-seviyesi retriever (cached load); dataset yoksa is_available False
+# olur ve agent eski davranisina dener.
+_DATASET_RETRIEVER = DatasetRetriever()
 
 def _to_strategic_inputs(scenario: ScenarioInput) -> dict:
     """
@@ -138,6 +143,20 @@ class CEOAgent(Agent):
                 elif cfo_s != hr_s:
                     confidence -= 0.05
                     reasoning_notes.append("Yönetim ekibindeki fikir, güveni hafif sarstı.")
+
+            # Dataset evidence (Seviye 4): Round 2+ icin tarihsel verilerden
+            # bizim stance'imiz dogrulaniyor mu / celisiyor mu? Confidence'i
+            # bounded sekilde ayarla, dataset disindaysa agirligi dusur.
+            evidence = _DATASET_RETRIEVER.outcome_alignment(
+                budget=scenario_inputs.budget_million_usd,
+                risk=scenario_inputs.risk_level,
+                readiness=scenario_inputs.team_readiness,
+                stance=stance,
+            )
+            if evidence["available"]:
+                confidence += evidence["confidence_delta"]
+                if evidence["note"]:
+                    reasoning_notes.append(evidence["note"])
 
         # Ensure confidence bounds
         confidence = max(0.3, min(1.0, confidence))

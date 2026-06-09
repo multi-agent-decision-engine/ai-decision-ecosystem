@@ -1,5 +1,8 @@
 from app.domain.agents.base import Agent
+from app.domain.learning.dataset_retriever import DatasetRetriever
 from app.domain.models import AgentMessage, ScenarioInput, get_agent_metrics, get_agent_stance
+
+_DATASET_RETRIEVER = DatasetRetriever()
 
 
 def _to_hr_inputs(scenario: ScenarioInput) -> dict:
@@ -164,6 +167,18 @@ class HRAgent(Agent):
                 reasoning_notes.append(
                     "Previous agent messages were reviewed; HR reassessed capacity and workload before keeping its position."
                 )
+
+            # Dataset evidence (Seviye 4): bkz CEO ayni mantik.
+            evidence = _DATASET_RETRIEVER.outcome_alignment(
+                budget=scenario_inputs.budget_million_usd,
+                risk=scenario_inputs.risk_level,
+                readiness=scenario_inputs.team_readiness,
+                stance=stance,
+            )
+            if evidence["available"]:
+                confidence += evidence["confidence_delta"]
+                if evidence["note"]:
+                    reasoning_notes.append(evidence["note"])
 
         confidence = max(0.3, min(1.0, confidence))
 

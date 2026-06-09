@@ -1,5 +1,8 @@
 from app.domain.agents.base import Agent
+from app.domain.learning.dataset_retriever import DatasetRetriever
 from app.domain.models import AgentMessage, ScenarioInput, Stance, get_agent_metrics, get_agent_stance
+
+_DATASET_RETRIEVER = DatasetRetriever()
 
 def _to_financial_inputs(scenario: ScenarioInput) -> dict:
     """
@@ -168,6 +171,18 @@ class CFOAgent(Agent):
                 elif stance == "neutral" and ceo_s == "support" and ceo_conf >= 0.8:
                     confidence = min(0.65, confidence + 0.1)
                     reasoning_notes.append("CEO'nun çok güçlü desteği belirsizliği azalttı.")
+
+            # Dataset evidence (Seviye 4): bkz CEO ayni mantik.
+            evidence = _DATASET_RETRIEVER.outcome_alignment(
+                budget=scenario_inputs.budget_million_usd,
+                risk=scenario_inputs.risk_level,
+                readiness=scenario_inputs.team_readiness,
+                stance=stance,
+            )
+            if evidence["available"]:
+                confidence += evidence["confidence_delta"]
+                if evidence["note"]:
+                    reasoning_notes.append(evidence["note"])
 
         # Ensure confidence bounds
         confidence = max(0.3, min(1.0, confidence))
