@@ -49,14 +49,15 @@ def apply_convergence_pressure(
 
     peer_mean = sum(p.confidence for p in peers) / len(peers)
     delta = peer_mean - confidence
-    new_conf = confidence + delta * pressure_weight
+    applied = delta * pressure_weight
+    new_conf = confidence + applied
 
     note: str | None = None
     if abs(delta) >= 0.10:
         direction = "yukseldi" if delta > 0 else "dustu"
         note = (
             f"Ekip ortalama guveni %{int(peer_mean * 100)}; bu nedenle "
-            f"kendi guvenim {direction} (yaklasma etkisi {delta:+.2f})."
+            f"kendi guvenim hafif {direction} (yaklasma etkisi {applied:+.2f})."
         )
 
     return new_conf, note

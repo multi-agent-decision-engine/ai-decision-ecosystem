@@ -59,6 +59,7 @@ import type {
 } from "./api/decisionApi";
 import type {
   ApiAgentOutput,
+  ApiRoundMessage,
   ApiScenario,
   ApiSimulationResponse,
 } from "./types/api";
@@ -207,7 +208,16 @@ const selectedScenario =
 
     try {
       const result = await decisionApi.simulateScenario(selectedScenarioId);
-      const backendAgents = result.agent_outputs.map(mapApiAgentToCockpitAgent);
+      const finalRound =
+        result.rounds && result.rounds.length > 0
+          ? result.rounds[result.rounds.length - 1]
+          : null;
+      const backendAgents = result.agent_outputs.map((output) =>
+        mapApiAgentToCockpitAgent(
+          output,
+          finalRound?.messages.find((m) => m.agent === output.agent) ?? null
+        )
+      );
 
       setSimulationResult(result);
       setAgents(backendAgents.length > 0 ? backendAgents : initialAgents);
@@ -2444,15 +2454,22 @@ function decisionBorderClass(tone: string) {
   return "border-amber-400/20";
 }
 
-function mapApiAgentToCockpitAgent(output: ApiAgentOutput): Agent {
+function mapApiAgentToCockpitAgent(
+  output: ApiAgentOutput,
+  finalMessage?: ApiRoundMessage | null
+): Agent {
   const id = getAgentIdFromName(output.agent);
-  const stance = output.stance?.toLowerCase() ?? "";
+  // agent_outputs stance/confidence taşımaz; gerçek değerler son tur mesajından gelir.
+  const stance = (finalMessage?.stance ?? output.stance ?? "").toLowerCase();
+  const realConfidence =
+    finalMessage?.confidence ?? output.confidence;
 
   return {
     id,
     name: output.agent,
     role: getAgentRoleFromId(id),
     status:
+      stance.includes("oppose") ||
       stance.includes("revise") ||
       stance.includes("warning") ||
       output.score < 70
@@ -2460,7 +2477,7 @@ function mapApiAgentToCockpitAgent(output: ApiAgentOutput): Agent {
         : "COMPLETED",
     score: Math.round(output.score),
     confidence:
-      output.confidence !== undefined ? formatConfidence(output.confidence) : 80,
+      realConfidence !== undefined ? formatConfidence(realConfidence) : 0,
     color: getAgentColorFromId(id),
     reasoning: output.reasoning ?? "Backend did not return reasoning.",
   };
