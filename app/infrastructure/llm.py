@@ -3,7 +3,7 @@ from typing import Optional
 
 from langchain_core.messages import BaseMessage
 from langchain_openai import ChatOpenAI
-from pydantic_settings import BaseSettings
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 from app.infrastructure.llm_logger import llm_logger
 
@@ -15,12 +15,19 @@ class LLMSettings(BaseSettings):
     """
     LLM_BASE_URL: str = "http://localhost:11434/v1"
     LLM_API_KEY: str = "ollama"
-    LLM_MODEL: str = "qwen2.5:14b"
+    # Varsayılan model docs/demo.md ve infrastructure/config.py ile hizalı:
+    # start-llm-demo.ps1 aksi belirtilmedikçe qwen2.5:7b kullanır.
+    LLM_MODEL: str = "qwen2.5:7b"
     LLM_TEMPERATURE: float = 0.7
 
-    class Config:
-        env_file = ".env"
-        env_file_encoding = "utf-8"
+    # extra="ignore" şart: .env içinde DATABASE_URL gibi başka değişkenler
+    # varken pydantic v2 varsayılanı (extra_forbidden) ValidationError üretir
+    # ve LLM modu sessizce devre dışı kalır.
+    model_config = SettingsConfigDict(
+        env_file=".env",
+        env_file_encoding="utf-8",
+        extra="ignore",
+    )
 
 
 @lru_cache()

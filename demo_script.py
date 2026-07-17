@@ -1,4 +1,12 @@
+import io
 import json
+import sys
+
+# Windows konsollarinda (cp1254 vb.) emoji ciktisi UnicodeEncodeError verir;
+# stdout'u UTF-8'e zorla.
+if sys.stdout.encoding and sys.stdout.encoding.lower() not in ("utf-8", "utf8"):
+    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace")
+
 from app.domain.agents.ceo_agent import CEOAgent
 from app.domain.agents.cfo_agent import CFOAgent
 from app.domain.agents.hr_agent import HRAgent

@@ -20,10 +20,13 @@ if _STATIC_DIR.exists():
     app.mount("/static", StaticFiles(directory=str(_STATIC_DIR)), name="static")
 
 # CORS middleware for browser requests
+# NOT: allow_origins=["*"] ile allow_credentials=True kombinasyonu CORS
+# spesifikasyonunda geçersizdir (tarayıcılar wildcard+credentials'ı reddeder).
+# Frontend credential göndermediği için credentials kapalı tutulur.
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
-    allow_credentials=True,
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
 )
